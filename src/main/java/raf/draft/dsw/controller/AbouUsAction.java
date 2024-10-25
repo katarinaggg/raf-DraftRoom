@@ -31,7 +31,7 @@ public class AbouUsAction extends AbstractRoomAction{
         }
         else
         {
-            System.err.println("File " + "images/aboutUs.png" + " not found");
+            System.err.println("File " + path + " not found");
         }
         return icon;
     }

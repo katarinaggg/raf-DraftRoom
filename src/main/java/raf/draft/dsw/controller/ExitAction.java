@@ -50,7 +50,7 @@ public class ExitAction extends AbstractRoomAction{
         }
         else
         {
-            System.err.println("File " + "images/exit.png" + " not found");
+            System.err.println("File " + path + " not found");
         }
         return icon;
     }

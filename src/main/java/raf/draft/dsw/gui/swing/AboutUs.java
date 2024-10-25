@@ -12,7 +12,7 @@ public class AboutUs extends JPanel {
 
         // Učitavanje slika
         Icon image1 = loadIcon("/images/anja.png");
-        Icon image2 = loadIcon("/images/exit.png");
+        Icon image2 = loadIcon("/images/katarina.png");
 
         // Kreiranje JLabel za slike i tekstove
         JLabel label1 = new JLabel("Anja Stanković RN 58/23", image1, JLabel.CENTER);
@@ -29,12 +29,12 @@ public class AboutUs extends JPanel {
         if(ImageURL != null)
         {
             Image img = new ImageIcon(ImageURL).getImage();
-            Image newImg = img.getScaledInstance(60, 60, Image.SCALE_DEFAULT);
+            Image newImg = img.getScaledInstance(70, 70, Image.SCALE_DEFAULT);
             icon = new ImageIcon(newImg);
         }
         else
         {
-            System.err.println("File " + "images/aboutUs.png" + " not found");
+            System.err.println("File " + path + " not found");
         }
         return icon;
     }
