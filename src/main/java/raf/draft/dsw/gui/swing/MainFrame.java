@@ -1,13 +1,17 @@
 package raf.draft.dsw.gui.swing;
 
-import lombok.Data;
 import lombok.Getter;
-import raf.draft.dsw.controller.ActionManager;
+import raf.draft.dsw.controller.actions.ActionManager;
+import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
+import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.core.ApplicationFramework;
+import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.messages.MessageType;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ISubscriber {
     //buduca polja za sve komponente view-a na glavnom prozoru
 
     private static MainFrame mainFrameInstance;
@@ -40,10 +44,26 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("DraftRoom");
 
+        // subscribujemo MainFrame na MessageGenerator koji je IPublisher
+        ApplicationFramework.getInstance().getMessageGenerator().addSubscriber(this);
+
         MyMenuBar menu = new MyMenuBar();
         setJMenuBar(menu);
 
         MyToolBar toolBar = new MyToolBar();
         add(toolBar, BorderLayout.NORTH);
+    }
+// JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.PLAIN_MESSAGE);
+    @Override
+    public void update(Message message) {
+        if(message.getTip().equals(MessageType.ERROR)){
+            JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.ERROR_MESSAGE);
+        }
+        else if(message.getTip().equals(MessageType.WARNING)){
+            JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.WARNING_MESSAGE);
+        }
+        else if(message.getTip().equals(MessageType.INFORMATION)){
+            JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package raf.draft.dsw.controller;
+package raf.draft.dsw.controller.actions;
 
 import raf.draft.dsw.gui.swing.AboutUs;
 
@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
-public class AbouUsAction extends AbstractRoomAction{
+public class AbouUsAction extends AbstractRoomAction {
 
     public AbouUsAction(){
         //bitno

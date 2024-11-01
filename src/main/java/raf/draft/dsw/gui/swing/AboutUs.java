@@ -29,7 +29,7 @@ public class AboutUs extends JPanel {
         if(ImageURL != null)
         {
             Image img = new ImageIcon(ImageURL).getImage();
-            Image newImg = img.getScaledInstance(70, 70, Image.SCALE_DEFAULT);
+            Image newImg = img.getScaledInstance(120, 120, Image.SCALE_DEFAULT);
             icon = new ImageIcon(newImg);
         }
         else
