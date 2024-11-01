@@ -1,4 +1,4 @@
-package raf.draft.dsw.controller;
+package raf.draft.dsw.controller.actions;
 
 import javax.swing.*;
 
