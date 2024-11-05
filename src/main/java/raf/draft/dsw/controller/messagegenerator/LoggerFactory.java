@@ -19,9 +19,6 @@ public class LoggerFactory {
         else if(type.equalsIgnoreCase("FILE")){
             logger = new FileLogger();
         }
-        // subscribujemo se
-        // logger je subscriber za messageGenerator koji je publisher
-        ApplicationFramework.getInstance().getMessageGenerator().addSubscriber(logger);
         return logger;
     }
 

@@ -10,6 +10,8 @@ public class AboutUs extends JPanel {
         // Postavljanje layout-a
         setLayout(new GridLayout(2, 2, 10, 10));
 
+        setPreferredSize(new Dimension(400, 400));
+
         // Učitavanje slika
         Icon image1 = loadIcon("/images/anja.png");
         Icon image2 = loadIcon("/images/katarina.png");
@@ -29,7 +31,7 @@ public class AboutUs extends JPanel {
         if(ImageURL != null)
         {
             Image img = new ImageIcon(ImageURL).getImage();
-            Image newImg = img.getScaledInstance(120, 120, Image.SCALE_DEFAULT);
+            Image newImg = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
             icon = new ImageIcon(newImg);
         }
         else
