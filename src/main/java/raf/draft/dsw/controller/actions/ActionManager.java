@@ -9,10 +9,12 @@ public class ActionManager {
 
     private ExitAction exitAction;
     private AbouUsAction abouUsAction;
+    private AddNodeAction addNodeAction;
 
     public ActionManager(){
         exitAction = new ExitAction();
         abouUsAction = new AbouUsAction();
+        addNodeAction = new AddNodeAction();
     }
 
 }

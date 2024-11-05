@@ -2,21 +2,22 @@ package raf.draft.dsw.gui.swing;
 
 import lombok.Getter;
 import raf.draft.dsw.controller.actions.ActionManager;
-import raf.draft.dsw.controller.messagegenerator.MessageGenerator;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ApplicationFramework;
+import raf.draft.dsw.gui.swing.jtree.DraftTree;
+import raf.draft.dsw.gui.swing.jtree.DraftTreeImplementation;
 import raf.draft.dsw.model.messages.Message;
 import raf.draft.dsw.model.messages.MessageType;
 
 import javax.swing.*;
 import java.awt.*;
-
+@Getter
 public class MainFrame extends JFrame implements ISubscriber {
     //buduca polja za sve komponente view-a na glavnom prozoru
 
     private static MainFrame mainFrameInstance;
-    @Getter
     private ActionManager actionManager;
+    private DraftTree draftTree;
 
     private MainFrame(){
     }
@@ -34,6 +35,7 @@ public class MainFrame extends JFrame implements ISubscriber {
         //ovde sam inicijalizovala actionManager, jer ovde pravim jedini objekat MainFrame-a
         // tj. sve sto taj objekat treba da ima
         actionManager=new ActionManager();
+        draftTree = new DraftTreeImplementation();
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
@@ -52,8 +54,18 @@ public class MainFrame extends JFrame implements ISubscriber {
 
         MyToolBar toolBar = new MyToolBar();
         add(toolBar, BorderLayout.NORTH);
+
+        JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomExplorerImplementation().getProjectExplorer());
+        JPanel desktop = new JPanel();
+
+        //ovde ubacujemo projectExplorer tj. root projekta u scrollPane
+        JScrollPane scroll = new JScrollPane(projectExplorer);
+        scroll.setMinimumSize(new Dimension(200,150));
+        JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,desktop);
+        getContentPane().add(split,BorderLayout.CENTER);
+        split.setDividerLocation(250);
+        split.setOneTouchExpandable(true);
     }
-// JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.PLAIN_MESSAGE);
     @Override
     public void update(Message message) {
         if(message.getTip().equals(MessageType.ERROR)){
