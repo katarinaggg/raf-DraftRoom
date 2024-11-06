@@ -11,8 +11,8 @@ import raf.draft.dsw.model.nodes.DraftNodeComposite;
 @Getter
 public class Project extends DraftNodeComposite {
 
-    // naziv projekta
-    private String ime;
+    //private String ime;
+
     // ime kreatora projekta
     private String autorProjekta;
     // putanja do foldera
