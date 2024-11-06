@@ -48,7 +48,7 @@ public class SaveButtonAction implements ActionListener {
         selected.setIme(naziv);
         selected.setPath(putanja);
 
-        // kako da refresujem stablo
+        // kako da refresujem stablo??
 
         dialog.dispose();
 
