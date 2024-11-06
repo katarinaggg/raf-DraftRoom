@@ -7,10 +7,12 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
 
 public class JTreeView extends JTree {
+
+    // konstruktor u koji dodajemo sve iz Jtree komponente
     public JTreeView(DefaultTreeModel defaultTreeModel){
 
-        //dodajemo defaultTreeModel jer nam je tu celo stablo
-        //item ne dodajemo jer je top krsenje MVC
+        //dodajemo defaultTreeModel jer nam je tu celo stablo (vec postojeca klasa)
+        //item ne dodajemo jer je to krsenje MVC
         setModel(defaultTreeModel);
 
         TreeCellRenderer treeCellRenderer = new TreeCellRenderer();

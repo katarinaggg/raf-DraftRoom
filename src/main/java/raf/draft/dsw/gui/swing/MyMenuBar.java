@@ -13,9 +13,17 @@ public class MyMenuBar extends JMenuBar {
         add(fileMenu);
 
 
+        JMenu editNodes = new JMenu("Edit Nodes");
+        editNodes.setMnemonic(KeyEvent.VK_F);
+        editNodes.add(MainFrame.getInstance().getActionManager().getAddNodeAction());
+        editNodes.add(MainFrame.getInstance().getActionManager().getRemoveNodeAction());
+        editNodes.add(MainFrame.getInstance().getActionManager().getEditProjectAction());
+        add(editNodes);
+
         JMenu aboutUsMenu = new JMenu("About us");
         aboutUsMenu.setMnemonic(KeyEvent.VK_F);
         aboutUsMenu.add(MainFrame.getInstance().getActionManager().getAbouUsAction());
         add(aboutUsMenu);
+
     }
 }

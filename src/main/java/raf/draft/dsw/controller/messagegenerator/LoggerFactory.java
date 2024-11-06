@@ -9,8 +9,7 @@ import raf.draft.dsw.model.messages.MessageType;
 @Data@NoArgsConstructor
 public class LoggerFactory {
 
-    // na osnovu cega pravimo logger?
-    // message ili string?
+
     public Logger createLogger(String type){
         Logger logger = null;
         if(type.equalsIgnoreCase("CONSOLE")){

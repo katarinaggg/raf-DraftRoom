@@ -10,6 +10,6 @@ public interface DraftTree {
 
     public JTreeView generate(ProjectExplorer projectExplorer);
     public void addChild(DraftTreeItem parent);
-    public void removeChild();
+    public void removeChild(DraftTreeItem node);
     public DraftTreeItem getSelectedItem();
 }

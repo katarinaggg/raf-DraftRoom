@@ -10,11 +10,15 @@ public class ActionManager {
     private ExitAction exitAction;
     private AbouUsAction abouUsAction;
     private AddNodeAction addNodeAction;
+    private RemoveNodeAction removeNodeAction;
+    private EditProjectAction editProjectAction;
 
     public ActionManager(){
         exitAction = new ExitAction();
         abouUsAction = new AbouUsAction();
         addNodeAction = new AddNodeAction();
+        removeNodeAction = new RemoveNodeAction();
+        editProjectAction = new EditProjectAction();
     }
 
 }

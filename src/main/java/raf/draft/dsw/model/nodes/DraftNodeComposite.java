@@ -1,10 +1,7 @@
 package raf.draft.dsw.model.nodes;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +15,8 @@ public abstract class DraftNodeComposite extends DraftNode {
     }
 
 
-    public abstract void addChild(DraftNode n);
+    public abstract void addChild(DraftNode child);
 
-    public abstract void removeChild(DraftNode n);
+    public abstract void removeChild(DraftNode child);
 
 }

@@ -13,15 +13,21 @@ import raf.draft.dsw.model.structures.Room;
 import javax.swing.*;
 import java.util.Random;
 
-@Data@AllArgsConstructor
+@Data@NoArgsConstructor
 public class ChildFactory {
+
+    private static int counterProject = 1;
+    private static int counterBuilding = 1;
+    private static int counterRoom = 1;
+
+
     public DraftNode createChild(DraftNode parent){
         if(parent instanceof ProjectExplorer){
-            return new Project("Project " + new Random().nextInt(100), parent);
+            return new Project("Project " + counterProject++, parent);
         }
         else if(parent instanceof Project){
             /// otvori se prozor i bira da li zeli Building ili Room
-            // na osnovu odabrane stvari ako je building
+
 
             Object[] options = {"Building", "Room"};
 
@@ -30,7 +36,7 @@ public class ChildFactory {
                     ///da li treba da bude parent component null ili MainFrame
                     null,
                     "Choose a project type:",
-                    "Project type",
+                    "Project types",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
@@ -40,12 +46,15 @@ public class ChildFactory {
             // Kreiranje objekta na osnovu izbora
             switch (choice) {
                 case 0:
-                    return new Building("Building " + new Random().nextInt(100), parent);
+                    return new Building("Building " + counterBuilding++, parent);
                 case 1:
-                    return new Room("Room " + new Random().nextInt(100), parent);
+                    return new Room("Room " + counterRoom++, parent);
                 default:
                     return null; // Ako korisnik zatvori dialog ili ne odabere ništa
             }
+        }
+        else if(parent instanceof Building){
+            return new Room("Room " + counterRoom++, parent);
         }
         return null;
     }

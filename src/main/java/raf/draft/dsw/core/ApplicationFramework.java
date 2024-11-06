@@ -4,8 +4,7 @@ package raf.draft.dsw.core;
 import lombok.Getter;
 import raf.draft.dsw.controller.messagegenerator.*;
 import raf.draft.dsw.gui.swing.MainFrame;
-import raf.draft.dsw.model.repository.DraftRoomExplorerImplementation;
-import raf.draft.dsw.model.repository.DraftRoomRepository;
+import raf.draft.dsw.model.repository.DraftRoomRepositoryImplementation;
 
 @Getter
 public class ApplicationFramework {
@@ -13,7 +12,7 @@ public class ApplicationFramework {
     MessageGenerator messageGenerator; //= new MessageGenerator();
     Logger consoleLogger;
     Logger fileLogger;
-    DraftRoomExplorerImplementation draftRoomExplorerImplementation;
+    DraftRoomRepositoryImplementation draftRoomRepositoryImplementation;
 
     private static ApplicationFramework applicationFrameworkInstance;
     private ApplicationFramework(){
@@ -36,16 +35,17 @@ public class ApplicationFramework {
 
         //ne mozemo da pravino DraftRoomRepository zato sto je to interface u kom nemamo nista
         // vec u ExplorerImplementation-u zapravo cuvamo projectExplorer
-        draftRoomExplorerImplementation = new DraftRoomExplorerImplementation();
+        draftRoomRepositoryImplementation = new DraftRoomRepositoryImplementation();
 
         MainFrame mainFrame = MainFrame.getInstance();
         mainFrame.setVisible(true);
 
-
-        // da li se ovo radi ovde ili u loggeru?
+        // pravimo loggere i subscribujemo ih na messageGenerator
         LoggerFactory factory = new LoggerFactory();
+
         consoleLogger = factory.createLogger("Console");
         messageGenerator.addSubscriber(consoleLogger);
+
         fileLogger = factory.createLogger("File");
         messageGenerator.addSubscriber(fileLogger);
     }

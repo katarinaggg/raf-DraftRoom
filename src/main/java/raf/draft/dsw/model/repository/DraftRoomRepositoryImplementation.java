@@ -1,20 +1,22 @@
 package raf.draft.dsw.model.repository;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 @Getter
-public class DraftRoomExplorerImplementation implements DraftRoomRepository{
+public class DraftRoomRepositoryImplementation implements DraftRoomRepository{
+
+    // OVDE CUVAMO MODEL (imamo projectExplorer koji je root)
 
     //jedan jedini projectExplorer samo tu ga pravimo, a cuvamo ga u ApplicationFramework-u
     private ProjectExplorer projectExplorer;
 
-    public DraftRoomExplorerImplementation() {
-        projectExplorer = new ProjectExplorer("Project explorer");
+    public DraftRoomRepositoryImplementation() {
+        projectExplorer = new ProjectExplorer("Project Explorer");
     }
 
     @Override
     public void getRoot() {
+
     }
 }

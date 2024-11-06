@@ -32,7 +32,7 @@ public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListe
 
         clickedOn = value; // ono na sta smo kliknuli 2 puta
         edit = new JTextField(value.toString()); // menjamo tekst, otvara se prozorcic u kome vec ima
-        // staro ime, a da nemamo value.toString() bio bi prazan
+                                                 // staro ime, a da nemamo value.toString() bio bi prazan
 
         edit.addActionListener(this);
         return edit;
@@ -59,6 +59,7 @@ public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListe
         DraftTreeItem clicked = (DraftTreeItem) clickedOn; // ovde smo morali da castujemo u DraftTReeItem
         //tj. da napravimo polje CLICKED jer ne smemo direktno na CLICKEDON da setujemo ime jer je krsenje MVC
         // zato sto menjamo nesto iz modela direktno u view, a to ne sme !
+
         clicked.setIme(e.getActionCommand());
     }
 }
