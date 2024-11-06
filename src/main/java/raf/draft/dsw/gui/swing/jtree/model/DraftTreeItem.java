@@ -8,11 +8,14 @@ import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-@Data@NoArgsConstructor@AllArgsConstructor
+
 public class DraftTreeItem extends DefaultMutableTreeNode {
 
     DraftNode draftNode;
 
+    public DraftTreeItem(DraftNode draftNode) {
+        this.draftNode = draftNode;
+    }
 
     @Override
     public String toString() {
@@ -21,5 +24,13 @@ public class DraftTreeItem extends DefaultMutableTreeNode {
 
     public void setIme(String ime){
         this.draftNode.setIme(ime);
+    }
+
+    public DraftNode getDraftNode() {
+        return draftNode;
+    }
+
+    public void setDraftNode(DraftNode draftNode) {
+        this.draftNode = draftNode;
     }
 }

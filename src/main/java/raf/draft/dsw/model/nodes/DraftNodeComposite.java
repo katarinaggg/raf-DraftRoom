@@ -19,6 +19,7 @@ public abstract class DraftNodeComposite extends DraftNode {
 
 
     public abstract void addChild(DraftNode n);
+
     public abstract void removeChild(DraftNode n);
 
 }
