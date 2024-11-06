@@ -6,6 +6,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
 
 public class TreeSelectionListener implements javax.swing.event.TreeSelectionListener {
+
     @Override
     public void valueChanged(TreeSelectionEvent e) {
         //ova metoda daje putanju do selektovanpg cvora i ispisuje ;)

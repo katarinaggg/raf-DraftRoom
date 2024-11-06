@@ -15,28 +15,13 @@ public class ExitAction extends AbstractRoomAction {
         putValue(SHORT_DESCRIPTION, "Exit");
     }
 
-    //deo koda za ucitavanje ikonice...
-//    private Icon loadIcon(String path){
-//        Icon icon = null;
-//        URL ImageURL = getClass().getResource(path);
-//        if(ImageURL != null)
-//        {
-//            Image img = new ImageIcon(ImageURL).getImage();
-//            Image newImg = img.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
-//            icon = new ImageIcon(newImg);
-//        }
-//        else
-//        {
-//            System.err.println("File " + "images/exit.png" + " not found");
-//        }
-//        return icon;
-//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         System.exit(0);
     }
 
+    //deo koda za ucitavanje ikonice...
     @Override
     public Icon loadIcon(String path) {
 

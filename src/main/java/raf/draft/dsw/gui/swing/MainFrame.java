@@ -55,7 +55,8 @@ public class MainFrame extends JFrame implements ISubscriber {
         MyToolBar toolBar = new MyToolBar();
         add(toolBar, BorderLayout.NORTH);
 
-        JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomExplorerImplementation().getProjectExplorer());
+        // ovde pravimo stablo
+        JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomRepositoryImplementation().getProjectExplorer());
         JPanel desktop = new JPanel();
 
         //ovde ubacujemo projectExplorer tj. root projekta u scrollPane

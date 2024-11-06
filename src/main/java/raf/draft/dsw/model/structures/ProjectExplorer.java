@@ -24,7 +24,9 @@ public class ProjectExplorer extends DraftNodeComposite {
     }
 
     @Override
-    public void removeChild(DraftNode n) {
-
+    public void removeChild(DraftNode child) {
+        if(child != null &&  child instanceof Project){
+            this.getChildren().remove(child);
+        }
     }
 }

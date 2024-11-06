@@ -1,4 +1,5 @@
 package raf.draft.dsw.gui.swing.jtree;
+import lombok.Getter;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.gui.swing.jtree.view.JTreeView;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -7,8 +8,10 @@ import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.util.Random;
+
 
 public class DraftTreeImplementation implements DraftTree{
 
@@ -19,8 +22,9 @@ public class DraftTreeImplementation implements DraftTree{
     private DefaultTreeModel defaultTreeModel;
 
 
-    //zvacemo je u MainFrame-u : bice JTreeView projectExplorer = DraftTree.generate() jer na projectExplorer mi dodajmo sve, on je rooot
-    //tj, pravimo stablo, izvucemo ga iz DraftRoomExplorerImplementation-a
+    // zvacemo je u MainFrame-u : bice JTreeView projectExplorer = DraftTree.generate()
+    // jer na projectExplorer mi dodajmo sve, on je root tj, pravimo stablo
+    // projectExplorer izvucemo iz DraftRoomExplorerImplementation-a
     @Override
     public JTreeView generate(ProjectExplorer projectExplorer) {
         DraftTreeItem root = new DraftTreeItem(projectExplorer);
@@ -31,7 +35,8 @@ public class DraftTreeImplementation implements DraftTree{
 
     @Override
     public void addChild(DraftTreeItem parent) {
-        // prosledjujemo samo parenta zato sto cemo znaci na osnovu njega koji tip deteta treba da pravimo
+        // prosledjujemo samo parenta zato sto cemo znati na osnovu njega
+        // koji tip deteta treba da pravimo
 
         //samo objekti klase DraftNodeComposite mogu da imaju decu
         //ako probamo da dodamo na nekom drugom tipu objekta decu ne moze ( npr. Room ne moze da ima decu)
@@ -40,26 +45,70 @@ public class DraftTreeImplementation implements DraftTree{
 
         DraftNode child = createChild(parent.getDraftNode());
 
-        //dodajemo u view
+        //dodajemo u view tj Jtree
         parent.add(new DraftTreeItem(child));
 
         //dodajemo u model
         ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
+
         jTreeView.expandPath(jTreeView.getSelectionPath());
         SwingUtilities.updateComponentTreeUI(jTreeView);
     }
 
 
     public DraftNode createChild(DraftNode parent){
-
         ChildFactory factory = new ChildFactory();
-
         return factory.createChild(parent);
     }
-    @Override
-    public void removeChild() {
 
+
+    @Override
+    public void removeChild(DraftTreeItem node) {
+
+        if(node == null){
+            return;
+        }
+
+        // treba ga obrisati i iz modela i iz viewa
+        // prosledjen nam je selektovani node koji treba da obrisemo
+
+        // izvlacimo koji je parent nasem selektovanom nodu
+        // da bi tom parentu mogli da removujemo selektovano dete iz liste
+        DraftTreeItem parent = (DraftTreeItem) node.getParent();
+        //System.out.println(parent);
+
+//        DraftNodeComposite parent = null;
+//        if(treeNode != null) {
+//            parent = (DraftNodeComposite) treeNode.getUserObject();
+//            System.out.println(treeNode.getUserObject());
+//        }
+
+        if(node!=null && parent!=null){
+
+            // BRISANJE IZ MODELA
+            ((DraftNodeComposite)parent.getDraftNode()).removeChild(node.getDraftNode());
+
+            // BRISANJE IZ VIEW-A
+            // prvo izvlacimo model koji se prikazuje u JTreeView
+            DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
+            model.removeNodeFromParent(node);
+            model.reload();
+            expandAllNodes(jTreeView);
+
+
+        }
+        return;
     }
+    // f-ja koja refreshuje celo stablo tako da se vide sva podstabla
+    // da ne moramo da ih otvaramo rucno
+    private static void expandAllNodes(JTree tree) {
+        int row = 0;
+        while (row < tree.getRowCount()) {
+            tree.expandRow(row);
+            row++;
+        }
+    }
+
 
     @Override
     public DraftTreeItem getSelectedItem() {

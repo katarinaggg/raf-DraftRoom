@@ -14,7 +14,6 @@ import java.util.List;
 @Data@NoArgsConstructor@AllArgsConstructor
 public class MessageGenerator extends IPublisher {
 
-    // ??? da li ovde treba da bude lista
     // lista prijavljenih na IPublisher
     List<ISubscriber> subscriberList = new ArrayList<>();
 
