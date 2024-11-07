@@ -7,14 +7,25 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.awt.*;
+import java.util.Random;
 
 
 public class Building extends DraftNodeComposite {
 
     // treba dodati polje za boju
+   Color color;
 
     public Building(String ime, DraftNode parent) {
         super(ime, parent);
+        loadColor();
+    }
+
+    private void loadColor() {
+        Random random = new Random();
+        int r = random.nextInt(256); // Random red (0-255)
+        int g = random.nextInt(256); // Random green (0-255)
+        int b = random.nextInt(256); // Random blue (0-255)
+        this.color = new Color(r, g, b);
     }
 
     @Override

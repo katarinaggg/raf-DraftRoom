@@ -55,6 +55,7 @@ public class AddNodeAction extends AbstractRoomAction{
         if(selected == null){
             message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali nijedan objekat!", MessageType.WARNING, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
         }
         if(selected.getDraftNode() instanceof Room){
             message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da dodajete objekte na Room!", MessageType.ERROR, LocalDateTime.now());
