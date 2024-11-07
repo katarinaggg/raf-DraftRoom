@@ -1,6 +1,11 @@
 package raf.draft.dsw.gui.swing.jtree.controller;
 
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -9,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
 import java.util.EventObject;
 
 public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListener{
@@ -40,9 +46,9 @@ public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListe
 
     @Override
     public boolean isCellEditable(EventObject event) {
-        //da li smo kliknuli 2 puta na nesto
+        //da li smo kliknuli 3 puta na nesto
         if(event instanceof MouseEvent){
-            if(((MouseEvent)event).getClickCount()==2){
+            if(((MouseEvent)event).getClickCount()==3){
                 return true;
             }
         }
@@ -59,6 +65,16 @@ public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListe
         DraftTreeItem clicked = (DraftTreeItem) clickedOn; // ovde smo morali da castujemo u DraftTReeItem
         //tj. da napravimo polje CLICKED jer ne smemo direktno na CLICKEDON da setujemo ime jer je krsenje MVC
         // zato sto menjamo nesto iz modela direktno u view, a to ne sme !
+
+        // ako parent ovog selektovanog Nodea vec ima dete sa istim imenom koje je dato u TextFieldu
+        // tj ako u njegovoj listi dece postoji neki Node sa istim imenom ne mozemo da ga preimenujemo
+        for(DraftNode dn : ((DraftNodeComposite)clicked.getDraftNode().getParent()).getChildren()){
+            if(dn.getIme().equals(edit.getText())){
+                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Već postoji objekat sa ovim imenom!", MessageType.ERROR, LocalDateTime.now());
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+                return;
+            }
+        }
 
         clicked.setIme(e.getActionCommand());
     }
