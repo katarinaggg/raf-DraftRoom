@@ -36,7 +36,7 @@ public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListe
     public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         //kada smo kliknuli 2 puta ulazi se u editMode i poziva se ova metoda
 
-        clickedOn = value; // ono na sta smo kliknuli 2 puta
+        clickedOn = value; // ono na sta smo kliknuli 3 puta
         edit = new JTextField(value.toString()); // menjamo tekst, otvara se prozorcic u kome vec ima
                                                  // staro ime, a da nemamo value.toString() bio bi prazan
 

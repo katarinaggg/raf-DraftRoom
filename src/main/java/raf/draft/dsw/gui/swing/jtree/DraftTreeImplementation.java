@@ -94,8 +94,6 @@ public class DraftTreeImplementation implements DraftTree{
             model.removeNodeFromParent(node);
             model.reload();
             expandAllNodes(jTreeView);
-
-
         }
         return;
     }

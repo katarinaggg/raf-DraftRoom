@@ -18,8 +18,6 @@ public class Message {
     private LocalDateTime timestamp;
 
 
-
-
     @Override
     public String toString() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");

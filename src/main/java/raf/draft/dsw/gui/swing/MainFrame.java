@@ -57,7 +57,9 @@ public class MainFrame extends JFrame implements ISubscriber {
 
         // ovde pravimo stablo
         JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomRepositoryImplementation().getProjectExplorer());
-        JPanel desktop = new JPanel();
+
+        // panel levo gde ce da budu tabovi i projectView
+        JPanel desktop = new JPanel(new BorderLayout());
 
         //ovde ubacujemo projectExplorer tj. root projekta u scrollPane
         JScrollPane scroll = new JScrollPane(projectExplorer);
@@ -66,6 +68,8 @@ public class MainFrame extends JFrame implements ISubscriber {
         getContentPane().add(split,BorderLayout.CENTER);
         split.setDividerLocation(250);
         split.setOneTouchExpandable(true);
+
+
     }
     @Override
     public void update(Message message) {
