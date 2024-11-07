@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.messages.MessageType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,11 @@ public class MessageGenerator extends IPublisher {
         for(ISubscriber subscriber : subscriberList){
             subscriber.update(message);
         }
+    }
+
+    public Message generateMessage(String sadrzaj, MessageType tip, LocalDateTime vreme){
+        Message message = new Message(sadrzaj, tip, vreme);
+        return message;
     }
 
 }

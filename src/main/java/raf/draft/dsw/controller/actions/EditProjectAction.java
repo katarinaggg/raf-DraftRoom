@@ -1,8 +1,11 @@
 package raf.draft.dsw.controller.actions;
 
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.EditProject;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.messages.MessageType;
 import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
@@ -10,6 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.time.LocalDateTime;
 
 public class EditProjectAction extends AbstractRoomAction{
 
@@ -43,7 +47,9 @@ public class EditProjectAction extends AbstractRoomAction{
         DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedItem();
         // ako nije project nece se uopste otvoriti prozor
         if(!(selected.getDraftNode() instanceof Project)){
-            // treba da se posalje poruka
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Možete da editujete samo Project", MessageType.INFORMATION, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
         }
 
         // da li smem da ga prosledim ovde?

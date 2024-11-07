@@ -3,14 +3,20 @@ package raf.draft.dsw.controller.actions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.time.LocalDateTime;
+
 @Data
 public class AddNodeAction extends AbstractRoomAction{
 
@@ -41,6 +47,19 @@ public class AddNodeAction extends AbstractRoomAction{
     @Override
     public void actionPerformed(ActionEvent e) {
         DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedItem();
+        // ako smo kliknuli na plus a nije oznacen ni jedan node -> greska
+        // pravimo poruku i saljemo je
+        // MessageGenerator treba da notify subscribere tj Loggere i MainFrame
+        // a oni ce preko update() metoda da urade sta treba
+        Message message;
+        if(selected == null){
+            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali nijedan objekat!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+        }
+        if(selected.getDraftNode() instanceof Room){
+            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da dodajete objekte na Room!", MessageType.ERROR, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+        }
         MainFrame.getInstance().getDraftTree().addChild(selected);
     }
 }

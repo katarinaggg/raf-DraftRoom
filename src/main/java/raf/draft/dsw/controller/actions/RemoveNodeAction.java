@@ -1,13 +1,19 @@
 package raf.draft.dsw.controller.actions;
 
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.structures.ProjectExplorer;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.time.LocalDateTime;
 
 public class RemoveNodeAction extends AbstractRoomAction{
 
@@ -38,6 +44,10 @@ public class RemoveNodeAction extends AbstractRoomAction{
     @Override
     public void actionPerformed(ActionEvent e) {
         DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedItem();
+        if(selected.getDraftNode() instanceof ProjectExplorer){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da obrišete Project Explorer!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+        }
         MainFrame.getInstance().getDraftTree().removeChild(selected);
     }
 }
