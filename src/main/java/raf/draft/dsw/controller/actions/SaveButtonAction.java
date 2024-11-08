@@ -9,6 +9,7 @@ import raf.draft.dsw.model.messages.MessageType;
 import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
@@ -40,23 +41,22 @@ public class SaveButtonAction implements ActionListener {
 
         // ako je neki field null tj nismo uneli nista -> greska
         // ako nesto nije uneto poruka
-//        if(autor==null || naziv==null || putanja==null){
-//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste popunili sva potrebna polja!", MessageType.ERROR, LocalDateTime.now());
-//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
-//            return;
-//        }
-
+        if(naziv.getText().isEmpty() || autor.getText().isEmpty() || putanja.getText().isEmpty()) {
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste popunili sva potrebna polja!", MessageType.ERROR, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
+        }
 
         String autor = this.autor.getText();
         String naziv = this.naziv.getText();
         String putanja = this.putanja.getText();
 
 
-        selected.setAutor(autor);
+        ((Project)(selected.getDraftNode())).setAutorProjekta(autor);
         selected.setIme(naziv);
-        selected.setPath(putanja);
+        ((Project)(selected.getDraftNode())).setPath(putanja);
 
-        // kako da refresujem stablo??
+        MainFrame.getInstance().getDraftTree().refreshTree();
 
         dialog.dispose();
 

@@ -12,4 +12,6 @@ public interface DraftTree {
     public void addChild(DraftTreeItem parent);
     public void removeChild(DraftTreeItem node);
     public DraftTreeItem getSelectedItem();
+
+    public void refreshTree();
 }

@@ -45,13 +45,18 @@ public class EditProjectAction extends AbstractRoomAction{
     public void actionPerformed(ActionEvent e) {
         // uzimamo selektovan Item
         DraftTreeItem selected = MainFrame.getInstance().getDraftTree().getSelectedItem();
+        if(selected == null){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali Project!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
+        }
         // ako nije project nece se uopste otvoriti prozor
         if(!(selected.getDraftNode() instanceof Project)){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Možete da editujete samo Project", MessageType.INFORMATION, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
             return;
         }
-        // da li smem da ga prosledim ovde?
+
         EditProject editProject = new EditProject();
         editProject.setVisible(true);
     }

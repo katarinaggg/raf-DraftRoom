@@ -43,10 +43,16 @@ public class RemoveNodeAction extends AbstractRoomAction{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DraftTreeItem selected = (DraftTreeItem) MainFrame.getInstance().getDraftTree().getSelectedItem();
+        DraftTreeItem selected = MainFrame.getInstance().getDraftTree().getSelectedItem();
+        if(selected == null){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali nijedan objekat!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
+        }
         if(selected.getDraftNode() instanceof ProjectExplorer){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da obrišete Project Explorer!", MessageType.WARNING, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
         }
         MainFrame.getInstance().getDraftTree().removeChild(selected);
     }

@@ -12,7 +12,7 @@ public class TreeSelectionListener implements javax.swing.event.TreeSelectionLis
         //ova metoda daje putanju do selektovanpg cvora i ispisuje ;)
         TreePath path = e.getPath();
         DraftTreeItem treeItemSelected = (DraftTreeItem)path.getLastPathComponent();
-        System.out.println("Selektovam cvor: " + treeItemSelected.getDraftNode().getIme());
+        System.out.println("Selektovan čvor: " + treeItemSelected.getDraftNode().getIme());
         System.out.println("getPath: "+ e.getPath());
     }
 }

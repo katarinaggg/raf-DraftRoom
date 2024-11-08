@@ -60,6 +60,7 @@ public class AddNodeAction extends AbstractRoomAction{
         if(selected.getDraftNode() instanceof Room){
             message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da dodajete objekte na Room!", MessageType.ERROR, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            return;
         }
         MainFrame.getInstance().getDraftTree().addChild(selected);
     }
