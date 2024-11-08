@@ -6,8 +6,10 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.jtree.DraftTree;
 import raf.draft.dsw.gui.swing.jtree.DraftTreeImplementation;
+import raf.draft.dsw.gui.swing.jtree.controller.SelectedProjectListener;
 import raf.draft.dsw.model.messages.Message;
 import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +20,8 @@ public class MainFrame extends JFrame implements ISubscriber {
     private static MainFrame mainFrameInstance;
     private ActionManager actionManager;
     private DraftTree draftTree;
+    private ProjectView projectView;
+    private JSplitPane splitPane;
 
     private MainFrame(){
     }
@@ -55,22 +59,40 @@ public class MainFrame extends JFrame implements ISubscriber {
         MyToolBar toolBar = new MyToolBar();
         add(toolBar, BorderLayout.NORTH);
 
-        // ovde pravimo stablo
+        // ovde pravimo stablo, vraca se JTreeView
         JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomRepositoryImplementation().getProjectExplorer());
 
-        // panel levo gde ce da budu tabovi i projectView
-        JPanel desktop = new JPanel(new BorderLayout());
+        // dodajemo MouseListener na model (treba nam za dvoklik na Project)
+        // moze i ovde ali bolje u JTreeView
+        //projectExplorer.addMouseListener(new SelectedProjectListener(projectExplorer));
 
         //ovde ubacujemo projectExplorer tj. root projekta u scrollPane
         JScrollPane scroll = new JScrollPane(projectExplorer);
         scroll.setMinimumSize(new Dimension(200,150));
-        JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,desktop);
-        getContentPane().add(split,BorderLayout.CENTER);
-        split.setDividerLocation(250);
-        split.setOneTouchExpandable(true);
 
+        // ekran delimo na levi deo sa scrollbarom (i JTree) i desni sa tabovima
+        // ali prvo ubacujemo neki random panel a projectView se prikazuje tek nakon dvoklika
+        splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,new JPanel());
 
+        splitPane.setDividerLocation(250);
+        splitPane.setOneTouchExpandable(true);
+        getContentPane().add(splitPane,BorderLayout.CENTER);
     }
+
+    // metoda za prikazivanje ProjectViewa
+    public void displayProjectView(Project project) {
+
+        // Kreiramo novi ProjectView sa selektovanim projektom
+        projectView = new ProjectView(project);  // Inicijalizacija tek kada je projekat izabran
+
+
+        // Postavljamo ProjectView u desni deo JSplitPane
+        splitPane.setRightComponent(projectView);
+        splitPane.revalidate();  // Osvežavanje SplitPane-a
+        splitPane.repaint();
+        draftTree.refreshTree(); // da refresuje stablo (jer se zatvore podstabla)
+    }
+
     @Override
     public void update(Message message) {
         if(message.getTip().equals(MessageType.ERROR)){

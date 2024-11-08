@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.jtree;
 import lombok.Getter;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.gui.swing.jtree.view.JTreeView;
 import raf.draft.dsw.model.nodes.DraftNode;
@@ -92,8 +93,10 @@ public class DraftTreeImplementation implements DraftTree{
             // prvo izvlacimo model koji se prikazuje u JTreeView
             DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
             model.removeNodeFromParent(node);
-            model.reload();
-            expandAllNodes(jTreeView);
+
+
+            //expandAllNodes(jTreeView);
+            refreshTree();
         }
         return;
     }
@@ -111,5 +114,13 @@ public class DraftTreeImplementation implements DraftTree{
     @Override
     public DraftTreeItem getSelectedItem() {
         return (DraftTreeItem) jTreeView.getLastSelectedPathComponent();
+    }
+
+    // f-ja za refreshovanje stabla
+    @Override
+    public void refreshTree() {
+        DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
+        model.reload();
+        expandAllNodes(jTreeView);
     }
 }

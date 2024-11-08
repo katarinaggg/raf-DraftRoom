@@ -44,4 +44,8 @@ public class Building extends DraftNodeComposite {
             this.getChildren().remove(child);
         }
     }
+
+    public Color getColor() {
+        return color;
+    }
 }

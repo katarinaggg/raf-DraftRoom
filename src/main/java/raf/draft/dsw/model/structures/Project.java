@@ -5,6 +5,8 @@ import raf.draft.dsw.gui.swing.jtree.ChildFactory;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
+import java.util.ArrayList;
+
 @Getter@Setter
 public class Project extends DraftNodeComposite {
 
@@ -41,5 +43,34 @@ public class Project extends DraftNodeComposite {
         if(child!=null && (child instanceof Building || child instanceof Room)){
             this.getChildren().remove(child);
         }
+    }
+
+    public void setAutorProjekta(String autorProjekta) {
+        this.autorProjekta = autorProjekta;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    // f-ja za izvlacenje svih soba iz projekta
+    public ArrayList<Room> getRooms() {
+        ArrayList<Room> rooms = new ArrayList<>();
+
+        // prolazimo kroz svu njegovu decu
+        for (DraftNode child : this.getChildren()) {
+
+            // ako mu je dete Room dodaj ga u listu
+            if (child instanceof Room) {
+                rooms.add((Room) child);
+            }
+            // ako mu je dete Building proci kroz svu njegovu decu (koja su Rooms)
+            if (child instanceof Building) {
+                for(DraftNode child2: ((Building)child).getChildren()){
+                    rooms.add((Room) child2);
+                }
+            }
+        }
+        return rooms;
     }
 }

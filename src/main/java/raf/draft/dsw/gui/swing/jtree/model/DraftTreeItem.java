@@ -29,17 +29,18 @@ public class DraftTreeItem extends DefaultMutableTreeNode {
         this.draftNode.setIme(ime);
     }
 
-    public void setAutor(String autor){
-        if(this.draftNode instanceof Project){
-            ((Project) this.draftNode).setAutorProjekta(autor);
-        }
-    }
-
-    public void setPath(String path){
-        if(this.draftNode instanceof Project){
-            ((Project) this.draftNode).setPath(path);
-        }
-    }
+    // ne bi trebalo ovako
+//    public void setAutor(String autor){
+//        if(this.draftNode instanceof Project){
+//            ((Project) this.draftNode).setAutorProjekta(autor);
+//        }
+//    }
+//
+//    public void setPath(String path){
+//        if(this.draftNode instanceof Project){
+//            ((Project) this.draftNode).setPath(path);
+//        }
+//    }
 
     public DraftNode getDraftNode() {
         return draftNode;
