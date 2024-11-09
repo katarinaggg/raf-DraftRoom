@@ -11,16 +11,14 @@ import java.util.ArrayList;
 
 
 public class ProjectView extends JPanel {
-    private JLabel infoLabel;
     private JTabbedPane tabbedPane;
-    private JLabel authorLabel;
 
     public ProjectView(Project selectedProject) {
         setLayout(new BorderLayout());
 
         // labela sa informacijama o Projektu
-        infoLabel = new JLabel();
-        authorLabel = new JLabel();
+        JLabel infoLabel = new JLabel();
+        JLabel authorLabel = new JLabel();
         infoLabel.setText("NAZIV: "+selectedProject.getIme());
         if(selectedProject.getAutorProjekta()==null){
             authorLabel.setText("Nema unetog autora za ovaj projekat");

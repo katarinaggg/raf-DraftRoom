@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data@NoArgsConstructor@AllArgsConstructor
-public class MessageGenerator extends IPublisher {
+public class MessageGenerator implements IPublisher {
 
     // lista prijavljenih na IPublisher
     List<ISubscriber> subscriberList = new ArrayList<>();
