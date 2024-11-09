@@ -1,10 +1,5 @@
 package raf.draft.dsw.gui.swing.jtree.factory;
 
-import raf.draft.dsw.core.ApplicationFramework;
-import raf.draft.dsw.model.messages.MessageType;
-
-import java.time.LocalDateTime;
-
 public class FactoryUtils {
 
     public DraftNodeFactory getFactory(String tip) {

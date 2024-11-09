@@ -2,10 +2,11 @@ package raf.draft.dsw.gui.swing.jtree.controller;
 
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.notification.Notification;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -71,11 +72,12 @@ public class TreeCellEditor extends DefaultTreeCellEditor implements ActionListe
         for(DraftNode dn : ((DraftNodeComposite)clicked.getDraftNode().getParent()).getChildren()){
             if(dn.getIme().equals(edit.getText())){
                 Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Već postoji objekat sa ovim imenom!", MessageType.ERROR, LocalDateTime.now());
-                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
                 return;
             }
         }
 
         clicked.setIme(e.getActionCommand());
+        clicked.getDraftNode().notifySubscribers(new Notification(clicked.getDraftNode()));
     }
 }

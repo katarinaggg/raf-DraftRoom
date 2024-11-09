@@ -2,9 +2,6 @@ package raf.draft.dsw.controller.messagegenerator;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import raf.draft.dsw.core.ApplicationFramework;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
 
 @Data@NoArgsConstructor
 public class LoggerFactory {

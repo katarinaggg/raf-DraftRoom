@@ -4,8 +4,9 @@ import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.EditProject;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
@@ -47,13 +48,13 @@ public class EditProjectAction extends AbstractRoomAction{
         DraftTreeItem selected = MainFrame.getInstance().getDraftTree().getSelectedItem();
         if(selected == null){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali Project!", MessageType.WARNING, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
         // ako nije project nece se uopste otvoriti prozor
         if(!(selected.getDraftNode() instanceof Project)){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Možete da editujete samo Project", MessageType.INFORMATION, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
 

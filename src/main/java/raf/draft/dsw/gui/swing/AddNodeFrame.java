@@ -2,7 +2,7 @@ package raf.draft.dsw.gui.swing;
 
 import lombok.Getter;
 import raf.draft.dsw.core.ApplicationFramework;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.MessageType;
 
 import javax.swing.*;
 import java.time.LocalDateTime;

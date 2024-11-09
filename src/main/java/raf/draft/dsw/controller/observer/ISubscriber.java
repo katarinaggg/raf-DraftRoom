@@ -1,8 +1,9 @@
 package raf.draft.dsw.controller.observer;
 
-import raf.draft.dsw.model.messages.Message;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.Notification;
 
 public interface ISubscriber {
 
-    void update(Message message);
+    void update(Notification notification);
 }

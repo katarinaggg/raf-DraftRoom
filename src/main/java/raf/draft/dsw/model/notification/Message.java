@@ -1,4 +1,4 @@
-package raf.draft.dsw.model.messages;
+package raf.draft.dsw.model.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
