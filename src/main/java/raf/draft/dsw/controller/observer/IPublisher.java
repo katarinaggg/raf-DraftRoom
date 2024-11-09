@@ -7,11 +7,10 @@ import raf.draft.dsw.model.messages.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-public abstract class IPublisher {
+public interface IPublisher {
 
-    public abstract void addSubscriber(ISubscriber subscriber);
-    public abstract void removeSubscriber(ISubscriber subscriber);
-    public abstract void notifySubscribers(Message message);     // mozda
+    void addSubscriber(ISubscriber subscriber);
+    void removeSubscriber(ISubscriber subscriber);
+    void notifySubscribers(Message message);
 
 }

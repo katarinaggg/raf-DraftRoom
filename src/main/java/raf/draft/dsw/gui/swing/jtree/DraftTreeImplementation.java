@@ -1,17 +1,16 @@
 package raf.draft.dsw.gui.swing.jtree;
-import lombok.Getter;
-import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.core.ApplicationFramework;
+import raf.draft.dsw.gui.swing.jtree.factory.ChildFactory;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.gui.swing.jtree.view.JTreeView;
+import raf.draft.dsw.model.messages.MessageType;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
-import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.Random;
+import java.time.LocalDateTime;
 
 
 public class DraftTreeImplementation implements DraftTree{
@@ -45,6 +44,10 @@ public class DraftTreeImplementation implements DraftTree{
             return;
 
         DraftNode child = createChild(parent.getDraftNode());
+        if(child==null){
+            //ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste izabrali nijedan objekat!", MessageType.WARNING,LocalDateTime.now());
+            return;
+        }
 
         //dodajemo u view tj Jtree
         parent.add(new DraftTreeItem(child));
