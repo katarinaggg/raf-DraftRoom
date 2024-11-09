@@ -1,16 +1,13 @@
 package raf.draft.dsw.gui.swing.jtree;
-import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.jtree.factory.ChildFactory;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.gui.swing.jtree.view.JTreeView;
-import raf.draft.dsw.model.messages.MessageType;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
-import java.time.LocalDateTime;
 
 
 public class DraftTreeImplementation implements DraftTree{

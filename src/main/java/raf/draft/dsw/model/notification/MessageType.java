@@ -1,4 +1,4 @@
-package raf.draft.dsw.model.messages;
+package raf.draft.dsw.model.notification;
 
 public enum MessageType {
 

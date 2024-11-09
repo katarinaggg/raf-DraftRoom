@@ -3,10 +3,10 @@ package raf.draft.dsw.controller.actions;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.ProjectExplorer;
-import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,14 +46,15 @@ public class RemoveNodeAction extends AbstractRoomAction{
         DraftTreeItem selected = MainFrame.getInstance().getDraftTree().getSelectedItem();
         if(selected == null){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali nijedan objekat!", MessageType.WARNING, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
         if(selected.getDraftNode() instanceof ProjectExplorer){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da obrišete Project Explorer!", MessageType.WARNING, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
         MainFrame.getInstance().getDraftTree().removeChild(selected);
+        selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode()));
     }
 }

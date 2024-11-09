@@ -2,12 +2,12 @@ package raf.draft.dsw.controller.messagegenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.controller.observer.IPublisher;
 import raf.draft.dsw.controller.observer.ISubscriber;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,9 +32,9 @@ public class MessageGenerator implements IPublisher {
     }
 
     @Override
-    public void notifySubscribers(Message message) {
+    public void notifySubscribers(Notification notification) {
         for(ISubscriber subscriber : subscriberList){
-            subscriber.update(message);
+            subscriber.update(notification);
         }
     }
 

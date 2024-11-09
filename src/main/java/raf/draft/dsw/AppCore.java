@@ -1,11 +1,6 @@
 package raf.draft.dsw;
 
 import raf.draft.dsw.core.ApplicationFramework;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class AppCore {
     public static void main(String[] args) {

@@ -1,14 +1,17 @@
 package raf.draft.dsw.gui.swing;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import raf.draft.dsw.controller.actions.ActionManager;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.jtree.DraftTree;
 import raf.draft.dsw.gui.swing.jtree.DraftTreeImplementation;
-import raf.draft.dsw.gui.swing.jtree.controller.SelectedProjectListener;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
+import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
@@ -85,6 +88,19 @@ public class MainFrame extends JFrame implements ISubscriber {
         // Kreiramo novi ProjectView sa selektovanim projektom
         projectView = new ProjectView(project);  // Inicijalizacija tek kada je projekat izabran
 
+        // ProjectView je subscriber kojeg dodajemo na sve nodove iz selektovanog projekta
+        // koji se prikazuje u tom projectView
+        project.addSubscriber(projectView);  // dodajemo ga selektovanom Projectu
+        for(DraftNode child: project.getChildren()){
+            if(child instanceof Building){
+                // ako je building subscribujemo ProjectView i na svu njegovu decu
+                for(DraftNode child2: ((Building) child).getChildren()){
+                    child2.addSubscriber(projectView);
+                }
+            }
+            // i na zasebne sobe (ili building)
+            child.addSubscriber(projectView);
+        }
 
         // Postavljamo ProjectView u desni deo JSplitPane
         splitPane.setRightComponent(projectView);
@@ -94,7 +110,8 @@ public class MainFrame extends JFrame implements ISubscriber {
     }
 
     @Override
-    public void update(Message message) {
+    public void update(Notification notification) {
+        Message message = notification.getMessage();
         if(message.getTip().equals(MessageType.ERROR)){
             JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.ERROR_MESSAGE);
         }

@@ -1,18 +1,16 @@
 package raf.draft.dsw.controller.actions;
 
-import com.sun.tools.javac.Main;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
 public class SaveButtonAction implements ActionListener {
@@ -43,7 +41,7 @@ public class SaveButtonAction implements ActionListener {
         // ako nesto nije uneto poruka
         if(naziv.getText().isEmpty() || autor.getText().isEmpty() || putanja.getText().isEmpty()) {
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste popunili sva potrebna polja!", MessageType.ERROR, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
 
@@ -57,6 +55,7 @@ public class SaveButtonAction implements ActionListener {
         ((Project)(selected.getDraftNode())).setPath(putanja);
 
         MainFrame.getInstance().getDraftTree().refreshTree();
+        selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode()));
 
         dialog.dispose();
 

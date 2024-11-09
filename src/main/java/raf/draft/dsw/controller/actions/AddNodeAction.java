@@ -1,13 +1,12 @@
 package raf.draft.dsw.controller.actions;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.messages.Message;
-import raf.draft.dsw.model.messages.MessageType;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
@@ -54,14 +53,15 @@ public class AddNodeAction extends AbstractRoomAction{
         Message message;
         if(selected == null){
             message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste selektovali nijedan objekat!", MessageType.WARNING, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
         if(selected.getDraftNode() instanceof Room){
             message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da dodajete objekte na Room!", MessageType.ERROR, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(message);
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
         MainFrame.getInstance().getDraftTree().addChild(selected);
+        selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode()));
     }
 }
