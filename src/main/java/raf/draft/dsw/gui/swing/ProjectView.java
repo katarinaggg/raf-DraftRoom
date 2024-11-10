@@ -19,6 +19,12 @@ public class ProjectView extends JPanel implements ISubscriber {
     private JLabel infoLabel;
     private JLabel authorLabel;
 
+    public ProjectView() {
+        tabbedPane = new JTabbedPane();
+        infoLabel = new JLabel();
+        authorLabel = new JLabel();
+    }
+
     public ProjectView(Project selectedProject) {
         setLayout(new BorderLayout());
 
@@ -53,6 +59,13 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         // prolazimo kroz sve sobe iz liste
         // i dodajemo JPanel i tab za tu sobu
+
+        //ako je lista soba prazna treba da se obrise i labela sa viewa?
+        if(selectedProject.getRooms().isEmpty()) {
+            infoLabel.setText("");
+            authorLabel.setText("");
+        }
+
         for (Room room : selectedProject.getRooms()) {
 
             JPanel roomPanel = new JPanel(); // panele za uredjivanje soba
@@ -76,7 +89,7 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         tabbedPane.addChangeListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
-            if (selectedIndex >= 0) {
+            if (selectedIndex >= 0 && selectedIndex < selectedProject.getRooms().size()) {
                 Room selectedRoom = selectedProject.getRooms().get(selectedIndex);
                 updateInfoPanel(selectedProject, selectedRoom);
             }
@@ -112,8 +125,15 @@ public class ProjectView extends JPanel implements ISubscriber {
             Project project = (Project) notification.getDraftNode().getParent();
             displayRooms(project);
         }
-        if(notification.getDraftNode() instanceof Project){
-            displayRooms((Project)notification.getDraftNode());
+        // ako brisemo ceo projekat brisemo i view
+        if(notification.getDraftNode() instanceof Project && notification.getBrisanje()){
+            tabbedPane.removeAll();
+            infoLabel.setText("");
+            authorLabel.setText("");
+        }
+        if(notification.getDraftNode() instanceof Project && !notification.getBrisanje()) {
+            displayRooms((Project) notification.getDraftNode());
         }
     }
+
 }

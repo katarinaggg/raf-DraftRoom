@@ -73,9 +73,11 @@ public class MainFrame extends JFrame implements ISubscriber {
         JScrollPane scroll = new JScrollPane(projectExplorer);
         scroll.setMinimumSize(new Dimension(200,150));
 
+        projectView = new ProjectView();
+
         // ekran delimo na levi deo sa scrollbarom (i JTree) i desni sa tabovima
         // ali prvo ubacujemo neki random panel a projectView se prikazuje tek nakon dvoklika
-        splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,new JPanel());
+        splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,projectView);
 
         splitPane.setDividerLocation(250);
         splitPane.setOneTouchExpandable(true);
@@ -85,8 +87,9 @@ public class MainFrame extends JFrame implements ISubscriber {
     // metoda za prikazivanje ProjectViewa
     public void displayProjectView(Project project) {
 
+        // kada imamo neki projekat koji vec u sebi ima podstabla
         // Kreiramo novi ProjectView sa selektovanim projektom
-        projectView = new ProjectView(project);  // Inicijalizacija tek kada je projekat izabran
+        projectView = new ProjectView(project);// Inicijalizacija tek kada je projekat izabran
 
         // ProjectView je subscriber kojeg dodajemo na sve nodove iz selektovanog projekta
         // koji se prikazuje u tom projectView
