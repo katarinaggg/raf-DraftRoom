@@ -1,9 +1,11 @@
 package raf.draft.dsw.gui.swing.jtree;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.factory.ChildFactory;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.gui.swing.jtree.view.JTreeView;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 
 import javax.swing.*;
@@ -45,6 +47,8 @@ public class DraftTreeImplementation implements DraftTree{
             //ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste izabrali nijedan objekat!", MessageType.WARNING,LocalDateTime.now());
             return;
         }
+        // treba childu koji kreiramo dodati subscribera projectView
+        child.addSubscriber(MainFrame.getInstance().getProjectView());
 
         //dodajemo u view tj Jtree
         parent.add(new DraftTreeItem(child));
@@ -52,8 +56,7 @@ public class DraftTreeImplementation implements DraftTree{
         //dodajemo u model
         ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
 
-        jTreeView.expandPath(jTreeView.getSelectionPath());
-        SwingUtilities.updateComponentTreeUI(jTreeView);
+        refreshTree();
     }
 
 
@@ -102,13 +105,13 @@ public class DraftTreeImplementation implements DraftTree{
     }
     // f-ja koja refreshuje celo stablo tako da se vide sva podstabla
     // da ne moramo da ih otvaramo rucno
-    private static void expandAllNodes(JTree tree) {
-        int row = 0;
-        while (row < tree.getRowCount()) {
-            tree.expandRow(row);
-            row++;
-        }
-    }
+//    private static void expandAllNodes(JTree tree) {
+//        int row = 0;
+//        while (row < tree.getRowCount()) {
+//            tree.expandRow(row);
+//            row++;
+//        }
+//    }
 
 
     @Override
@@ -119,8 +122,10 @@ public class DraftTreeImplementation implements DraftTree{
     // f-ja za refreshovanje stabla
     @Override
     public void refreshTree() {
-        DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
-        model.reload();
-        expandAllNodes(jTreeView);
+//        DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
+//        model.reload();
+//        expandAllNodes(jTreeView);
+        jTreeView.expandPath(jTreeView.getSelectionPath());
+        SwingUtilities.updateComponentTreeUI(jTreeView);
     }
 }
