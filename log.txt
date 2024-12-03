@@ -22,6 +22,7 @@
 [WARNING] [10.11.2024. 00:45] [Niste selektovali nijedan objekat!]
 [WARNING] [10.11.2024. 01:12] [Niste selektovali nijedan objekat!]
 [ERROR] [10.11.2024. 01:23] [Ne možete da dodajete objekte na Room!]
+[ERROR] [03.12.2024. 13:13] [Ne možete da dodajete objekte na Room!]
 [INFORMATION] [11.11.2024. 16:36] [Možete da editujete samo Project]
 [WARNING] [18.11.2024. 14:55] [Niste selektovali nijedan objekat!]
 [WARNING] [18.11.2024. 14:55] [Niste selektovali nijedan objekat!]
