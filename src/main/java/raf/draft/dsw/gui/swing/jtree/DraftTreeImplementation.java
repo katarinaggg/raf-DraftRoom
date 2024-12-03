@@ -48,6 +48,7 @@ public class DraftTreeImplementation implements DraftTree{
             return;
         }
         // treba childu koji kreiramo dodati subscribera projectView
+        // ?? proveriti
         child.addSubscriber(MainFrame.getInstance().getProjectView());
 
         //dodajemo u view tj Jtree

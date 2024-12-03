@@ -25,6 +25,7 @@ public class ProjectView extends JPanel implements ISubscriber {
         tabbedPane = new JTabbedPane();
         infoLabel = new JLabel();
         authorLabel = new JLabel();
+        sideToolBar = new JToolBar();
     }
 
     public ProjectView(Project selectedProject) {
@@ -98,11 +99,12 @@ public class ProjectView extends JPanel implements ISubscriber {
         sideToolBar.add(zoomButton);
 
         JButton editButton = createIconButton("images/editProject.png", "Edit");
-        sideToolBar.add(editRoomButton);
+        sideToolBar.add(editButton);
 
         // Dugme za Delete State
         JButton deleteElementButton = createIconButton("images/remove.png", "Obriši Element");
         sideToolBar.add(deleteElementButton);
+
     }
 
     private JButton createIconButton(String iconPath, String tooltip) {
@@ -160,6 +162,62 @@ public class ProjectView extends JPanel implements ISubscriber {
             }
         }
 
+
+        sideToolBar.setVisible(!selectedProject.getRooms().isEmpty());
+////////////////////////////////////////////////////////////////////////////////////////////
+//        Room firstRoom = selectedProject.getRooms().isEmpty() ? null : selectedProject.getRooms().get(0);
+//        updateInfoPanel(selectedProject, firstRoom);
+//
+//        // Kreiramo listu trenutnih soba iz tabbedPane-a
+//        ArrayList<String> existingTabs = new ArrayList<>();
+//        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+//            existingTabs.add(tabbedPane.getTitleAt(i));
+//        }
+//
+//        // Prolazimo kroz sve sobe u projektu
+//        for (Room room : selectedProject.getRooms()) {
+//            String roomName = room.getIme();
+//            RoomView roomPanel = new RoomView(room);
+//
+//            // Ako tab za sobu ne postoji, dodajemo ga
+//            if (!existingTabs.contains(roomName)) {
+//                tabbedPane.addTab(roomName, roomPanel);
+//
+//                // Ako soba ima parent Building, obojimo tab
+//                if (room.getParent() instanceof Building) {
+//                    Building parentBuilding = (Building) room.getParent();
+//                    Color buildingColor = parentBuilding.getColor();
+//
+//                    int tabIndex = tabbedPane.indexOfComponent(roomPanel);
+//                    if (tabIndex != -1) {
+//                        tabbedPane.setBackgroundAt(tabIndex, buildingColor);
+//                    }
+//                }
+//            } else {
+//                // Ako tab postoji, proveravamo da li treba da ažuriramo sadržaj
+//                int tabIndex = existingTabs.indexOf(roomName);
+//                if (tabIndex != -1) {
+//                    tabbedPane.setComponentAt(tabIndex, roomPanel);
+//                }
+//            }
+//            existingTabs.remove(roomName); // Uklanjamo iz liste, jer još uvek postoji
+//        }
+//
+//        // Uklanjamo sve tabove koji više nisu prisutni
+//        for (String roomName : existingTabs) {
+//            int tabIndex = tabbedPane.indexOfTab(roomName);
+//            if (tabIndex != -1) {
+//                tabbedPane.removeTabAt(tabIndex);
+//            }
+//        }
+//
+//        // Postavljamo selekciju na prvi tab ako postoji
+//        if (tabbedPane.getTabCount() > 0) {
+//            tabbedPane.setSelectedIndex(0);
+//        }
+//
+////////////////////////////////////////////////////////////////////////
+        // od pre
         tabbedPane.addChangeListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
             if (selectedIndex >= 0 && selectedIndex < selectedProject.getRooms().size()) {
@@ -170,7 +228,14 @@ public class ProjectView extends JPanel implements ISubscriber {
     }
 
     private void updateInfoPanel(Project project, Room room) {
-        if (room != null && room.getParent() instanceof Building) {
+        // dodato
+        if(room==null){
+            infoLabel.setText("");
+            authorLabel.setText("");
+            return;
+        }
+
+        if (room.getParent() instanceof Building) {
             infoLabel.setText(project.getIme() + ", " + room.getParent().getIme());
         } else {
             infoLabel.setText(project.getIme() + ", / ");
@@ -181,11 +246,13 @@ public class ProjectView extends JPanel implements ISubscriber {
         } else {
             authorLabel.setText("AUTOR: " + project.getAutorProjekta());
         }
+
     }
 
 
     @Override
     public void update(Notification notification) {
+
         if(notification.getDraftNode() instanceof Room && notification.getDraftNode().getParent() instanceof Building){
             Project project = (Project) notification.getDraftNode().getParent().getParent();
             displayRooms(project);
@@ -201,6 +268,8 @@ public class ProjectView extends JPanel implements ISubscriber {
         // ako brisemo ceo projekat brisemo i view
         if(notification.getDraftNode() instanceof Project && notification.getBrisanje()){
             tabbedPane.removeAll();
+            // dodato
+            remove(sideToolBar);
             infoLabel.setText("");
             authorLabel.setText("");
         }
