@@ -20,7 +20,7 @@ public class DraftRoomRepositoryImplementation implements DraftRoomRepository{
     }
 
     @Override
-    public void getRoot() {
-
+    public ProjectExplorer getRoot() {
+        return projectExplorer;
     }
 }

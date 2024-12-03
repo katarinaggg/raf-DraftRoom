@@ -1,5 +1,6 @@
 package raf.draft.dsw.controller.actions;
 
+import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
@@ -55,11 +56,13 @@ public class RemoveNodeAction extends AbstractRoomAction{
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
+
         MainFrame.getInstance().getDraftTree().removeChild(selected);
-        if (selected.getDraftNode() instanceof Project) {
-            selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode(), true));
-        } else {
+
+       if (selected.getDraftNode() instanceof Project) {
+           selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode(), true));
+       } else {
             selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode()));
-        }
+       }
     }
 }
