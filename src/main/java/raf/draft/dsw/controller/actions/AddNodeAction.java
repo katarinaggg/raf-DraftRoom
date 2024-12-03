@@ -56,11 +56,11 @@ public class AddNodeAction extends AbstractRoomAction{
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
-        if(selected.getDraftNode() instanceof Room){
-            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da dodajete objekte na Room!", MessageType.ERROR, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-            return;
-        }
+//        if(selected.getDraftNode() instanceof Room){
+//            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da dodajete objekte na Room!", MessageType.ERROR, LocalDateTime.now());
+//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+//            return;
+//        }
         MainFrame.getInstance().getDraftTree().addChild(selected);
         selected.getDraftNode().notifySubscribers(new Notification(selected.getDraftNode()));
     }

@@ -63,7 +63,7 @@ public class MainFrame extends JFrame implements ISubscriber {
         add(toolBar, BorderLayout.NORTH);
 
         // ovde pravimo stablo, vraca se JTreeView
-        JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomRepositoryImplementation().getProjectExplorer());
+        JTree  projectExplorer =  draftTree.generate(ApplicationFramework.getInstance().getDraftRoomRepositoryImplementation().getRoot());
 
         // dodajemo MouseListener na model (treba nam za dvoklik na Project)
         // moze i ovde ali bolje u JTreeView

@@ -6,6 +6,7 @@ import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.state.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +15,11 @@ import java.util.ArrayList;
 
 public class ProjectView extends JPanel implements ISubscriber {
     private JTabbedPane tabbedPane;
-
+    private JToolBar sideToolBar;
     private JPanel infoPanel;
     private JLabel infoLabel;
     private JLabel authorLabel;
+    private StateManager stateManager = new StateManager();
 
     public ProjectView() {
         tabbedPane = new JTabbedPane();
@@ -38,6 +40,10 @@ public class ProjectView extends JPanel implements ISubscriber {
         infoPanel.add(authorLabel);
         add(infoPanel, BorderLayout.NORTH);
 
+        // Dodavanje desnog panela
+        sideToolBar = new JToolBar();
+        sideToolBar.setLayout(new BoxLayout(sideToolBar, BoxLayout.Y_AXIS));
+        add(sideToolBar, BorderLayout.EAST);
 
         // tabbedPane na kom redjamo tabove
         tabbedPane = new JTabbedPane();
@@ -49,6 +55,73 @@ public class ProjectView extends JPanel implements ISubscriber {
         if (!selectedProject.getRooms().isEmpty()) {
             updateInfoPanel(selectedProject, selectedProject.getRooms().get(0));
         }
+
+        // Dodavanje kontrola u desni panel
+        setupSidePanel();
+
+    }
+
+    private void setupSidePanel() {
+        // Dugme za Edit Room State
+        JButton editRoomButton = createIconButton("images/editRoom.png", "Edit Room");
+        sideToolBar.add(editRoomButton);
+
+        // Dugme za Add State
+        JButton addElementButton = createIconButton("images/plus.png", "Dodaj Element");
+        sideToolBar.add(addElementButton);
+
+        // Dugme za Select State
+        JButton selectElementButton = createIconButton("images/tap.png", "Selektuj Element");
+        sideToolBar.add(selectElementButton);
+
+        // Dugme za Resize State
+        JButton resizeElementButton = createIconButton("images/resize.png", "Promeni Dimenzije");
+        sideToolBar.add(resizeElementButton);
+
+        // Dugme za Rotate State
+        JButton rotateLeftButton = createIconButton("images/rotateLeft.png", "Rotiraj Levo");
+        sideToolBar.add(rotateLeftButton);
+
+        JButton rotateRightButton = createIconButton("images/rotateRight.png", "Rotiraj Desno");
+        sideToolBar.add(rotateRightButton);
+
+        // Dugme za Copy/Paste State
+        JButton copyPasteElementButton = createIconButton("images/copypaste.png", "Kopiraj Element");
+        sideToolBar.add(copyPasteElementButton);
+
+        // Dugme za Move State
+        JButton moveElementButton = createIconButton("images/move.png", "Pomeranje");
+        sideToolBar.add(moveElementButton);
+
+        // Dugme za Zoom State
+        JButton zoomButton = createIconButton("images/zoom-in.png", "Zumiranje");
+        sideToolBar.add(zoomButton);
+
+        JButton editButton = createIconButton("images/editProject.png", "Edit");
+        sideToolBar.add(editRoomButton);
+
+        // Dugme za Delete State
+        JButton deleteElementButton = createIconButton("images/remove.png", "Obriši Element");
+        sideToolBar.add(deleteElementButton);
+    }
+
+    private JButton createIconButton(String iconPath, String tooltip) {
+        JButton button = new JButton();
+        button.setToolTipText(tooltip);
+
+        // Postavljanje ikone na dugme
+        try {
+            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(iconPath));
+            Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+            button.setIcon(new ImageIcon(scaledIcon));
+        } catch (Exception e) {
+            System.err.println("Ikona nije pronađena: " + iconPath);
+        }
+
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        return button;
     }
 
 
@@ -68,7 +141,7 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         for (Room room : selectedProject.getRooms()) {
 
-            JPanel roomPanel = new JPanel(); // panele za uredjivanje soba
+            RoomView roomPanel = new RoomView(room); // panele za uredjivanje soba
             tabbedPane.addTab(room.getIme(), roomPanel);
 
             //System.out.println(room.getParent());
