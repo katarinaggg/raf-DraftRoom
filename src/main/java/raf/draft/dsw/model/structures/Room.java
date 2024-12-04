@@ -6,15 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Getter
 public class Room extends DraftNodeComposite {
-    double sirina;
-    double duzina;
-    private ArrayList<Object> namestaj = new ArrayList<>();
+    private double sirina;
+    private double duzina;
+    private ArrayList<RoomElement> namestaj = new ArrayList<>();
 
     public Room(String ime, DraftNode parent, double sirina, double duzina) {
         super(ime, parent);
@@ -33,12 +34,14 @@ public class Room extends DraftNodeComposite {
     }
     @Override
     public void addChild(DraftNode child) {
-
+        if(!namestaj.contains((RoomElement) child)){
+            namestaj.add((RoomElement) child);
+        }
     }
 
     @Override
     public void removeChild(DraftNode child) {
-
+        namestaj.remove(child);
     }
 
     public double getSirina() {
@@ -49,7 +52,7 @@ public class Room extends DraftNodeComposite {
         return duzina;
     }
 
-    public ArrayList<Object> getNamestaj() {
+    public ArrayList<RoomElement> getNamestaj() {
         return namestaj;
     }
 
