@@ -72,6 +72,15 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         // Dugme za Add State
         JButton addElementButton = createIconButton("images/plus.png", "Dodaj Element");
+        addElementButton.addActionListener(e -> {
+            AddElementFrame addElementFrame = new AddElementFrame(); // Kreiramo instancu klase
+
+//            if (selectedElement != null) {
+//                addElementToRoom(selectedElement); // Dodajemo izabrani element u sobu
+//            } else {
+//                System.out.println("Nijedan element nije izabran.");
+//            }
+        });
         sideToolBar.add(addElementButton);
 
         // Dugme za Select State
