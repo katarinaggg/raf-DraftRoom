@@ -19,12 +19,13 @@ public class ProjectView extends JPanel implements ISubscriber {
     private JPanel infoPanel;
     private JLabel infoLabel;
     private JLabel authorLabel;
-    private StateManager stateManager = new StateManager();
+    private StateManager stateManager; // prebacila sam ga u prvi konstruktor bez argumenata
 
     public ProjectView() {
         tabbedPane = new JTabbedPane();
         infoLabel = new JLabel();
         authorLabel = new JLabel();
+        stateManager = new StateManager();
     }
 
     public ProjectView(Project selectedProject) {

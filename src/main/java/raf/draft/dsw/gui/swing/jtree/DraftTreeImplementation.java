@@ -38,7 +38,8 @@ public class DraftTreeImplementation implements DraftTree{
         // koji tip deteta treba da pravimo
 
         //samo objekti klase DraftNodeComposite mogu da imaju decu
-        //ako probamo da dodamo na nekom drugom tipu objekta decu ne moze ( npr. Room ne moze da ima decu)
+        //ako probamo da dodamo na nekom drugom tipu objekta decu ne moze ( npr. Room ne moze da ima decu) OVO VISE NE VAZI
+        //sada samo elementi sobe ne mogu imati decu
         if (!(parent.getDraftNode() instanceof DraftNodeComposite))
             return;
 

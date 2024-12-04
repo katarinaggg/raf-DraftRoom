@@ -6,4 +6,8 @@ public class Lavabo extends RoomElement{
     public Lavabo(String ime, DraftNode parent) {
         super(ime, parent);
     }
+
+    public Lavabo(String ime, DraftNode parent, double x, double y, double sirina, double duzina) {
+        super(ime, parent, x, y, sirina, duzina);
+    }
 }

@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.model.structures.namestaj.*;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -38,6 +39,39 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         else if(((DraftTreeItem)value).getDraftNode() instanceof Room){
             imageURL = getClass().getResource("/images/rooms.png");
         }
+
+        ///nisam sigurna za ovo
+
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Bojler){
+            imageURL = getClass().getResource("/images/boiler.png");
+        }
+
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Kada){
+            imageURL = getClass().getResource("/images/bath.png");
+        }
+
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Krevet){
+            imageURL = getClass().getResource("/images/double-bed.png");
+        }
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Lavabo){
+            imageURL = getClass().getResource("/images/sink.png");
+        }
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Ormar){
+            imageURL = getClass().getResource("/images/closet.png");
+        }
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Sto){
+            imageURL = getClass().getResource("/images/desk.png");
+        }
+        else if(((DraftTreeItem)value).getDraftNode() instanceof VesMasina){
+            imageURL = getClass().getResource("/images/laundry-machine.png");
+        }
+        else if(((DraftTreeItem)value).getDraftNode() instanceof Vrata){
+            imageURL = getClass().getResource("/images/door.png");
+        }
+        else if(((DraftTreeItem)value).getDraftNode() instanceof WCSolja){
+            imageURL = getClass().getResource("/images/toilet.png");
+        }
+
 
         Icon icon = null;
         if (imageURL != null)
