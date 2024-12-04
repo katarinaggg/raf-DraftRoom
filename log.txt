@@ -46,3 +46,4 @@
 [INFORMATION] [03.12.2024. 18:27] [Možete da editujete samo Project]
 [WARNING] [04.12.2024. 03:59] [Niste selektovali nijedan objekat!]
 [WARNING] [04.12.2024. 04:14] [Niste selektovali nijedan objekat!]
+[WARNING] [04.12.2024. 14:34] [Niste selektovali nijedan objekat!]
