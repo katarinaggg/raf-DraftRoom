@@ -6,13 +6,12 @@ import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import java.awt.*;
 
 public abstract class RoomElement extends DraftNode {
-    private double x; // X koordinata elementa unutar sobe
-    private double y; // Y koordinata elementa unutar sobe
+     private Point lokacija;
 
     // umesto ovoga moze klasa Dimension
-    // private Dimension size;
-    private double sirina;
-    private double duzina;
+     private Dimension size;
+//    private double sirina;
+//    private double duzina;
 
 
     private int rotacija; ///  Rotacija elementa (0 do 3, gde 0 = 0°, 1 = 90°, 2 = 180°, 3 = 270°)
@@ -22,48 +21,31 @@ public abstract class RoomElement extends DraftNode {
         super(ime, parent);
     }
 
-    public RoomElement(String ime, DraftNode parent, double x, double y, double sirina, double duzina) {
+    public RoomElement(String ime, DraftNode parent, Point lokacija, Dimension size) {
         super(ime + " " + (elementCounter++), parent);
-        this.x = x;
-        this.y = y;
-        this.sirina = sirina;
-        this.duzina = duzina;
+        this.lokacija = lokacija;
+        this.size = size;
         this.rotacija = 0;
     }
 
     //  Apstraktna metoda za prikazivanje u JTree
     //    public abstract void render();
 
-    public double getX() {
-        return x;
+
+    public Point getLokacija() {
+        return lokacija;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public void setLokacija(Point lokacija) {
+        this.lokacija = lokacija;
     }
 
-    public double getY() {
-        return y;
+    public Dimension getSize() {
+        return size;
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getSirina() {
-        return sirina;
-    }
-
-    public void setSirina(double sirina) {
-        this.sirina = sirina;
-    }
-
-    public double getDuzina() {
-        return duzina;
-    }
-
-    public void setDuzina(double duzina) {
-        this.duzina = duzina;
+    public void setSize(Dimension size) {
+        this.size = size;
     }
 
     public int getRotacija() {
