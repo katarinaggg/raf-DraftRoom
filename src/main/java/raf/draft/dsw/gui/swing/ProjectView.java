@@ -1,8 +1,6 @@
 package raf.draft.dsw.gui.swing;
 
-import lombok.NoArgsConstructor;
 import raf.draft.dsw.controller.observer.ISubscriber;
-import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
@@ -11,7 +9,6 @@ import raf.draft.dsw.state.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +19,7 @@ public class ProjectView extends JPanel implements ISubscriber {
     private JPanel infoPanel;
     private JLabel infoLabel;
     private JLabel authorLabel;
+    //private JScrollPane scrollPane;
     private StateManager stateManager = new StateManager();
 
     public ProjectView() {
@@ -45,8 +43,21 @@ public class ProjectView extends JPanel implements ISubscriber {
         add(infoPanel, BorderLayout.NORTH);
 
         // Dodavanje desnog panela
-        sideToolBar = new JToolBar();
-        sideToolBar.setLayout(new BoxLayout(sideToolBar, BoxLayout.Y_AXIS));
+        //sideToolBar = new JToolBar();
+        //sideToolBar.setLayout(new BoxLayout(sideToolBar, BoxLayout.Y_AXIS));
+
+        // gridLayout da bi stali svi dugmici u 2 kolone
+        sideToolBar = new JToolBar(JToolBar.VERTICAL);
+        sideToolBar.setLayout(new GridLayout(0, 2, 5, 5)); // 5px razmak između dugmića
+
+        // iz nekog razloga poremeti sve
+//        // Kreiranje JScrollPane-a za sideToolBar
+//        scrollPane = new JScrollPane(sideToolBar);
+//        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+//
+//        add(scrollPane, BorderLayout.EAST);
+
         add(sideToolBar, BorderLayout.EAST);
 
         // tabbedPane na kom redjamo tabove
@@ -66,77 +77,19 @@ public class ProjectView extends JPanel implements ISubscriber {
     }
 
     private void setupSidePanel() {
-        // Dugme za Edit Room State
-        JButton editRoomButton = createIconButton("images/editRoom.png", "Edit Room");
-        sideToolBar.add(editRoomButton);
-
-        // Dugme za Add State
-        JButton addElementButton = createIconButton("images/plus.png", "Dodaj Element");
-        addElementButton.addActionListener(e -> {
-            AddElementFrame addElementFrame = new AddElementFrame(); // Kreiramo instancu klase
-
-//            if (selectedElement != null) {
-//                addElementToRoom(selectedElement); // Dodajemo izabrani element u sobu
-//            } else {
-//                System.out.println("Nijedan element nije izabran.");
-//            }
-        });
-        sideToolBar.add(addElementButton);
-
-        // Dugme za Select State
-        JButton selectElementButton = createIconButton("images/tap.png", "Selektuj Element");
-        sideToolBar.add(selectElementButton);
-
-        // Dugme za Resize State
-        JButton resizeElementButton = createIconButton("images/resize.png", "Promeni Dimenzije");
-        sideToolBar.add(resizeElementButton);
-
-        // Dugme za Rotate State
-        JButton rotateLeftButton = createIconButton("images/rotateLeft.png", "Rotiraj Levo");
-        sideToolBar.add(rotateLeftButton);
-
-        JButton rotateRightButton = createIconButton("images/rotateRight.png", "Rotiraj Desno");
-        sideToolBar.add(rotateRightButton);
-
-        // Dugme za Copy/Paste State
-        JButton copyPasteElementButton = createIconButton("images/copypaste.png", "Kopiraj Element");
-        sideToolBar.add(copyPasteElementButton);
-
-        // Dugme za Move State
-        JButton moveElementButton = createIconButton("images/move.png", "Pomeranje");
-        sideToolBar.add(moveElementButton);
-
-        // Dugme za Zoom State
-        JButton zoomButton = createIconButton("images/zoom-in.png", "Zumiranje");
-        sideToolBar.add(zoomButton);
-
-        JButton editButton = createIconButton("images/editProject.png", "Edit");
-        sideToolBar.add(editButton);
-
-        // Dugme za Delete State
-        JButton deleteElementButton = createIconButton("images/remove.png", "Obriši Element");
-        sideToolBar.add(deleteElementButton);
-
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getEditRoomAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getAddRoomElementAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getSelectRoomElementAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getResizeAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getRotateLeftAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getRotateRightAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getCopyPasteAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getMoveRoomElementAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getZoomAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getEditRoomElementAction());
+        sideToolBar.add(MainFrame.getInstance().getActionManager().getDeleteAction());
     }
 
-    private JButton createIconButton(String iconPath, String tooltip) {
-        JButton button = new JButton();
-        button.setToolTipText(tooltip);
-
-        // Postavljanje ikone na dugme
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(iconPath));
-            Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
-            button.setIcon(new ImageIcon(scaledIcon));
-        } catch (Exception e) {
-            System.err.println("Ikona nije pronađena: " + iconPath);
-        }
-
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        return button;
-    }
 
 /*
 
@@ -308,6 +261,7 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         // Ažuriramo vidljivost sideToolBar
         sideToolBar.setVisible(!selectedProject.getRooms().isEmpty());
+
     }
 
 
@@ -333,10 +287,6 @@ public class ProjectView extends JPanel implements ISubscriber {
         }
 
     }
-
-
-
-
     @Override
     public void update(Notification notification) {
 
@@ -365,30 +315,68 @@ public class ProjectView extends JPanel implements ISubscriber {
         }
     }
 
-//    public void displayRooms2(Project selectedProject, DraftNode promenjen) {
-//        Room firstRoom = selectedProject.getRooms().isEmpty() ? null : selectedProject.getRooms().get(0);
-//        updateInfoPanel(selectedProject, firstRoom);
-//
-//        // Kreiramo listu trenutnih soba iz tabbedPane-a
-//        ArrayList<String> existingTabs = new ArrayList<>();
-//        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-//            existingTabs.add(tabbedPane.getTitleAt(i));
-//        }
-//
-//        // ako smo menjali Building menjali smo mu ime
-//        // ili smo dodali novi ali se on svakako ne prikazuje u tabovima
-//        // ako smo promenili ima na trenutno otvorenom tabu treba ga updatovati na labelli
-//        if(promenjen instanceof Building){
-//            firstRoom.getParent().equals(promenjen);
-//            updateInfoPanel(selectedProject, firstRoom);
-//        }
-//
-//        // ako smo menjali Project menjali smo mu ime
-//        // ili smo dodali novi koji se nece prikazivati svakako jer nije selektovan
-//        if(promenjen instanceof Project){
-//
-//        }
-//
-//    }
+    public void startAddBojlerState(){
+        stateManager.setAddBojlerState();
+    }
+
+    public void startAddKadaState(){
+        stateManager.setAddKadaState();
+    }
+
+    public void startAddKrevetState(){
+        stateManager.setAddKrevetState();
+    }
+
+    public void startAddLavaboState(){
+        stateManager.setAddLavaboState();
+    }
+
+    public void startAddOrmarState(){
+        stateManager.setAddOrmarState();
+    }
+
+    public void startAddStoState(){
+        stateManager.setAddStoState();
+    }
+
+    public void startAddVesMasinaState(){
+        stateManager.setAddVesMasinaState();
+    }
+
+    public void startAddVrataState(){
+        stateManager.setAddVrataState();
+    }
+
+    public void startAddWCSoljaState(){
+        stateManager.setAddWCSoljaState();
+    }
+
+    public void startDeleteState() {
+        stateManager.setDeleteState();
+    }
+
+    public void startEditRoomState() {
+        stateManager.setEditRoomState();
+    }
+
+    public void startEditState() {
+        stateManager.setEditState();
+    }
+
+    public void startMoveState() {
+        stateManager.setMoveState();
+    }
+
+    public void startResizeState() {
+        stateManager.setResizeState();
+    }
+
+    public void startSelectState() {
+        stateManager.setSelectState();
+    }
+
+    public void startZoomState() {
+        stateManager.setZoomState();
+    }
 
 }

@@ -6,70 +6,79 @@ import raf.draft.dsw.model.notification.MessageType;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddElementFrame {
-    String element;
+public class AddElementFrame extends JDialog {
 
-    public AddElementFrame() {
-        element = typeOfElement();
+    private String selectedElement;
+
+    public AddElementFrame(Frame parent) {
+        super(parent, "Odaberite element koji želite da dodate:", true); // Postavlja modalnost
+        this.selectedElement = createDialog();
     }
 
-    public String typeOfElement() {
-        String[] elements = {"Bojler", "Kada/Tus kabina", "Krevet", "Lavabo", "Ormar", "Sto", "Ves masina", "Vrata", "WC solja"};
+    public String getSelectedElement() {
+        return selectedElement;
+    }
+
+    private String createDialog() {
+        String[] elements = {"Bojler", "Kada", "Krevet", "Lavabo", "Ormar", "Sto", "Ves masina", "Vrata", "WC solja"};
 
         Icon[] icons = {
-                loadIcon("namestaj/toilet.png"),
-                loadIcon("namestaj/door.png"),
-                loadIcon("namestaj/laundry-machine.png"),
-                loadIcon("namestaj/desk.png"),
-                loadIcon("namestaj/closet.png"),
-                loadIcon("namestaj/sink.png"),
-                loadIcon("namestaj/double-bed.png"),
-                loadIcon("namestaj/bath.png"),
-                loadIcon("namestaj/boiler.png")
+                loadScaledIcon("namestaj/boiler.png", 50, 50),
+                loadScaledIcon("namestaj/bath.png", 50, 50),
+                loadScaledIcon("namestaj/double-bed.png", 50, 50),
+                loadScaledIcon("namestaj/sink.png", 50, 50),
+                loadScaledIcon("namestaj/closet.png", 50, 50),
+                loadScaledIcon("namestaj/desk.png", 50, 50),
+                loadScaledIcon("namestaj/laundry-machine.png", 50, 50),
+                loadScaledIcon("namestaj/door.png", 50, 50),
+                loadScaledIcon("namestaj/toilet.png", 50, 50)
         };
 
+        // Kreiranje panela za dugmiće
+        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+        ArrayList<JButton> buttons = new ArrayList<JButton>();
 
-        // Kreiranje panela za svaku opciju
-        JPanel[] options = new JPanel[elements.length];
         for (int i = 0; i < elements.length; i++) {
-            options[i] = new JPanel();
-            options[i].add(new JLabel(icons[i]));
-            options[i].add(new JLabel(elements[i]));
+            JButton button = new JButton(elements[i], icons[i]);
+            button.setVerticalTextPosition(SwingConstants.BOTTOM);
+            button.setHorizontalTextPosition(SwingConstants.CENTER);
+            button.setFont(new Font("Arial", Font.BOLD, 12));
+            button.setPreferredSize(new Dimension(100, 120));
+
+            // Dodaj akciju dugmetu
+            int index = i;
+            button.addActionListener(e -> {
+                selectedElement = elements[index];
+                dispose(); // Zatvara dijalog
+            });
+
+            gridPanel.add(button);
+            buttons.add(button);
         }
 
-        // Prikazivanje JOptionPane dialoga za izbor opcije
-        int choice = JOptionPane.showOptionDialog(
-                ///da li treba da bude parent component null ili MainFrame
-                MainFrame.getInstance(),
-                "Odaberite element koji zelite da dodate :",
-                "Element types",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                options,
-                options[0]);
+        // Postavljanje na JDialog
+        setLayout(new BorderLayout());
+        add(gridPanel, BorderLayout.CENTER);
 
+        // Podešavanje prozora
+        setSize(400, 400);
+        setResizable(false);
+        setLocationRelativeTo(getParent());
+        setVisible(true);
 
-        // Vraćanje izabranog elementa (ili null ako ništa nije izabrano)
-        if (choice >= 0 && choice < elements.length) {
-            return elements[choice];
-        } else {
-            // Ako korisnik zatvori dijalog ili ne odabere ništa
-            ApplicationFramework.getInstance().getMessageGenerator().generateMessage(
-                    "Niste izabrali nijedan element!", MessageType.WARNING, LocalDateTime.now()
-            );
-            return null;
-        }
+        return selectedElement;
     }
 
-
-    // Privatna metoda za učitavanje ikonice
-    private Icon loadIcon(String path) {
+    // Metoda za skaliranje ikonica
+    private Icon loadScaledIcon(String path, int width, int height) {
         try {
-            return new ImageIcon(getClass().getResource("/" + path));
+            ImageIcon icon = new ImageIcon(getClass().getResource("/" + path));
+            Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImage);
         } catch (Exception e) {
             System.err.println("Ikonica nije učitana sa putanje: " + path);
             return UIManager.getIcon("OptionPane.errorIcon");
@@ -77,28 +86,3 @@ public class AddElementFrame {
     }
 }
 
-//        // Kreiranje objekta na osnovu izbora
-//        switch (choice) {
-//            case 0:
-//                return "Bojler";
-//            case 1:
-//                return "Kada/Tus kabina";
-//            case 2:
-//                return "Krevet";
-//            case 3:
-//                return "Lavabo";
-//            case 4:
-//                return "Ormar";
-//            case 5:
-//                return "Sto";
-//            case 6:
-//                return "Ves masina";
-//            case 7:
-//                return "Vrata";
-//            case 8:
-//                return "WC solja";
-//            default:
-//                // ne radi ovde?
-//                ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste izabrali nijedan element!", MessageType.WARNING, LocalDateTime.now());
-//                return null; // Ako korisnik zatvori dialog ili ne odabere ništa
-//        }

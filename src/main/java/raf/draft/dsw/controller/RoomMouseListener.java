@@ -2,7 +2,7 @@ package raf.draft.dsw.controller;
 
 import java.awt.event.*;
 
-public class MouseListenerRoom implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class RoomMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         //ova

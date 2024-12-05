@@ -3,11 +3,18 @@ package raf.draft.dsw.model.structures.namestaj;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
+import java.awt.*;
+
 public abstract class RoomElement extends DraftNode {
     private double x; // X koordinata elementa unutar sobe
     private double y; // Y koordinata elementa unutar sobe
+
+    // umesto ovoga moze klasa Dimension
+    // private Dimension size;
     private double sirina;
     private double duzina;
+
+
     private int rotacija; ///  Rotacija elementa (0 do 3, gde 0 = 0°, 1 = 90°, 2 = 180°, 3 = 270°)
     private static int elementCounter = 1; // Brojač elemenata za automatske nazive, npr. krevet1, krevet2, solja1, solja2...
 
