@@ -4,69 +4,123 @@ import raf.draft.dsw.state.concrete.*;
 
 public class StateManager {
     private State currentState;
-    private AddState addState;
+
+    private AddBojler addBojler;
+    private AddKada addKada;
+    private AddKrevet addKrevet;
+    private AddLavabo addLavabo;
+    private AddOrmar addOrmar;
+    private AddSto addSto;
+    private AddVesMasina addVesMasina;
+    private AddVrata addVrata;
+    private AddWCSolja addWCSolja;
     private CopyPasteState copyPasteState;
     private DeleteState deleteState;
     private EditRoomState editRoomState;
+    private EditState editState;
     private MoveState moveState;
     private ResizeState resizeState;
-    private RotateState rotateState;
+    private RotateRightState rotateRightState;
+    private RotateLeftState rotateLeftState;
     private SelectState selectState;
     private ZoomState zoomState;
+
     public StateManager() {
         initStates();
     }
 
     public void initStates() {
-        addState = new AddState();
+        addBojler = new AddBojler();
+        addKada = new AddKada();
+        addKrevet = new AddKrevet();
+        addLavabo = new AddLavabo();
+        addOrmar = new AddOrmar();
+        addSto = new AddSto();
+        addVesMasina = new AddVesMasina();
+        addVrata = new AddVrata();
+        addWCSolja = new AddWCSolja();
         copyPasteState = new CopyPasteState();
         deleteState = new DeleteState();
         editRoomState = new EditRoomState();
+        editState = new EditState();
         moveState = new MoveState();
         resizeState = new ResizeState();
-        rotateState = new RotateState();
+        rotateRightState = new RotateRightState();
+        rotateLeftState = new RotateLeftState();
         selectState = new SelectState();
         zoomState = new ZoomState();
-        currentState = addState;
     }
 
     public State getCurrentState() {
         return currentState;
     }
 
-    public void setAddState(AddState addState) {
-        currentState = addState;
+    public void setAddBojlerState(){
+        currentState = addBojler;
+        System.out.println("Zapocet AddBojler State");
+    }
+    public void setAddKadaState(){
+        currentState = addKada;
+    }
+    public void setAddKrevetState(){
+        currentState = addKrevet;
+    }
+    public void setAddLavaboState(){
+        currentState = addLavabo;
+    }
+    public void setAddOrmarState(){
+        currentState = addOrmar;
+    }
+    public void setAddStoState(){
+        currentState = addSto;
+    }
+    public void setAddVesMasinaState(){
+        currentState = addVesMasina;
+    }
+    public void setAddVrataState(){
+        currentState = addVrata;
+    }
+    public void setAddWCSoljaState(){
+        currentState = addWCSolja;
     }
 
-    public void setCopyPasteState(CopyPasteState copyPasteState) {
+    public void setCopyPasteState() {
         currentState = copyPasteState;
     }
 
-    public void setDeleteState(DeleteState deleteState) {
+    public void setDeleteState() {
         currentState = deleteState;
     }
 
-    public void setEditRoomState(EditRoomState editRoomState) {
+    public void setEditRoomState() {
         currentState = editRoomState;
     }
 
-    public void setMoveState(MoveState moveState) {
+    public void setEditState() {
+        currentState = editState;
+    }
+
+    public void setMoveState() {
         currentState = moveState;
     }
 
-    public void setResizeState(ResizeState resizeState) {
+    public void setResizeState() {
         currentState = resizeState;
     }
 
-    public void setRotateState(RotateState rotateState) {
-        currentState = rotateState;
+    public void setRotateRightState() {
+        currentState = rotateRightState;
     }
 
-    public void setSelectState(SelectState selectState) {
+    public void setRotateLeftState() {
+        currentState = rotateLeftState;
+    }
+
+    public void setSelectState() {
         currentState = selectState;
     }
 
-    public void setZoomState(ZoomState zoomState) {
+    public void setZoomState() {
         currentState = zoomState;
     }
 }
