@@ -11,6 +11,10 @@ public class BojlerPainter implements ElementPainter{
 
     private Bojler bojler;
 
+    public BojlerPainter(Bojler bojler) {
+        this.bojler = bojler;
+    }
+
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;

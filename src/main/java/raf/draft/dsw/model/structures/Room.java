@@ -8,13 +8,21 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Getter
 public class Room extends DraftNodeComposite {
+
     private double sirina;
     private double duzina;
+
+    // Polja za crtanje
+    private Color lineColor = Color.BLACK; // Boja linija (crna)
+    private float lineThickness = 2.0f; // Debljina linija (2 px)
+
+    // njegova deca
     private ArrayList<RoomElement> namestaj = new ArrayList<>();
 
     public Room(String ime, DraftNode parent, double sirina, double duzina) {
@@ -32,6 +40,7 @@ public class Room extends DraftNodeComposite {
     public int convertCmToPx(double cm, double scalingFactor) {
         return (int) (cm * scalingFactor);
     }
+
     @Override
     public void addChild(DraftNode child) {
         if(!namestaj.contains((RoomElement) child)){
@@ -62,5 +71,13 @@ public class Room extends DraftNodeComposite {
 
     public void setDuzina(double duzina) {
         this.duzina = duzina;
+    }
+
+    public Color getLineColor() {
+        return lineColor;
+    }
+
+    public float getLineThickness() {
+        return lineThickness;
     }
 }

@@ -9,6 +9,10 @@ public class KrevetPainter implements ElementPainter{
 
     private Krevet krevet;
 
+    public KrevetPainter(Krevet krevet) {
+        this.krevet = krevet;
+    }
+
     @Override
     public void paint(Graphics g) {
 

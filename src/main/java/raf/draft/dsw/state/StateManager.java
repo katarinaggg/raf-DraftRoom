@@ -49,6 +49,8 @@ public class StateManager {
         rotateLeftState = new RotateLeftState();
         selectState = new SelectState();
         zoomState = new ZoomState();
+        // po defaultu prvo da je ukljuceno stanje za pravljenje sobe
+        currentState = editRoomState;
     }
 
     public State getCurrentState() {

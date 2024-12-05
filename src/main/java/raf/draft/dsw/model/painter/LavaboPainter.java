@@ -9,6 +9,10 @@ public class LavaboPainter implements ElementPainter{
 
     private Lavabo lavabo;
 
+    public LavaboPainter(Lavabo lavabo) {
+        this.lavabo = lavabo;
+    }
+
     @Override
     public void paint(Graphics g) {
 

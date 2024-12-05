@@ -1,20 +1,41 @@
 package raf.draft.dsw.controller;
 
+import com.sun.tools.javac.Main;
+import raf.draft.dsw.gui.swing.MainFrame;
+import raf.draft.dsw.gui.swing.RoomView;
+
 import java.awt.event.*;
 
 public class RoomMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        //ova
-    }
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        //ova
+
+    // treba da ima polje odgovarajuce sobe
+    // da bi znali gde crtamo
+    private RoomView roomView;
+
+    public RoomMouseListener(RoomView roomView) {
+        this.roomView = roomView;
     }
 
+    // nasi State-ovi ce da imaju kopije ovih metoda
+    // svaki State radi nesto svoje na klik misem...
+
+    //ova
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // da li se ovako pristupa ProjectViewu ???
+        MainFrame.getInstance().getProjectView().misKliknut(roomView,e.getPoint());
+    }
+
+    //ova
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        MainFrame.getInstance().getProjectView().misPomeren();
+    }
+
+    //ova
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        //ova
+        MainFrame.getInstance().getProjectView().misScroll();
     }
 
     @Override
