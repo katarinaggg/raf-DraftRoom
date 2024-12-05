@@ -9,6 +9,10 @@ public class BojlerPainter implements ElementPainter{
 
     private Bojler bojler;
 
+    public BojlerPainter(Bojler bojler) {
+        this.bojler = bojler;
+    }
+
     @Override
     public void paint(Graphics g) {
 

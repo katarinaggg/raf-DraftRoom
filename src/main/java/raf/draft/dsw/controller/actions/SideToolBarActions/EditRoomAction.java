@@ -1,5 +1,8 @@
 package raf.draft.dsw.controller.actions.SideToolBarActions;
 
+import raf.draft.dsw.gui.swing.DimensionFrame;
+import raf.draft.dsw.gui.swing.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,6 +36,7 @@ public class EditRoomAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        // kada se klikne na ovo dugme potrebno je da se zapocne stanje EditRoomState
+        MainFrame.getInstance().getProjectView().startEditRoomState();
     }
 }

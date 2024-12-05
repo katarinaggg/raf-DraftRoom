@@ -9,6 +9,10 @@ public class StoPainter implements ElementPainter{
 
     private Sto sto;
 
+    public StoPainter(Sto sto) {
+        this.sto = sto;
+    }
+
     @Override
     public void paint(Graphics g) {
 

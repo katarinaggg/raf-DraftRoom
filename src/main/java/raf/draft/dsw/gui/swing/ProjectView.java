@@ -14,12 +14,14 @@ import java.util.Map;
 
 
 public class ProjectView extends JPanel implements ISubscriber {
+
+    // MEDIJATOR
+
     private JTabbedPane tabbedPane;
     private JToolBar sideToolBar;
     private JPanel infoPanel;
     private JLabel infoLabel;
     private JLabel authorLabel;
-    //private JScrollPane scrollPane;
     private StateManager stateManager = new StateManager();
 
     public ProjectView() {
@@ -314,6 +316,25 @@ public class ProjectView extends JPanel implements ISubscriber {
             displayRooms((Project) notification.getDraftNode());
         }
     }
+
+    // posto je medijator treba da ima sve metode iz stanja
+
+    // stateManager ce za trenutno aktivan state da pozove njegovu odgovarajucu metodu
+    public void misKliknut(RoomView roomView, Point point) {
+        stateManager.getCurrentState().misKliknut(roomView, point);
+    }
+
+
+    public void misPomeren() {
+        stateManager.getCurrentState().misPomeren();
+    }
+
+
+    public void misScroll() {
+        stateManager.getCurrentState().misScroll();
+    }
+
+
 
     public void startAddBojlerState(){
         stateManager.setAddBojlerState();

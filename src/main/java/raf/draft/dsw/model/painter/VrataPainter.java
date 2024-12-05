@@ -9,6 +9,10 @@ public class VrataPainter implements ElementPainter{
 
     private Vrata vrata;
 
+    public VrataPainter(Vrata vrata) {
+        this.vrata = vrata;
+    }
+
     @Override
     public void paint(Graphics g) {
 

@@ -9,6 +9,10 @@ public class WCSoljaPainter implements ElementPainter{
 
     private WCSolja wcSolja;
 
+    public WCSoljaPainter(WCSolja wcSolja) {
+        this.wcSolja = wcSolja;
+    }
+
     @Override
     public void paint(Graphics g) {
 

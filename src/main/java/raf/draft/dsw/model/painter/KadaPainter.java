@@ -9,6 +9,10 @@ public class KadaPainter implements ElementPainter{
 
     private Kada kada;
 
+    public KadaPainter(Kada kada) {
+        this.kada = kada;
+    }
+
     @Override
     public void paint(Graphics g) {
 

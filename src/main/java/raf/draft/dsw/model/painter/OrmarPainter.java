@@ -9,6 +9,10 @@ public class OrmarPainter implements ElementPainter{
 
     private Ormar ormar;
 
+    public OrmarPainter(Ormar ormar) {
+        this.ormar = ormar;
+    }
+
     @Override
     public void paint(Graphics g) {
 

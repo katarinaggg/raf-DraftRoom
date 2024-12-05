@@ -9,6 +9,10 @@ public class VesMasinaPainter implements ElementPainter{
 
     private VesMasina vesMasina;
 
+    public VesMasinaPainter(VesMasina vesMasina) {
+        this.vesMasina = vesMasina;
+    }
+
     @Override
     public void paint(Graphics g) {
 

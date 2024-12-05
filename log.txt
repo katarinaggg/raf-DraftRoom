@@ -52,3 +52,5 @@
 [WARNING] [05.12.2024. 00:20] [Niste selektovali nijedan objekat!]
 [WARNING] [05.12.2024. 00:30] [Niste selektovali nijedan objekat!]
 [WARNING] [05.12.2024. 00:32] [Niste selektovali nijedan objekat!]
+[ERROR] [05.12.2024. 17:31] [Niste uneli odgovarajuce podatke!]
+[WARNING] [05.12.2024. 17:43] [Niste selektovali nijedan objekat!]
