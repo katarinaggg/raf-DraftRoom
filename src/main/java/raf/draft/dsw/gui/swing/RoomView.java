@@ -37,7 +37,6 @@ public class RoomView extends JPanel {
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
         Graphics2D g2d = (Graphics2D) g;
-
     }
 
     public void addPainter(ElementPainter painter) {
