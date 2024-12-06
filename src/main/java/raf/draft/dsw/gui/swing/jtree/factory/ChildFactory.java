@@ -5,9 +5,15 @@ import lombok.NoArgsConstructor;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.AddNodeFrame;
 import raf.draft.dsw.model.nodes.DraftNode;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
+import raf.draft.dsw.model.structures.Room;
+
+import java.time.LocalDateTime;
 
 @Data@NoArgsConstructor
 public class ChildFactory {
@@ -20,8 +26,8 @@ public class ChildFactory {
             AddNodeFrame addNodeFrame = new AddNodeFrame();
             String type = addNodeFrame.getTip();
             if(type==null){
-                // nece da prikaze poruku???
-                //ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste izabrali nijedan objekat!", MessageType.WARNING,LocalDateTime.now());
+                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste izabrali nijedan objekat!", MessageType.WARNING,LocalDateTime.now());
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
                 return null;
             }
             else{

@@ -212,6 +212,9 @@ public class ProjectView extends JPanel implements ISubscriber {
             String roomName = room.getIme();
             RoomView roomPanel = new RoomView(room);
 
+            // kada pravimo RoomView treba da ga subscribujemo odgovarajucoj sobi
+            room.addSubscriber(roomPanel);
+
             // Ako tab već postoji na odgovarajućem mestu, samo ga ažuriramo
             if (tabIndex < tabbedPane.getTabCount() && tabbedPane.getTitleAt(tabIndex).equals(roomName)) {
                 tabbedPane.setComponentAt(tabIndex, roomPanel);

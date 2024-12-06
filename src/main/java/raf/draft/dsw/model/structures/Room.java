@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;
@@ -46,6 +47,12 @@ public class Room extends DraftNodeComposite {
         if(!namestaj.contains((RoomElement) child)){
             namestaj.add((RoomElement) child);
         }
+
+        // Room je vec IPublisher i samo treba da obavesti RoomView
+        // (koji je sada postao ISubscriber) da je dodato dete i da treba da se repaintuje
+
+        notifySubscribers(new Notification());
+
     }
 
     @Override

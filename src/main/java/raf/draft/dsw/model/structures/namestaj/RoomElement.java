@@ -15,14 +15,14 @@ public abstract class RoomElement extends DraftNode {
 
 
     private int rotacija; ///  Rotacija elementa (0 do 3, gde 0 = 0°, 1 = 90°, 2 = 180°, 3 = 270°)
-    private static int elementCounter = 1; // Brojač elemenata za automatske nazive, npr. krevet1, krevet2, solja1, solja2...
+
 
     public RoomElement(String ime, DraftNode parent) {
         super(ime, parent);
     }
 
     public RoomElement(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime + " " + (elementCounter++), parent);
+        super(ime, parent);
         this.lokacija = lokacija;
         this.size = size;
         this.rotacija = 0;

@@ -1,6 +1,8 @@
 package raf.draft.dsw.gui.swing;
 
 import raf.draft.dsw.controller.RoomMouseListener;
+import raf.draft.dsw.controller.observer.ISubscriber;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
 
@@ -9,9 +11,10 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class RoomView extends JPanel {
+public class RoomView extends JPanel implements ISubscriber {
 
     private Room room;
+
     private double scalingFactor; // Faktor skaliranja
 
     // lista Paintera koje treba da iscrta
@@ -70,5 +73,10 @@ public class RoomView extends JPanel {
 
     public double getScalingFactor() {
         return scalingFactor;
+    }
+
+    @Override
+    public void update(Notification notification) {
+        repaint();
     }
 }

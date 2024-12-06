@@ -5,12 +5,15 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class VesMasina extends RoomElement{
-    public VesMasina(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public VesMasina(DraftNode parent) {
+        super("Ves Masina "+ elementCounter++, parent);
     }
 
-    public VesMasina(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public VesMasina(DraftNode parent, Point lokacija, Dimension size) {
+        super("Ves Masina "+ elementCounter++, parent, lokacija, size);
     }
 
 }
