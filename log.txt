@@ -57,3 +57,4 @@
 [WARNING] [05.12.2024. 16:51] [Niste selektovali nijedan objekat!]
 [WARNING] [05.12.2024. 16:51] [Niste selektovali nijedan objekat!]
 [WARNING] [05.12.2024. 16:52] [Niste selektovali nijedan objekat!]
+[WARNING] [05.12.2024. 19:18] [Niste selektovali nijedan objekat!]

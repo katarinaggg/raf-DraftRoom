@@ -5,11 +5,29 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Kada extends RoomElement{
+    private Color color = new Color(13, 152, 184);;
+    private Stroke stroke  = new BasicStroke(2.0f);
     public Kada(String ime, DraftNode parent) {
         super(ime, parent);
     }
 
     public Kada(String ime, DraftNode parent, Point lokacija, Dimension size) {
         super(ime, parent, lokacija, size);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
     }
 }

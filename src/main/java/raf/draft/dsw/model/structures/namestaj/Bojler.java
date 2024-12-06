@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Bojler extends RoomElement{
     private Color color = new Color(139, 148, 199);;
-    private Stroke stroke  = new BasicStroke(5.0f);
+    private Stroke stroke  = new BasicStroke(2.0f);
 
     public Bojler(String ime, DraftNode parent) {
         super(ime, parent);
