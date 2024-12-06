@@ -59,4 +59,13 @@ public abstract class RoomElement extends DraftNode {
             throw new IllegalArgumentException("Rotacija mora biti između 0 i 3.");
         }
     }
+
+    public Dimension getScaledDimensions(double scalingFactor) {
+        // Skaliranje širine i visine dimenzija elementa
+        int scaledWidth = (int) (size.getWidth() * scalingFactor);
+        int scaledHeight = (int) (size.getHeight() * scalingFactor);
+        return new Dimension(scaledWidth, scaledHeight);
+    }
+
+
 }

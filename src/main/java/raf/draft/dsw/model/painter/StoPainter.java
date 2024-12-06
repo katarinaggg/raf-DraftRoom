@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.Sto;
 
@@ -11,9 +12,11 @@ public class StoPainter implements ElementPainter{
 
     private Sto sto;
     private GeneralPath path;
+    private RoomView roomView;
 
-    public StoPainter(Sto sto) {
+    public StoPainter(Sto sto,RoomView roomView) {
         this.sto = sto;
+        this.roomView = roomView;
     }
 
     @Override
@@ -22,11 +25,15 @@ public class StoPainter implements ElementPainter{
         g2d.setColor(sto.getColor());
         g2d.setStroke(sto.getStroke());
 
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = sto.getScaledDimensions(scalingFactor); // Skalirane dimenzije
 
         // Dimenzije kvadrata
         int squareX = sto.getLokacija().x; // X koordinata gornjeg levog ugla kvadrata
         int squareY = sto.getLokacija().y; // Y koordinata gornjeg levog ugla kvadrata
-        int squareSize = sto.getSize().width; // Veličina kvadrata (dužina stranice)
+        //int squareSize = sto.getSize().width; // Veličina kvadrata (dužina stranice)
+        int squareSize = scaledSize.width; // Skalirana veličina kvadrata (dužina stranice)
+
 
         // Udaljenost tačaka od uglova (1/10 veličine kvadrata)
         int offset = squareSize / 10;

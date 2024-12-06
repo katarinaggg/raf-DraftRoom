@@ -5,6 +5,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Getter@Setter
 public class Project extends DraftNodeComposite {
@@ -16,8 +17,11 @@ public class Project extends DraftNodeComposite {
     // putanja do foldera
     private String path;
 
+    private final String id; // Jedinstveni identifikator
+
     public Project(String ime, DraftNode parent) {
         super(ime, parent);
+        this.id = UUID.randomUUID().toString(); // Generišemo jedinstveni ID
     }
 
 
@@ -72,4 +76,18 @@ public class Project extends DraftNodeComposite {
         }
         return rooms;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Project other = (Project) obj;
+        return id.equals(other.id); // Projekti su jednaki samo ako imaju isti ID
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode(); // Hash kod baziran na jedinstvenom ID-u
+    }
+
 }

@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.Vrata;
 
@@ -11,9 +12,11 @@ public class VrataPainter implements ElementPainter{
 
     private Vrata vrata;
     private GeneralPath path;
+    private RoomView roomView;
 
-    public VrataPainter(Vrata vrata) {
+    public VrataPainter(Vrata vrata,RoomView roomView) {
         this.vrata = vrata;
+        this.roomView = roomView;
     }
 
     @Override
@@ -22,9 +25,14 @@ public class VrataPainter implements ElementPainter{
         g2d.setColor(vrata.getColor());
         g2d.setStroke(vrata.getStroke());
 
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = vrata.getScaledDimensions(scalingFactor); // Skalirane dimenzije
+
         int startX = vrata.getLokacija().x;
         int startY = vrata.getLokacija().y;
-        int precnik = Math.max(vrata.getSize().width, vrata.getSize().height); // Prečnik kruga
+        //int precnik = Math.max(vrata.getSize().width, vrata.getSize().height); // Prečnik kruga
+        int precnik = Math.max(scaledSize.width, scaledSize.height); // Prečnik kruga (najveća dimenzija)
+
 
         path = new GeneralPath();
 

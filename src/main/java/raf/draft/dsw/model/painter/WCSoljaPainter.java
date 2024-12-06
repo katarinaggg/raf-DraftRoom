@@ -1,5 +1,7 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
+import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.WCSolja;
 
@@ -11,9 +13,11 @@ public class WCSoljaPainter implements ElementPainter{
 
     private WCSolja wcSolja;
     private GeneralPath path;
+    private RoomView roomView;
 
-    public WCSoljaPainter(WCSolja wcSolja) {
+    public WCSoljaPainter(WCSolja wcSolja, RoomView roomView) {
         this.wcSolja = wcSolja;
+        this.roomView = roomView;
     }
 
     @Override
@@ -22,17 +26,20 @@ public class WCSoljaPainter implements ElementPainter{
         g2d.setColor(wcSolja.getColor());
         g2d.setStroke(wcSolja.getStroke());
 
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = wcSolja.getScaledDimensions(scalingFactor); // Skalirane dimenzije
 
 
         // Dimenzije spoljnog oblika
         int startX = wcSolja.getLokacija().x; // Gornja leva X koordinata pravougaonika u kojem je luk
         int startY = wcSolja.getLokacija().y; // Gornja leva Y koordinata pravougaonika u kojem je luk
-        int width = wcSolja.getSize().width;  // Širina luka (horizontalni prečnik)
-        int height = wcSolja.getSize().height; // Visina luka (vertikalni prečnik)
+//        int width = wcSolja.getSize().width;  // Širina luka (horizontalni prečnik)
+//        int height = wcSolja.getSize().height; // Visina luka (vertikalni prečnik)
+        int width = scaledSize.width;
+        int height = scaledSize.height;
+
 
         path = new GeneralPath();
-
-
 
         // Crtanje spoljnog luka
         Arc2D.Double outerArc = new Arc2D.Double(

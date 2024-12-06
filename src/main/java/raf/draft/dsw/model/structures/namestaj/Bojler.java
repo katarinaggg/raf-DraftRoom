@@ -34,4 +34,5 @@ public class Bojler extends RoomElement{
         this.stroke = stroke;
     }
 
+
 }

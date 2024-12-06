@@ -6,6 +6,7 @@ import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,6 +41,7 @@ public class AddRoomElementAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         AddElementFrame addElementFrame = new AddElementFrame(MainFrame.getInstance());
         String selectedElement = addElementFrame.getSelectedElement();
 

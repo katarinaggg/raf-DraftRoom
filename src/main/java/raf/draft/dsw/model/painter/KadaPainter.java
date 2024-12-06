@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Kada;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
@@ -8,11 +9,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
 public class KadaPainter implements ElementPainter{
+
     private Kada kada;
     private GeneralPath path;
+    private RoomView roomView;
 
-    public KadaPainter(Kada kada) {
+    public KadaPainter(Kada kada, RoomView roomView) {
         this.kada = kada;
+        this.roomView = roomView;
     }
 
     @Override
@@ -21,11 +25,19 @@ public class KadaPainter implements ElementPainter{
         g2d.setColor(kada.getColor());
         g2d.setStroke(kada.getStroke());
 
+        // Faktor skaliranja sobe
+        double scalingFactor = roomView.getScalingFactor();
+        // Skaliranje dimenzija pravougaonika
+        Dimension scaledDimensions = kada.getScaledDimensions(scalingFactor);
+
         // Dimenzije pravougaonika
         int rectX = kada.getLokacija().x; // X koordinata gornjeg levog ugla pravougaonika
         int rectY = kada.getLokacija().y; // Y koordinata gornjeg levog ugla pravougaonika
-        int rectWidth = kada.getSize().width; // Širina pravougaonika
-        int rectHeight = kada.getSize().height; // Visina pravougaonika
+//        int rectWidth = kada.getSize().width; // Širina pravougaonika
+//        int rectHeight = kada.getSize().height; // Visina pravougaonika
+
+        int rectWidth = scaledDimensions.width;
+        int rectHeight = scaledDimensions.height;
 
         path = new GeneralPath();
 

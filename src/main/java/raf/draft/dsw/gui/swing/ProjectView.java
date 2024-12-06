@@ -24,6 +24,11 @@ public class ProjectView extends JPanel implements ISubscriber {
     private JLabel authorLabel;
     private StateManager stateManager = new StateManager();
 
+    // mora da cuva sve RoomView-ove koje ima
+    // da nam se ne bi izgubili crtezi kada menjamo nesto
+    // ili prolazimo kroz tabove
+    private Map<String, RoomView> roomViewMap = new HashMap<>();
+
     public ProjectView() {
         tabbedPane = new JTabbedPane();
         infoLabel = new JLabel();
@@ -91,10 +96,9 @@ public class ProjectView extends JPanel implements ISubscriber {
         sideToolBar.add(MainFrame.getInstance().getActionManager().getEditRoomElementAction());
         sideToolBar.add(MainFrame.getInstance().getActionManager().getDeleteAction());
     }
-
-
 /*
 
+    // POKUSAJ 1
     public void displayRooms(Project selectedProject) {
 //        tabbedPane.removeAll();  // uklanjamo stare i otvaramo nove tabove
 //
@@ -133,6 +137,8 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         sideToolBar.setVisible(!selectedProject.getRooms().isEmpty());
 /////////////////////////////////////////////////////////////////////////////////////////
+
+        // POKUSAJ 2
         //  ne radi kad se menja ime Room-a
 
         Room firstRoom = selectedProject.getRooms().isEmpty() ? null : selectedProject.getRooms().get(0);
@@ -198,7 +204,8 @@ public class ProjectView extends JPanel implements ISubscriber {
     }
 
  */
-
+    // POKUSAJ 3
+    /*
     public void displayRooms(Project selectedProject) {
         // Kreiramo mapu za čuvanje trenutnih tabova i njihovih indeksa
         Map<String, Integer> existingTabs = new HashMap<>();
@@ -267,6 +274,88 @@ public class ProjectView extends JPanel implements ISubscriber {
         // Ažuriramo vidljivost sideToolBar
         sideToolBar.setVisible(!selectedProject.getRooms().isEmpty());
 
+    }
+*/
+
+
+    // POKUSAJ 4
+    public void displayRooms(Project selectedProject) {
+        // Mapiranje postojećih tabova za praćenje
+        Map<String, Integer> existingTabs = new HashMap<>();
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            existingTabs.put(tabbedPane.getTitleAt(i), i);
+        }
+
+        int tabIndex = 0;
+
+        for (Room room : selectedProject.getRooms()) {
+            String roomName = room.getIme();
+            RoomView roomPanel;
+
+            // Proveravamo da li postoji RoomView za ovu sobu
+            if (roomViewMap.containsKey(roomName)) {
+                roomPanel = roomViewMap.get(roomName);
+            } else {
+                // Kreiramo novi RoomView za novu sobu
+                roomPanel = new RoomView(room);
+                roomViewMap.put(roomName, roomPanel);
+                room.addSubscriber(roomPanel); // Subscribujemo se na odgovarajuci room
+            }
+
+            // Ako tab već postoji, ažuriramo ime i sadržaj taba
+            if (tabIndex < tabbedPane.getTabCount()) {
+                if (!tabbedPane.getTitleAt(tabIndex).equals(roomName)) {
+                    tabbedPane.setTitleAt(tabIndex, roomName); // Ažuriramo naziv taba
+                }
+                tabbedPane.setComponentAt(tabIndex, roomPanel); // Ažuriramo sadržaj taba
+            } else {
+                // Ako tab ne postoji, dodajemo ga
+                tabbedPane.insertTab(roomName, null, roomPanel, null, tabIndex);
+            }
+
+            // Postavljamo boju taba na osnovu roditelja (Building)
+            if (room.getParent() instanceof Building) {
+                Building parentBuilding = (Building) room.getParent();
+                Color buildingColor = parentBuilding.getColor();
+                tabbedPane.setBackgroundAt(tabIndex, buildingColor);
+            }
+
+            tabIndex++;
+        }
+
+        // Uklanjamo tabove i RoomView-ove koji više nisu prisutni
+        while (tabIndex < tabbedPane.getTabCount()) {
+            String roomName = tabbedPane.getTitleAt(tabIndex);
+            tabbedPane.removeTabAt(tabIndex);
+            roomViewMap.remove(roomName); // Uklanjamo iz mape
+        }
+
+        // Selektujemo prvi tab ako postoji
+        if (tabbedPane.getTabCount() > 0) {
+            tabbedPane.setSelectedIndex(0);
+        }
+
+        // Ažuriramo infoPanel na osnovu selektovanog taba
+        if (!selectedProject.getRooms().isEmpty()) {
+            Room firstRoom = selectedProject.getRooms().get(0);
+            updateInfoPanel(selectedProject, firstRoom);
+        } else {
+            // Ako nema soba, brišemo informacije iz infoLabel
+            infoLabel.setText("");
+            authorLabel.setText("");
+        }
+
+        // Dodajemo listener za promene selektovanog taba
+        tabbedPane.addChangeListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            if (selectedIndex >= 0 && selectedIndex < selectedProject.getRooms().size()) {
+                Room selectedRoom = selectedProject.getRooms().get(selectedIndex);
+                updateInfoPanel(selectedProject, selectedRoom);
+            }
+        });
+
+        // Ažuriramo vidljivost sideToolBar
+        sideToolBar.setVisible(!selectedProject.getRooms().isEmpty());
     }
 
 

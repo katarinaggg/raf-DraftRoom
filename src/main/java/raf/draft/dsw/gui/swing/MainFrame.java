@@ -16,6 +16,9 @@ import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 public class MainFrame extends JFrame implements ISubscriber {
     //buduca polja za sve komponente view-a na glavnom prozoru
@@ -23,8 +26,15 @@ public class MainFrame extends JFrame implements ISubscriber {
     private static MainFrame mainFrameInstance;
     private ActionManager actionManager;
     private DraftTree draftTree;
+
+    // valjda se cuva trenutni otvoreni
     private ProjectView projectView;
     private JSplitPane splitPane;
+
+    // mora da ima mapu svih ProjectView-ova koji su trenutno otvoreni
+    // kljuc je odgovarajuci Project
+    // kada "setamo" kroz projekte da nam se ne izbrisu crtezi
+    private Map<Project, ProjectView> projectViewMap = new HashMap<>();
 
     private MainFrame(){
     }
@@ -86,27 +96,48 @@ public class MainFrame extends JFrame implements ISubscriber {
 
     // metoda za prikazivanje ProjectViewa
     public void displayProjectView(Project project) {
+        //System.out.println("Opening ProjectView for project: " + project.getIme() + " (ID: " + project.getId() + ")");
 
-        // kada imamo neki projekat koji vec u sebi ima podstabla
-        // Kreiramo novi ProjectView sa selektovanim projektom
-        projectView = new ProjectView(project);// Inicijalizacija tek kada je projekat izabran
+        // proveravamo da li vec postoji ProjectView za selektovani Project
 
-        // ProjectView je subscriber kojeg dodajemo na sve nodove iz selektovanog projekta
-        // koji se prikazuje u tom projectView
-        project.addSubscriber(projectView);  // dodajemo ga selektovanom Projectu
-        for(DraftNode child: project.getChildren()){
-            if(child instanceof Building){
-                // ako je building subscribujemo ProjectView i na svu njegovu decu
-                for(DraftNode child2: ((Building) child).getChildren()){
-                    child2.addSubscriber(projectView);
+        if(!projectViewMap.containsKey(project)) {
+            // ako ne postoji pravimo novi
+            //System.out.println("Creating new ProjectView for project: " + project.getIme());
+
+            // kada imamo neki projekat koji vec u sebi ima podstabla
+            // Kreiramo novi ProjectView sa selektovanim projektom
+            ProjectView newProjectView = new ProjectView(project);// Inicijalizacija tek kada je projekat izabran
+
+            // ProjectView je subscriber kojeg dodajemo na sve nodove iz selektovanog projekta
+            // koji se prikazuje u tom projectView
+            project.addSubscriber(newProjectView);  // dodajemo ga selektovanom Projectu
+            for (DraftNode child : project.getChildren()) {
+                if (child instanceof Building) {
+                    // ako je building subscribujemo ProjectView i na svu njegovu decu
+                    for (DraftNode child2 : ((Building) child).getChildren()) {
+                        child2.addSubscriber(newProjectView);
+                    }
                 }
+                // i na zasebne sobe (ili building)
+                child.addSubscriber(newProjectView);
             }
-            // i na zasebne sobe (ili building)
-            child.addSubscriber(projectView);
+            // dodajemo novi projectView u mapu
+            projectViewMap.put(project, newProjectView);
+        }
+
+        projectView = projectViewMap.get(project);
+        //System.out.println("Using ProjectView for project: " + project.getIme() + " (ID: " + project.getId() + ")");
+        for (Project project1 : projectViewMap.keySet()) {
+            System.out.println("Project key: " + project1.getIme()); // ili neki drugi atribut ključa
         }
 
         // Postavljamo ProjectView u desni deo JSplitPane
         splitPane.setRightComponent(projectView);
+
+        // project je selektovani project
+        // moramo da pozovemo da se prikazu tabovi
+        projectView.displayRooms(project);
+
         splitPane.revalidate();  // Osvežavanje SplitPane-a
         splitPane.repaint();
         draftTree.refreshTree(); // da refresuje stablo (jer se zatvore podstabla)

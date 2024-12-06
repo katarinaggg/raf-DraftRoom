@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Lavabo;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
@@ -11,9 +12,11 @@ public class LavaboPainter implements ElementPainter{
 
     private Lavabo lavabo;
     private GeneralPath path;
+    private RoomView roomView;
 
-    public LavaboPainter(Lavabo lavabo) {
+    public LavaboPainter(Lavabo lavabo, RoomView roomView) {
         this.lavabo = lavabo;
+        this.roomView = roomView;
     }
 
     @Override
@@ -22,11 +25,19 @@ public class LavaboPainter implements ElementPainter{
         g2d.setColor(lavabo.getColor());
         g2d.setStroke(lavabo.getStroke());
 
+        double scalingFactor = roomView.getScalingFactor();
+        // Skalirane dimenzije i pozicija
+        Point location = lavabo.getLokacija();
+        Dimension scaledSize = lavabo.getScaledDimensions(scalingFactor);
+
+        int width = scaledSize.width;
+        int height = scaledSize.height;
+
         // Dimenzije i pozicija obrnutog trougla
         int baseX = lavabo.getLokacija().x; // X koordinata početne tačke baze trougla
         int baseY = lavabo.getLokacija().y; // Y koordinata baze trougla
-        int width = lavabo.getSize().width; // Širina baze trougla
-        int height = lavabo.getSize().height; // Visina trougla
+//        int width = lavabo.getSize().width; // Širina baze trougla
+//        int height = lavabo.getSize().height; // Visina trougla
 
         // Koordinate vrhova trougla
         int[] xPoints = {

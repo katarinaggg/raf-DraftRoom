@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Bojler;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
@@ -12,8 +13,11 @@ public class BojlerPainter implements ElementPainter{
 
     private Bojler bojler;
 
-    public BojlerPainter(Bojler bojler) {
+    private RoomView roomView;
+
+    public BojlerPainter(Bojler bojler, RoomView roomView) {
         this.bojler = bojler;
+        this.roomView = roomView;
     }
 
     @Override
@@ -22,11 +26,20 @@ public class BojlerPainter implements ElementPainter{
         g2d.setColor(bojler.getColor());
         g2d.setStroke(bojler.getStroke());
 
+        // faktor skaliranja sobe
+        double scalingFactor = roomView.getScalingFactor();
+
+        // Skaliranje dimenzija
+        Dimension scaledDimensions = bojler.getScaledDimensions(scalingFactor);
+
         // Dimenzije kruga pre metode za skaliranje
         int centarX = bojler.getLokacija().x; // X koordinata centra kruga
         int centarY = bojler.getLokacija().y; // Y koordinata centra kruga
-        int precnik = Math.min(bojler.getSize().width, bojler.getSize().height); // Prečnik kruga
-        int radius = precnik / 2; // Poluprečnik kruga
+//        int precnik = Math.min(bojler.getSize().width, bojler.getSize().height); // Prečnik kruga
+//        int radius = precnik / 2; // Poluprečnik kruga
+
+        int precnik = Math.min(scaledDimensions.width, scaledDimensions.height);
+        int radius = precnik / 2;
 
         shape = new GeneralPath();
 

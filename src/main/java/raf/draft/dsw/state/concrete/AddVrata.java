@@ -1,9 +1,13 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.painter.KadaPainter;
 import raf.draft.dsw.model.painter.VrataPainter;
 import raf.draft.dsw.model.structures.namestaj.Kada;
@@ -11,6 +15,7 @@ import raf.draft.dsw.model.structures.namestaj.Vrata;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 
 public class AddVrata implements State {
 
@@ -22,13 +27,19 @@ public class AddVrata implements State {
 
         Dimension dimenzija = frame.getDimenzija();
 
-        Vrata vrata = new Vrata(roomView.getRoom(),point, dimenzija);
-        VrataPainter vrataPainter = new VrataPainter(vrata);
-        roomView.addPainter(vrataPainter);
+        if(dimenzija!=null && dimenzija.width>0 && dimenzija.height>0) {
+            Vrata vrata = new Vrata(roomView.getRoom(), point, dimenzija);
+            VrataPainter vrataPainter = new VrataPainter(vrata,roomView);
+            roomView.addPainter(vrataPainter);
 
-        DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-        MainFrame.getInstance().getDraftTree().addRoomChild(soba,vrata);
-
+            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
+            MainFrame.getInstance().getDraftTree().addRoomChild(soba, vrata);
+        }
+        else{
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            frame.setVisible(true);
+        }
     }
 
     @Override
