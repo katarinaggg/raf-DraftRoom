@@ -1,15 +1,20 @@
 package raf.draft.dsw.gui.swing.jtree;
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.factory.ChildFactory;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.gui.swing.jtree.view.JTreeView;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.ProjectExplorer;
+import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
+import java.time.LocalDateTime;
 
 
 public class DraftTreeImplementation implements DraftTree{
@@ -32,6 +37,19 @@ public class DraftTreeImplementation implements DraftTree{
         return jTreeView;
     }
 
+
+    @Override
+    public void addRoomChild(DraftTreeItem parent, RoomElement child) {
+
+        // dodajemo u view tj Jtree
+        parent.add(new DraftTreeItem(child));
+
+        //dodajemo u model
+        ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
+
+        refreshTree();
+    }
+
     @Override
     public void addChild(DraftTreeItem parent) {
         // prosledjujemo samo parenta zato sto cemo znati na osnovu njega
@@ -45,7 +63,6 @@ public class DraftTreeImplementation implements DraftTree{
 
         DraftNode child = createChild(parent.getDraftNode());
         if(child==null){
-            //ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste izabrali nijedan objekat!", MessageType.WARNING,LocalDateTime.now());
             return;
         }
         // treba childu koji kreiramo dodati subscribera projectView
@@ -107,13 +124,13 @@ public class DraftTreeImplementation implements DraftTree{
     }
     // f-ja koja refreshuje celo stablo tako da se vide sva podstabla
     // da ne moramo da ih otvaramo rucno
-//    private static void expandAllNodes(JTree tree) {
-//        int row = 0;
-//        while (row < tree.getRowCount()) {
-//            tree.expandRow(row);
-//            row++;
-//        }
-//    }
+    private static void expandAllNodes(JTree tree) {
+        int row = 0;
+        while (row < tree.getRowCount()) {
+            tree.expandRow(row);
+            row++;
+        }
+    }
 
 
     @Override
@@ -121,13 +138,41 @@ public class DraftTreeImplementation implements DraftTree{
         return (DraftTreeItem) jTreeView.getLastSelectedPathComponent();
     }
 
+
     // f-ja za refreshovanje stabla
     @Override
     public void refreshTree() {
-//        DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
-//        model.reload();
-//        expandAllNodes(jTreeView);
-        jTreeView.expandPath(jTreeView.getSelectionPath());
-        SwingUtilities.updateComponentTreeUI(jTreeView);
+        DefaultTreeModel model = (DefaultTreeModel) jTreeView.getModel();
+        model.reload();
+        expandAllNodes(jTreeView);
+//        jTreeView.expandPath(jTreeView.getSelectionPath());
+//        SwingUtilities.updateComponentTreeUI(jTreeView);
     }
+
+    //////////////////////////////////////////////////////////////
+    // treba da izvucem room iz stabla kada na njega dodajemo namestaj
+    // jer se u Jtree dodaje na DraftTreeItem a ja kada dodajem
+    // namestaj iz stanja tj kada ih crtam nemam pristup Jtree-u
+
+    public DraftTreeItem findTreeItem(DraftNode targetNode) {
+        // Korenski čvor stabla
+        DraftTreeItem root = (DraftTreeItem) defaultTreeModel.getRoot();
+        return findTreeItemRecursive(root, targetNode);
+    }
+
+    private DraftTreeItem findTreeItemRecursive(DraftTreeItem current, DraftNode targetNode) {
+        if (current.getDraftNode().equals(targetNode)) {
+            return current; // Pronađen odgovarajući čvor
+        }
+        for (int i = 0; i < current.getChildCount(); i++) {
+            DraftTreeItem child = (DraftTreeItem) current.getChildAt(i);
+            DraftTreeItem result = findTreeItemRecursive(child, targetNode); // Rekurzivno pretraživanje
+            if (result != null) {
+                return result; // Ako je pronađen u podstablima
+            }
+        }
+        return null; // Ako čvor nije pronađen
+    }
+
+
 }

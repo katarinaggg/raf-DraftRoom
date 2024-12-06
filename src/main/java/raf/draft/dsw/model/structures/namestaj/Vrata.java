@@ -8,12 +8,14 @@ public class Vrata extends RoomElement{
 
     private Color color = new Color(8, 5, 0);
     private Stroke stroke = new BasicStroke(3.0f);
-    public Vrata(String ime, DraftNode parent) {
-        super(ime, parent);
+    private static int elementCounter = 1;
+
+    public Vrata(DraftNode parent) {
+        super("Vrata "+ elementCounter++, parent);
     }
 
-    public Vrata(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Vrata(DraftNode parent, Point lokacija, Dimension size) {
+        super("Vrata "+ elementCounter++, parent, lokacija, size);
     }
 
     public Color getColor() {

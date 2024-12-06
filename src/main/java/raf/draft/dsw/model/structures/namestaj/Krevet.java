@@ -9,14 +9,15 @@ public class Krevet extends RoomElement{
     private Color color = new Color(94, 70, 41);;
     private Stroke stroke  = new BasicStroke(2.0f);
 
-    public Krevet(String ime, DraftNode parent) {
-        super(ime, parent);
-    }
 
-    public Krevet(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
-    }
+    private static int elementCounter = 1;
 
+    public Krevet(DraftNode parent) {
+        super("Krevet "+ elementCounter++, parent);
+  }
+    public Krevet(DraftNode parent, Point lokacija, Dimension size) {
+        super("Krevet "+ elementCounter++, parent, lokacija, size);
+        }
     public Color getColor() {
         return color;
     }

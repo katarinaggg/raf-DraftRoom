@@ -59,7 +59,7 @@ public class StateManager {
 
     public void setAddBojlerState(){
         currentState = addBojler;
-        System.out.println("Zapocet AddBojler State");
+        //System.out.println("Zapocet AddBojler State");
     }
     public void setAddKadaState(){
         currentState = addKada;

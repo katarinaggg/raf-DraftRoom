@@ -43,33 +43,33 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         ///nisam sigurna za ovo
 
         else if(((DraftTreeItem)value).getDraftNode() instanceof Bojler){
-            imageURL = getClass().getResource("/images/boiler.png");
+            imageURL = getClass().getResource("/namestaj/boiler.png");
         }
 
         else if(((DraftTreeItem)value).getDraftNode() instanceof Kada){
-            imageURL = getClass().getResource("/images/bath.png");
+            imageURL = getClass().getResource("/namestaj/bath.png");
         }
 
         else if(((DraftTreeItem)value).getDraftNode() instanceof Krevet){
-            imageURL = getClass().getResource("/images/double-bed.png");
+            imageURL = getClass().getResource("/namestaj/double-bed.png");
         }
         else if(((DraftTreeItem)value).getDraftNode() instanceof Lavabo){
-            imageURL = getClass().getResource("/images/sink.png");
+            imageURL = getClass().getResource("/namestaj/sink.png");
         }
         else if(((DraftTreeItem)value).getDraftNode() instanceof Ormar){
-            imageURL = getClass().getResource("/images/closet.png");
+            imageURL = getClass().getResource("/namestaj/closet.png");
         }
         else if(((DraftTreeItem)value).getDraftNode() instanceof Sto){
-            imageURL = getClass().getResource("/images/desk.png");
+            imageURL = getClass().getResource("/namestaj/desk.png");
         }
         else if(((DraftTreeItem)value).getDraftNode() instanceof VesMasina){
-            imageURL = getClass().getResource("/images/laundry-machine.png");
+            imageURL = getClass().getResource("/namestaj/laundry-machine.png");
         }
         else if(((DraftTreeItem)value).getDraftNode() instanceof Vrata){
-            imageURL = getClass().getResource("/images/door.png");
+            imageURL = getClass().getResource("/namestaj/door.png");
         }
         else if(((DraftTreeItem)value).getDraftNode() instanceof WCSolja){
-            imageURL = getClass().getResource("/images/toilet.png");
+            imageURL = getClass().getResource("/namestaj/toilet.png");
         }
 
 

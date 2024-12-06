@@ -5,11 +5,14 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Sto extends RoomElement{
-    public Sto(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public Sto(DraftNode parent) {
+        super("Sto "+ elementCounter++, parent);
     }
 
-    public Sto(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Sto(DraftNode parent, Point lokacija, Dimension size) {
+        super("Sto "+ elementCounter++, parent, lokacija, size);
     }
 }

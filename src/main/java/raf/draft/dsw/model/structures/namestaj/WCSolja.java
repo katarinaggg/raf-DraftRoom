@@ -5,11 +5,14 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class WCSolja extends RoomElement{
-    public WCSolja(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public WCSolja(DraftNode parent) {
+        super("WC Solja "+ elementCounter++, parent);
     }
 
-    public WCSolja(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public WCSolja(DraftNode parent, Point lokacija, Dimension size) {
+        super("WC Solja "+ elementCounter++, parent, lokacija, size);
     }
 }

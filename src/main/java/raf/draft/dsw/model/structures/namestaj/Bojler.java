@@ -5,15 +5,17 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Bojler extends RoomElement{
+
+    private static int elementCounter = 1;
     private Color color = new Color(139, 148, 199);;
     private Stroke stroke  = new BasicStroke(2.0f);
 
-    public Bojler(String ime, DraftNode parent) {
-        super(ime, parent);
+    public Bojler(DraftNode parent) {
+        super("Bojler " + elementCounter++, parent);
     }
 
-    public Bojler(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Bojler(DraftNode parent, Point lokacija, Dimension size) {
+        super("Bojler "+ elementCounter++, parent, lokacija, size);
     }
 
     public Color getColor() {
@@ -31,4 +33,5 @@ public class Bojler extends RoomElement{
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
     }
+
 }
