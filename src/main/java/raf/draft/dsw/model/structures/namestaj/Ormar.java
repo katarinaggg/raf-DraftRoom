@@ -8,11 +8,30 @@ public class Ormar extends RoomElement{
 
     private static int elementCounter = 1;
 
+    private Color color = new Color(74, 45, 24);
+    private Stroke stroke = new BasicStroke(2.0f);
+
     public Ormar(DraftNode parent) {
         super("Ormar "+ elementCounter++, parent);
     }
 
     public Ormar(DraftNode parent, Point lokacija, Dimension size) {
         super("Ormar "+ elementCounter++, parent, lokacija, size);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
     }
 }

@@ -8,6 +8,9 @@ public class VesMasina extends RoomElement{
 
     private static int elementCounter = 1;
 
+    private Color color = new Color(204, 161, 227);
+    private Stroke stroke = new BasicStroke(2.0f);
+
     public VesMasina(DraftNode parent) {
         super("Ves Masina "+ elementCounter++, parent);
     }
@@ -16,4 +19,19 @@ public class VesMasina extends RoomElement{
         super("Ves Masina "+ elementCounter++, parent, lokacija, size);
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
+    }
 }
