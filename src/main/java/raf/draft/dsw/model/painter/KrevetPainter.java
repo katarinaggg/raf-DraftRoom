@@ -32,6 +32,8 @@ public class KrevetPainter implements ElementPainter{
         int pillowHeight = bedHeight / 7; // Visina jastuka je 1/7 visine kreveta
         int pillowMargin = 10; // Udaljenost jastuka od gornje ivice kreveta
 
+        path = new GeneralPath();
+
         // Crtanje kreveta (veliki pravougaonik)
         int bedX = krevet.getLokacija().x; // X koordinata gornjeg levog ugla kreveta
         int bedY = krevet.getLokacija().y; // Y koordinata gornjeg levog ugla kreveta

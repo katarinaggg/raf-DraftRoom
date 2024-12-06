@@ -7,7 +7,7 @@ import java.awt.*;
 public class Lavabo extends RoomElement{
 
     private static int elementCounter = 1;
-    private Color color = new Color(35, 170, 232);;
+    private Color color = new Color(218, 237, 228);;
     private Stroke stroke  = new BasicStroke(2.0f);
 
     public Lavabo(DraftNode parent) {
