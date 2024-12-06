@@ -57,3 +57,7 @@
 [WARNING] [05.12.2024. 16:51] [Niste selektovali nijedan objekat!]
 [WARNING] [05.12.2024. 16:51] [Niste selektovali nijedan objekat!]
 [WARNING] [05.12.2024. 16:52] [Niste selektovali nijedan objekat!]
+[WARNING] [06.12.2024. 03:05] [Niste selektovali nijedan objekat!]
+[INFORMATION] [06.12.2024. 03:05] [Da biste dodali namestaj, morate prvo da ga nacrtate]
+[ERROR] [06.12.2024. 03:07] [Niste uneli odgovarajuce podatke!]
+[INFORMATION] [06.12.2024. 03:13] [Da biste dodali namestaj, morate prvo da ga nacrtate]
