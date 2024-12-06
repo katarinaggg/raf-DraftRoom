@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Ormar;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
@@ -11,9 +12,11 @@ public class OrmarPainter implements ElementPainter{
 
     private Ormar ormar;
     private GeneralPath path;
+    private RoomView roomView;
 
-    public OrmarPainter(Ormar ormar) {
+    public OrmarPainter(Ormar ormar, RoomView roomView) {
         this.ormar = ormar;
+        this.roomView = roomView;
     }
 
     @Override
@@ -22,11 +25,16 @@ public class OrmarPainter implements ElementPainter{
         g2d.setColor(ormar.getColor());
         g2d.setStroke(ormar.getStroke());
 
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = ormar.getScaledDimensions(scalingFactor);
+
         //Dimenzije pravougaonika
         int rectX = ormar.getLokacija().x; // X koordinata gornjeg levog ugla pravougaonika
         int rectY = ormar.getLokacija().y; // Y koordinata gornjeg levog ugla pravougaonika
-        int rectWidth = ormar.getSize().width; // Širina pravougaonika
-        int rectHeight = ormar.getSize().height; // Visina pravougaonika
+//        int rectWidth = ormar.getSize().width; // Širina pravougaonika
+//        int rectHeight = ormar.getSize().height; // Visina pravougaonika
+        int rectWidth = scaledSize.width;
+        int rectHeight = scaledSize.height;
 
         path = new GeneralPath();
 

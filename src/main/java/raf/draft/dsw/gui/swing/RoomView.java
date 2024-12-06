@@ -29,7 +29,6 @@ public class RoomView extends JPanel implements ISubscriber {
     // Metoda za određivanje faktora skaliranja
     public void calculateScalingFactor() {
 
-
         // Uzimamo dimenzije panela
         int panelWidth = getWidth();
         int panelHeight = getHeight();

@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.VesMasina;
 
@@ -11,8 +12,11 @@ public class VesMasinaPainter implements ElementPainter{
 
     private VesMasina vesMasina;
     private GeneralPath path;
-    public VesMasinaPainter(VesMasina vesMasina) {
+    private RoomView roomView;
+
+    public VesMasinaPainter(VesMasina vesMasina, RoomView roomView) {
         this.vesMasina = vesMasina;
+        this.roomView = roomView;
     }
 
     @Override
@@ -21,10 +25,15 @@ public class VesMasinaPainter implements ElementPainter{
         g2d.setColor(vesMasina.getColor());
         g2d.setStroke(vesMasina.getStroke());
 
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = vesMasina.getScaledDimensions(scalingFactor); // Skalirane dimenzije
+
+
         // Dimenzije kvadrata
         int squareX = vesMasina.getLokacija().x; // X koordinata gornjeg levog ugla kvadrata
         int squareY = vesMasina.getLokacija().y; // Y koordinata gornjeg levog ugla kvadrata
-        int squareSize = vesMasina.getSize().width; // Dužina stranice kvadrata
+        //int squareSize = vesMasina.getSize().width; // Dužina stranice kvadrata
+        int squareSize = scaledSize.width;
 
         // Crtanje kvadrata
         GeneralPath path = new GeneralPath();

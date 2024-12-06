@@ -1,9 +1,13 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.painter.KadaPainter;
 import raf.draft.dsw.model.painter.LavaboPainter;
 import raf.draft.dsw.model.structures.namestaj.Kada;
@@ -11,6 +15,7 @@ import raf.draft.dsw.model.structures.namestaj.Lavabo;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 
 public class AddLavabo implements State {
 
@@ -22,13 +27,19 @@ public class AddLavabo implements State {
 
         Dimension dimenzija = frame.getDimenzija();
 
-        Lavabo lavabo = new Lavabo(roomView.getRoom(),point, dimenzija);
-        LavaboPainter lavaboPainter = new LavaboPainter(lavabo);
-        roomView.addPainter(lavaboPainter);
+        if(dimenzija!=null && dimenzija.getWidth()>0 && dimenzija.getHeight()>0) {
+            Lavabo lavabo = new Lavabo(roomView.getRoom(), point, dimenzija);
+            LavaboPainter lavaboPainter = new LavaboPainter(lavabo,roomView);
+            roomView.addPainter(lavaboPainter);
 
-        DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-        MainFrame.getInstance().getDraftTree().addRoomChild(soba,lavabo);
-
+            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
+            MainFrame.getInstance().getDraftTree().addRoomChild(soba, lavabo);
+        }
+        else{
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            frame.setVisible(true);
+        }
     }
 
     @Override
