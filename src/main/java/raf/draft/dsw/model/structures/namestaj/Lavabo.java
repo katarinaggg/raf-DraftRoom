@@ -11,8 +11,8 @@ public class Lavabo extends RoomElement{
     private Stroke stroke  = new BasicStroke(2.0f);
 
     public Lavabo(DraftNode parent) {
-        super("Lavabo "+ elementCounter++, parent);
-        }
+        super("Lavabo " + elementCounter++, parent);
+    }
 
     public Lavabo(DraftNode parent, Point lokacija, Dimension size) {
         super("Lavabo "+ elementCounter++, parent, lokacija, size);
