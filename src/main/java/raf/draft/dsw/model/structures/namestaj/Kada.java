@@ -5,11 +5,14 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Kada extends RoomElement{
-    public Kada(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public Kada(DraftNode parent) {
+        super("Kada "+ elementCounter++, parent);
     }
 
-    public Kada(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Kada(DraftNode parent, Point lokacija, Dimension size) {
+        super("Kada "+ elementCounter++, parent, lokacija, size);
     }
 }

@@ -7,6 +7,9 @@ public class Notification {
     DraftNode draftNode;
     Boolean brisanje=false;
 
+    public Notification() {
+    }
+
     public Notification(Message message) {
         this.message = message;
     }

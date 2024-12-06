@@ -5,12 +5,15 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Krevet extends RoomElement{
-    public Krevet(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public Krevet(DraftNode parent) {
+        super("Krevet "+ elementCounter++, parent);
     }
 
-    public Krevet(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Krevet(DraftNode parent, Point lokacija, Dimension size) {
+        super("Krevet "+ elementCounter++, parent, lokacija, size);
     }
 
 }

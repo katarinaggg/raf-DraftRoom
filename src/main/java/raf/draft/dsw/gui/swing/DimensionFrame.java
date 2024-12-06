@@ -20,6 +20,8 @@ public class DimensionFrame extends JDialog {
     // kojoj treba da podesimo dimenzije
     private RoomView roomView;
 
+    Dimension dimenzija;
+
     public DimensionFrame(RoomView roomView) {
 
         this.roomView = roomView;
@@ -27,6 +29,7 @@ public class DimensionFrame extends JDialog {
         setSize(300, 200);
         setLayout(new GridBagLayout());
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setModalityType(ModalityType.APPLICATION_MODAL);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -80,18 +83,16 @@ public class DimensionFrame extends JDialog {
 //                System.out.println(sirina);
 //                System.out.println(duzina);
 
-                // ne pravimo novi objekat soba vec je to ona ciji je tab otvoren i samo treba da
-                // joj setujemo duzinu i sirinu koju smo dobili s prozora??
+//                // krsi MVC ???
+//                roomView.getRoom().setDuzina(duzina);
+//                roomView.getRoom().setSirina(sirina);
 
-                // krsi MVC ???
-                roomView.getRoom().setDuzina(duzina);
-                roomView.getRoom().setSirina(sirina);
+                dimenzija = new Dimension(sirina, duzina);
 
-
-                Room room = roomView.getRoom();
-                RoomPainter roomPainter = new RoomPainter(room,roomView);
-                roomView.addPainter(roomPainter);
-                roomView.repaint();
+//                Room room = roomView.getRoom();
+//                RoomPainter roomPainter = new RoomPainter(room,roomView);
+//                roomView.addPainter(roomPainter);
+//                roomView.repaint();
 
                 // ako je validan unos da se izadje iz prozora
                 dispose();
@@ -107,7 +108,9 @@ public class DimensionFrame extends JDialog {
         //pack();
         setLocationRelativeTo(null);
 
+    }
 
-
+    public Dimension getDimenzija() {
+        return dimenzija;
     }
 }

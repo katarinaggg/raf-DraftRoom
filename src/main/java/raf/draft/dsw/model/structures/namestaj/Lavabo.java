@@ -5,11 +5,14 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Lavabo extends RoomElement{
-    public Lavabo(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public Lavabo(DraftNode parent) {
+        super("Lavabo "+ elementCounter++, parent);
     }
 
-    public Lavabo(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Lavabo(DraftNode parent, Point lokacija, Dimension size) {
+        super("Lavabo "+ elementCounter++, parent, lokacija, size);
     }
 }

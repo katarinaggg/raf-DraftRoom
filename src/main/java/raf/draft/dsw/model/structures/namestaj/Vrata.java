@@ -5,11 +5,14 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import java.awt.*;
 
 public class Vrata extends RoomElement{
-    public Vrata(String ime, DraftNode parent) {
-        super(ime, parent);
+
+    private static int elementCounter = 1;
+
+    public Vrata(DraftNode parent) {
+        super("Vrata "+ elementCounter++, parent);
     }
 
-    public Vrata(String ime, DraftNode parent, Point lokacija, Dimension size) {
-        super(ime, parent, lokacija, size);
+    public Vrata(DraftNode parent, Point lokacija, Dimension size) {
+        super("Vrata "+ elementCounter++, parent, lokacija, size);
     }
 }

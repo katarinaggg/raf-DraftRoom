@@ -19,6 +19,25 @@ public class EditRoomState implements State {
     public void misKliknut(RoomView roomView, Point point) {
         DimensionFrame frame = new DimensionFrame(roomView);
         frame.setVisible(true);
+
+        // ne pravimo novi objekat soba vec je to ona ciji je tab otvoren i samo treba da
+        // joj setujemo duzinu i sirinu koju smo dobili s prozora??
+
+        Dimension dimenzija = frame.getDimenzija();
+        Double duzina;
+        Double sirina;
+        if(dimenzija!=null) {
+            duzina = dimenzija.getHeight();
+            sirina = dimenzija.getWidth();
+            // ovde valjda nije krsenje MVC-a
+            roomView.getRoom().setDuzina(duzina);
+            roomView.getRoom().setSirina(sirina);
+
+            RoomPainter roomPainter = new RoomPainter(roomView.getRoom(),roomView);
+            roomView.addPainter(roomPainter);
+            roomView.repaint();
+        }
+
     }
 
     @Override
