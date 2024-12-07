@@ -33,8 +33,6 @@ public class KadaPainter implements ElementPainter{
         // Dimenzije pravougaonika
         int rectX = kada.getLokacija().x; // X koordinata gornjeg levog ugla pravougaonika
         int rectY = kada.getLokacija().y; // Y koordinata gornjeg levog ugla pravougaonika
-//        int rectWidth = kada.getSize().width; // Širina pravougaonika
-//        int rectHeight = kada.getSize().height; // Visina pravougaonika
 
         int rectWidth = scaledDimensions.width;
         int rectHeight = scaledDimensions.height;
@@ -67,8 +65,9 @@ public class KadaPainter implements ElementPainter{
     }
 
     @Override
-    public boolean elementAt(RoomElement element, Point point) {
-        return path != null && path.contains(point);
+    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle) {
+
+        return path!= null && (path.contains(point) || path.intersects(rectangle));
     }
 
     public Kada getKada() {

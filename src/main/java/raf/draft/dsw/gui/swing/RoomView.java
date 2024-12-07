@@ -20,6 +20,11 @@ public class RoomView extends JPanel implements ISubscriber {
     // lista Paintera koje treba da iscrta
     ArrayList<ElementPainter> painters = new ArrayList<>();
 
+    //lista Paintera koje koristimo kada se nesto selektuje
+    ArrayList<ElementPainter> selectionList = new ArrayList<>();
+    private Rectangle selectionRectangleLT = new Rectangle();
+    private Rectangle selectionRectangleRB = new Rectangle();
+
     public RoomView(Room room) {
         this.room = room;
         // dodajemo mu mouse listener
@@ -50,16 +55,42 @@ public class RoomView extends JPanel implements ISubscriber {
         //System.out.println("Usao u paintComponent");
 
 
+        // Definisanje isprekidanog stila linije
+        float[] dashPattern = {10, 10}; // Dužina crte i razmaka
+        BasicStroke dashedStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0.0f);
+
+        g2d.setStroke(dashedStroke);
+        g2d.setColor(Color.BLUE);
+
+        ///nesto za selekciju, mozda nije dobro
+        g.drawRect(selectionRectangleLT.x, selectionRectangleRB.y, selectionRectangleLT.width, selectionRectangleRB.height);
+
         for(ElementPainter p : painters) {
             p.paint(g2d);
             //System.out.println("Usao u paintere");
         }
-
     }
 
     public void addPainter(ElementPainter painter) {
         painters.add(painter);
         //System.out.println("Dodat painter"+painter.getClass().getName());
+    }
+
+    public Rectangle getSelectionRectangleLT() {
+        return selectionRectangleLT;
+    }
+
+    public void setSelectionRectangleLT(Rectangle selectionRectangleLT) {
+        this.selectionRectangleLT = selectionRectangleLT;
+    }
+
+    public Rectangle getSelectionRectangleRB() {
+        return selectionRectangleRB;
+    }
+
+    public void setSelectionRectangleRB(Rectangle selectionRectangleRB) {
+        this.selectionRectangleRB = selectionRectangleRB;
     }
 
     public ArrayList<ElementPainter> getPainters() {
@@ -73,6 +104,11 @@ public class RoomView extends JPanel implements ISubscriber {
     public double getScalingFactor() {
         return scalingFactor;
     }
+
+    public ArrayList<ElementPainter> getSelectionList() {
+        return selectionList;
+    }
+
 
     @Override
     public void update(Notification notification) {

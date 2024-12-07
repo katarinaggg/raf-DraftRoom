@@ -8,4 +8,5 @@ public interface State {
     public void misKliknut(RoomView roomView, Point point);
     public void misPomeren();
     public void misScroll();
+    public void misPovucen();
 }

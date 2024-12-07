@@ -23,4 +23,9 @@ public class RotateRightState implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

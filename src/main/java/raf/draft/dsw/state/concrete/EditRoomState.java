@@ -49,4 +49,9 @@ public class EditRoomState implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

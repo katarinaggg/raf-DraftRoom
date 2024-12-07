@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Krevet extends RoomElement{
 
-    private Color color = new Color(94, 70, 41);;
+    private Color color = new Color(131, 139, 156);;
     private Stroke stroke  = new BasicStroke(2.0f);
 
 

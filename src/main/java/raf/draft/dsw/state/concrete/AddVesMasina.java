@@ -51,4 +51,9 @@ public class AddVesMasina implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

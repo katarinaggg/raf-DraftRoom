@@ -50,4 +50,9 @@ public class AddKada implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

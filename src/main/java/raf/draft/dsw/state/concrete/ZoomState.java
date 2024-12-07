@@ -23,4 +23,9 @@ public class ZoomState implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }
