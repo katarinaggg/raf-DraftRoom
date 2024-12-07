@@ -51,4 +51,9 @@ public class AddSto implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

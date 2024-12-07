@@ -53,6 +53,7 @@ public class KrevetPainter implements ElementPainter{
         path.lineTo(bedX, bedY + bedHeight); // Donji levi ugao kreveta
         path.closePath();
 
+        //g2d.fill(path);
 
         // Crtanje jastuka (manji pravougaonik unutar kreveta)
         double pillowXStart = bedX + (bedWidth - pillowWidth) / 2.0; // Centriranje jastuka po širini
@@ -71,8 +72,9 @@ public class KrevetPainter implements ElementPainter{
     }
 
     @Override
-    public boolean elementAt(RoomElement element, Point point) {
-        return path != null && path.contains(point);
+    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle) {
+
+        return path!= null && (path.contains(point) || path.intersects(rectangle));
     }
 
     public Krevet getKrevet() {

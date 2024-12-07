@@ -23,4 +23,9 @@ public class ResizeState implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

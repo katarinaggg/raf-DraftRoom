@@ -79,8 +79,9 @@ public class BojlerPainter implements ElementPainter{
     }
 
     @Override
-    public boolean elementAt(RoomElement element, Point point) {
-        return shape != null && shape.contains(point);
+    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle) {
+
+        return shape != null && (shape.contains(point) || shape.intersects(rectangle));
     }
 
     public GeneralPath getShape() {

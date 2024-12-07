@@ -59,7 +59,8 @@ public class VrataPainter implements ElementPainter{
     }
 
     @Override
-    public boolean elementAt(RoomElement element, Point point) {
-        return path != null && path.contains(point);
+    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle) {
+
+        return path!= null && (path.contains(point) || path.intersects(rectangle));
     }
 }

@@ -51,4 +51,9 @@ public class AddVrata implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

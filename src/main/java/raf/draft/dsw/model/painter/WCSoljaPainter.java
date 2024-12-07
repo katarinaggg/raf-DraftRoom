@@ -73,11 +73,19 @@ public class WCSoljaPainter implements ElementPainter{
                 Arc2D.CHORD                // Otvoreni luk
         );
         path.append(innerArc, false);
+
+        // Crtanje horizontalne linije iznad unutrašnjeg luka, ali unutar spoljnog
+        int lineY = innerStartY + 7; // Pozicija linije neposredno iznad unutrašnjeg luka
+        int lineStartX = startX; // Početak linije od leve ivice spoljnog luka
+        int lineEndX = startX + width; // Kraj linije do desne ivice spoljnog luka
+
+        g2d.drawLine(lineStartX, lineY, lineEndX, lineY);
         g2d.draw(path);
     }
 
     @Override
-    public boolean elementAt(RoomElement element, Point point) {
-        return path != null && path.contains(point);
+    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle) {
+
+        return path!= null && (path.contains(point) || path.intersects(rectangle));
     }
 }

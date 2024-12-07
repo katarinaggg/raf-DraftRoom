@@ -64,4 +64,9 @@ public class AddBojler implements State {
     public void misScroll() {
 
     }
+
+    @Override
+    public void misPovucen() {
+
+    }
 }

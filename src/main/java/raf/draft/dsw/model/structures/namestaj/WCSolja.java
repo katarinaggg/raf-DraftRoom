@@ -7,7 +7,7 @@ import java.awt.*;
 public class WCSolja extends RoomElement{
 
     private static int elementCounter = 1;
-    private Color color = new Color(219, 219, 186);
+    private Color color = new Color(250, 250, 245);
     private Stroke stroke = new BasicStroke(2.0f);
 
     public WCSolja(DraftNode parent) {
