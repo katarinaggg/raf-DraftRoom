@@ -25,7 +25,18 @@ public class DeleteState implements State {
     }
 
     @Override
-    public void misPovucen() {
+    public void misZadrzan(RoomView roomView, Point point) {
 
     }
+
+    @Override
+    public void misPovucen(RoomView roomView, Point point) {
+
+    }
+
+    @Override
+    public void misPusten(RoomView roomView, Point point) {
+
+    }
+
 }
