@@ -65,7 +65,7 @@ public class KadaPainter implements ElementPainter{
     }
 
     @Override
-    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle) {
+    public boolean elementAt(Point point, Rectangle rectangle) {
 
         return path!= null && (path.contains(point) || path.intersects(rectangle));
     }

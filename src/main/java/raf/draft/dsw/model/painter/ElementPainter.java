@@ -10,5 +10,5 @@ public interface ElementPainter{
 
     // trebace nam za selekciju
     // vrati true ako se point nalazi unutar nekog paintera
-    public boolean elementAt(RoomElement element, Point point, Rectangle rectangle);
+    public boolean elementAt(Point point, Rectangle rectangle);
 }

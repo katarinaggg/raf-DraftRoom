@@ -5,6 +5,7 @@ import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.state.State;
 import raf.draft.dsw.state.StateManager;
 
 import javax.swing.*;
@@ -426,6 +427,22 @@ public class ProjectView extends JPanel implements ISubscriber {
         stateManager.getCurrentState().misScroll();
     }
 
+    public void misZadrzan(RoomView roomView, Point point){
+        stateManager.getCurrentState().misZadrzan(roomView,point);
+    }
+
+    public void misPovucen(RoomView roomView, Point point){
+        stateManager.getCurrentState().misPovucen(roomView,point);
+    }
+
+    public void misPusten(RoomView roomView, Point point){
+        stateManager.getCurrentState().misPusten(roomView,point);
+    }
+
+
+    public State trenutnoStanje(){
+        return stateManager.getCurrentState();
+    }
 
 
     public void startAddBojlerState(){
@@ -491,5 +508,6 @@ public class ProjectView extends JPanel implements ISubscriber {
     public void startZoomState() {
         stateManager.setZoomState();
     }
+
 
 }

@@ -5,6 +5,7 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.state.concrete.SelectState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,9 +23,12 @@ public class RoomView extends JPanel implements ISubscriber {
 
     //lista Paintera koje koristimo kada se nesto selektuje
     ArrayList<ElementPainter> selectionList = new ArrayList<>();
-    private Rectangle selectionRectangleLT = new Rectangle();
-    private Rectangle selectionRectangleRB = new Rectangle();
+//    private Rectangle selectionRectangleLT = new Rectangle();
+//    private Rectangle selectionRectangleRB = new Rectangle();
 
+
+    private Point selectionRectangleLT;
+    private Point selectionRectangleRB;
     public RoomView(Room room) {
         this.room = room;
         // dodajemo mu mouse listener
@@ -46,50 +50,80 @@ public class RoomView extends JPanel implements ISubscriber {
         scalingFactor = Math.min((double) panelWidth / roomSirinaPx, (double) panelHeight / roomVisinaPx);
         //System.out.println("Scaling factor: " + scalingFactor);
     }
+//
+//    @Override
+//    public void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//
+//        Graphics2D g2d = (Graphics2D) g;
+//        //System.out.println("Usao u paintComponent");
+//
+//        //drawDashedRectangle(g2d, selectionRectangleLT, selectionRectangleRB);
+//
+//
+////        // Definisanje isprekidanog stila linije
+////        float[] dashPattern = {10, 10}; // Dužina crte i razmaka
+////        BasicStroke dashedStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+////                BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0.0f);
+////
+////        g2d.setStroke(dashedStroke);
+////        g2d.setColor(Color.BLUE);
+////
+////        ///nesto za selekciju, mozda nije dobro
+////        g.drawRect(selectionRectangleLT.x, selectionRectangleRB.y, selectionRectangleLT.width, selectionRectangleRB.height);
+//
+//        if(MainFrame.getInstance().getProjectView().trenutnoStanje() instanceof SelectState){
+//            drawDashedRectangle(g2d,selectionRectangleLT,selectionRectangleRB);
+//        }
+//        for(ElementPainter p : painters) {
+//            p.paint(g2d);
+//            //System.out.println("Usao u paintere");
+//        }
+//    }
+
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2d = (Graphics2D) g;
-        //System.out.println("Usao u paintComponent");
 
-
-        // Definisanje isprekidanog stila linije
-        float[] dashPattern = {10, 10}; // Dužina crte i razmaka
-        BasicStroke dashedStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0.0f);
-
-        g2d.setStroke(dashedStroke);
-        g2d.setColor(Color.BLUE);
-
-        ///nesto za selekciju, mozda nije dobro
-        g.drawRect(selectionRectangleLT.x, selectionRectangleRB.y, selectionRectangleLT.width, selectionRectangleRB.height);
-
-        for(ElementPainter p : painters) {
+        // Crtanje svih elemenata
+        for (ElementPainter p : painters) {
             p.paint(g2d);
-            //System.out.println("Usao u paintere");
+        }
+
+        // Crtanje isprekidanog pravougaonika za selekciju
+        if (selectionRectangleLT != null && selectionRectangleRB != null) {
+            int x = Math.min(selectionRectangleLT.x, selectionRectangleRB.x);
+            int y = Math.min(selectionRectangleLT.y, selectionRectangleRB.y);
+            int width = Math.abs(selectionRectangleRB.x - selectionRectangleLT.x);
+            int height = Math.abs(selectionRectangleRB.y - selectionRectangleLT.y);
+
+            if (width > 0 && height > 0) {
+                drawDashedRectangle(g2d, selectionRectangleLT, selectionRectangleRB);
+            }
         }
     }
+
 
     public void addPainter(ElementPainter painter) {
         painters.add(painter);
         //System.out.println("Dodat painter"+painter.getClass().getName());
     }
 
-    public Rectangle getSelectionRectangleLT() {
+    public Point getSelectionRectangleLT() {
         return selectionRectangleLT;
     }
 
-    public void setSelectionRectangleLT(Rectangle selectionRectangleLT) {
+    public void setSelectionRectangleLT(Point selectionRectangleLT) {
         this.selectionRectangleLT = selectionRectangleLT;
     }
 
-    public Rectangle getSelectionRectangleRB() {
+    public Point getSelectionRectangleRB() {
         return selectionRectangleRB;
     }
 
-    public void setSelectionRectangleRB(Rectangle selectionRectangleRB) {
+    public void setSelectionRectangleRB(Point selectionRectangleRB) {
         this.selectionRectangleRB = selectionRectangleRB;
     }
 
@@ -109,6 +143,29 @@ public class RoomView extends JPanel implements ISubscriber {
         return selectionList;
     }
 
+    public void drawDashedRectangle(Graphics2D g2d, Point point1, Point point2) {
+        // Izračunavanje gornje leve tačke i dimenzija
+        int x = Math.min(point1.x, point2.x); // Manji X
+        int y = Math.min(point1.y, point2.y); // Manji Y
+        int width = Math.abs(point2.x - point1.x); // Širina pravougaonika
+        int height = Math.abs(point2.y - point1.y); // Visina pravougaonika
+
+        // Definisanje isprekidanog stila linije
+        float[] dashPattern = {10, 10}; // Dužina crte i razmaka
+        BasicStroke dashedStroke = new BasicStroke(2.0f,                      // Debljina linije
+                BasicStroke.CAP_BUTT,      // Oblik kraja linije
+                BasicStroke.JOIN_MITER,    // Stil spojeva
+                10.0f,                     // Miter limit
+                dashPattern,               // Šablon isprekidanih linija
+                0.0f);                     // Početna faza
+
+        // Postavljanje isprekidanog stila
+        g2d.setStroke(dashedStroke);
+        g2d.setColor(Color.BLUE);
+
+        // Crtanje pravougaonika
+        g2d.drawRect(x, y, width, height);
+    }
 
     @Override
     public void update(Notification notification) {
