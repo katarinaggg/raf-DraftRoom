@@ -1,5 +1,8 @@
 package raf.draft.dsw.controller.actions.SideToolBarActions;
 
+import com.sun.tools.javac.Main;
+import raf.draft.dsw.gui.swing.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,7 +36,7 @@ public class DeleteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        MainFrame.getInstance().getProjectView().startDeleteState();
     }
 
 }
