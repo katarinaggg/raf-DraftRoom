@@ -1,6 +1,7 @@
 package raf.draft.dsw.controller.actions.SideToolBarActions;
 
 import raf.draft.dsw.gui.swing.AddElementFrame;
+import raf.draft.dsw.gui.swing.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;

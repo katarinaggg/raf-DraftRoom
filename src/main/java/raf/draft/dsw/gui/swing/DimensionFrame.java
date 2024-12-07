@@ -77,6 +77,7 @@ public class DimensionFrame extends JDialog {
                 if(duzina<=0 || sirina<=0){
                     Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli odgovarajuce podatke!", MessageType.ERROR, LocalDateTime.now());
                     ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+                    dispose();
                     return;
                 }
 
@@ -100,6 +101,7 @@ public class DimensionFrame extends JDialog {
             }catch (NumberFormatException e1) {
                 Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli odgovarajuce podatke!", MessageType.ERROR, LocalDateTime.now());
                 ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+                dispose();
             }
         });
 

@@ -1,5 +1,7 @@
 package raf.draft.dsw.controller.actions.SideToolBarActions;
 
+import raf.draft.dsw.gui.swing.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,6 +35,6 @@ public class ResizeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        MainFrame.getInstance().getProjectView().startResizeState();
     }
 }
