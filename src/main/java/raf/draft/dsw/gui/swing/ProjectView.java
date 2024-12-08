@@ -190,7 +190,7 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         // Postavljamo selekciju na prvi tab ako postoji
         if (tabbedPane.getTabCount() > 0) {
-            tabbedPane.setSelectedIndex(0);
+            tabbedPane.setSelectedIndex(0);pre
         }
 
 /////////////////////////////////////////////////////////////////////////////////////////

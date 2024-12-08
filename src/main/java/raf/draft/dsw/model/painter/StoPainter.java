@@ -42,7 +42,7 @@ public class StoPainter implements ElementPainter{
         int offset = Math.min(rectWidth, rectHeight) / 10;
 
         // Kreiranje GeneralPath objekta za pravougaonik
-        GeneralPath path = new GeneralPath();
+        path = new GeneralPath();
         Rectangle2D.Double rectangle = new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight);
         path.append(rectangle, false);
 
@@ -92,12 +92,17 @@ public class StoPainter implements ElementPainter{
         ), false);
 
         g2d.fill(path);
+        //g2d.draw(path);
     }
 
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-
         return path!= null && (path.contains(point) || path.intersects(rectangle));
+    }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return sto;
     }
 }

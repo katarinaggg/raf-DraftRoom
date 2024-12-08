@@ -10,6 +10,7 @@ import raf.draft.dsw.state.concrete.SelectState;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class RoomView extends JPanel implements ISubscriber {
@@ -29,10 +30,15 @@ public class RoomView extends JPanel implements ISubscriber {
 
     private Point selectionRectangleLT;
     private Point selectionRectangleRB;
+
     public RoomView(Room room) {
         this.room = room;
         // dodajemo mu mouse listener
-        addMouseListener(new RoomMouseListener(this));
+        //addMouseListener(new RoomMouseListener(this));
+        RoomMouseListener mouseListener = new RoomMouseListener(this);
+        addMouseListener(mouseListener); // Za MousePressed, MouseReleased itd.
+        addMouseMotionListener(mouseListener); // Za MouseDragged i MouseMoved
+
     }
 
     // Metoda za određivanje faktora skaliranja
@@ -100,7 +106,8 @@ public class RoomView extends JPanel implements ISubscriber {
             int height = Math.abs(selectionRectangleRB.y - selectionRectangleLT.y);
 
             if (width > 0 && height > 0) {
-                drawDashedRectangle(g2d, selectionRectangleLT, selectionRectangleRB);
+                //drawDashedRectangle(g2d, selectionRectangleLT, selectionRectangleRB);
+                drawDashedRectangle(g2d, x, y, width, height);
             }
         }
     }
@@ -143,16 +150,34 @@ public class RoomView extends JPanel implements ISubscriber {
         return selectionList;
     }
 
-    public void drawDashedRectangle(Graphics2D g2d, Point point1, Point point2) {
-        // Izračunavanje gornje leve tačke i dimenzija
-        int x = Math.min(point1.x, point2.x); // Manji X
-        int y = Math.min(point1.y, point2.y); // Manji Y
-        int width = Math.abs(point2.x - point1.x); // Širina pravougaonika
-        int height = Math.abs(point2.y - point1.y); // Visina pravougaonika
+//    public void drawDashedRectangle(Graphics2D g2d, Point point1, Point point2) {
+//        // Izračunavanje gornje leve tačke i dimenzija
+//        int x = Math.min(point1.x, point2.x); // Manji X
+//        int y = Math.min(point1.y, point2.y); // Manji Y
+//        int width = Math.abs(point2.x - point1.x); // Širina pravougaonika
+//        int height = Math.abs(point2.y - point1.y); // Visina pravougaonika
+//
+//        // Definisanje isprekidanog stila linije
+//        float[] dashPattern = {10, 10}; // Dužina crte i razmaka
+//        BasicStroke dashedStroke = new BasicStroke(2.0f,        // Debljina linije
+//                BasicStroke.CAP_BUTT,      // Oblik kraja linije
+//                BasicStroke.JOIN_MITER,    // Stil spojeva
+//                10.0f,                     // Miter limit
+//                dashPattern,               // Šablon isprekidanih linija
+//                0.0f);                     // Početna faza
+//
+//        // Postavljanje isprekidanog stila
+//        g2d.setStroke(dashedStroke);
+//        g2d.setColor(Color.BLUE);
+//
+//        // Crtanje pravougaonika
+//        g2d.drawRect(x, y, width, height);
+//    }
 
+    public void drawDashedRectangle(Graphics2D g2d, int x, int y, int width, int height) {
         // Definisanje isprekidanog stila linije
         float[] dashPattern = {10, 10}; // Dužina crte i razmaka
-        BasicStroke dashedStroke = new BasicStroke(2.0f,                      // Debljina linije
+        BasicStroke dashedStroke = new BasicStroke(2.0f,        // Debljina linije
                 BasicStroke.CAP_BUTT,      // Oblik kraja linije
                 BasicStroke.JOIN_MITER,    // Stil spojeva
                 10.0f,                     // Miter limit
