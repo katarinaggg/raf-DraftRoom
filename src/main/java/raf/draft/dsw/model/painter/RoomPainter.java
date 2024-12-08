@@ -57,4 +57,9 @@ public class RoomPainter implements ElementPainter{
     public boolean elementAt(Point point, Rectangle rectangle) {
         return false;
     }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return null;
+    }
 }

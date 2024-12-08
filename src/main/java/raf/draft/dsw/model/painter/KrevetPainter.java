@@ -92,4 +92,9 @@ public class KrevetPainter implements ElementPainter{
     public void setPath(GeneralPath path) {
         this.path = path;
     }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return krevet;
+    }
 }

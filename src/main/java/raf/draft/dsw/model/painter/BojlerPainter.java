@@ -99,4 +99,10 @@ public class BojlerPainter implements ElementPainter{
     public void setBojler(Bojler bojler) {
         this.bojler = bojler;
     }
+
+
+    @Override
+    public RoomElement getRoomElement() {
+        return bojler;
+    }
 }

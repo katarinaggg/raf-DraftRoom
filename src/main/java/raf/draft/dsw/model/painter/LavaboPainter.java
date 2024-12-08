@@ -27,7 +27,6 @@ public class LavaboPainter implements ElementPainter{
 
         double scalingFactor = roomView.getScalingFactor();
         // Skalirane dimenzije i pozicija
-        Point location = lavabo.getLokacija();
         Dimension scaledSize = lavabo.getScaledDimensions(scalingFactor);
 
         int width = scaledSize.width;
@@ -52,7 +51,7 @@ public class LavaboPainter implements ElementPainter{
         };
 
         // Kreiranje GeneralPath objekta za trougao
-        GeneralPath path = new GeneralPath();
+        path = new GeneralPath();
         path.moveTo(xPoints[0], yPoints[0]); // Leva tačka na osnovi
         path.lineTo(xPoints[1], yPoints[1]); // Desna tačka na osnovi
         path.lineTo(xPoints[2], yPoints[2]); // Vrh trougla
@@ -79,7 +78,11 @@ public class LavaboPainter implements ElementPainter{
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-
         return path!= null && (path.contains(point) || path.intersects(rectangle));
+    }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return lavabo;
     }
 }

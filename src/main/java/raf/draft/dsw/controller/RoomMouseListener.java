@@ -38,18 +38,19 @@ public class RoomMouseListener implements MouseListener, MouseMotionListener, Mo
         MainFrame.getInstance().getProjectView().misScroll();
     }
 
+    //ovo za selekciju
     @Override
     public void mousePressed(MouseEvent e) {
-//ovo za selekciju
         MainFrame.getInstance().getProjectView().misZadrzan(roomView,e.getPoint());
     }
 
-
+    //ovo za selekciju
     @Override
     public void mouseDragged(MouseEvent e) {
         MainFrame.getInstance().getProjectView().misPovucen(roomView, e.getPoint());
     }
 
+    //ovo za selekciju
     @Override
     public void mouseReleased(MouseEvent e) {
         MainFrame.getInstance().getProjectView().misPusten(roomView,e.getPoint());

@@ -36,7 +36,7 @@ public class VesMasinaPainter implements ElementPainter{
         int squareSize = scaledSize.width;
 
         // Crtanje kvadrata
-        GeneralPath path = new GeneralPath();
+        path = new GeneralPath();
         path.moveTo(squareX, squareY); // Gornji levi ugao
         path.lineTo(squareX + squareSize, squareY); // Gornji desni ugao
         path.lineTo(squareX + squareSize, squareY + squareSize); // Donji desni ugao
@@ -64,7 +64,11 @@ public class VesMasinaPainter implements ElementPainter{
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-
         return path!= null && (path.contains(point) || path.intersects(rectangle));
+    }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return vesMasina;
     }
 }

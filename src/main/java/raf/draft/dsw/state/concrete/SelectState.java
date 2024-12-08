@@ -14,20 +14,27 @@ import java.awt.*;
 @NoArgsConstructor
 public class SelectState implements State {
 
+    private Point kliknut;
+
+    // ne mozemo ovde da koristimo misKliknut jer je to kombinacija
+    // misZadrzan i misPusten samo kad to uradimo na istom pointu
     @Override
     public void misKliknut(RoomView roomView, Point point) {
 
-        //svaki put kada kliknem obrisem sve iz prethodne selektovane liste, da bih dodala nove elemente
-        roomView.getSelectionList().clear();
-
-        for(ElementPainter e : roomView.getPainters()){
-            if(!(e instanceof RoomPainter)){
-                /// elementAt nam kaze za ovu tacku, reci mi da li se ta taj Point sece sa mojim elementom
-                if(e.elementAt(point, null)){
-                    roomView.getSelectionList().add(e);
-                }
-            }
-        }
+//        //svaki put kada kliknem obrisem sve iz prethodne selektovane liste, da bih dodala nove elemente
+//        roomView.getSelectionList().clear();
+//
+//        for(ElementPainter e : roomView.getPainters()){
+//            if(!(e instanceof RoomPainter)){
+//                /// elementAt nam kaze za ovu tacku, reci mi da li se ta taj Point sece sa mojim elementom
+//                if(e.elementAt(point, null)){
+//                    roomView.getSelectionList().add(e);
+//                }
+//            }
+//        }
+//        roomView.repaint();
+//        System.out.println("Mis kliknut");
+//        System.out.println(roomView.getSelectionList());
     }
 
     @Override
@@ -44,8 +51,11 @@ public class SelectState implements State {
     ///mousePressed
     @Override
     public void misZadrzan(RoomView roomView, Point point) {
+        // postavljamo klik
+        kliknut = point;
         roomView.getSelectionList().clear();
         roomView.setSelectionRectangleLT(point);
+        System.out.println("Mis zadrzan");
     }
 
 
@@ -55,8 +65,8 @@ public class SelectState implements State {
         if(roomView.getSelectionRectangleLT() != null){
             roomView.setSelectionRectangleRB(point);
             roomView.repaint();
+            System.out.println("Mis povucen");
         }
-
 
         //kada je mouseDown uzmem i setujem gornju levu tacku, dok prevlacim ukoliko postoji gornja levatacka,
         // svaki put kad se triggeruje dragged tu tacku (iz neceg toggled, mozda nisam dobro cukla?) setujem na donju desnu
@@ -64,10 +74,35 @@ public class SelectState implements State {
         //tokom prevlacenja svaki put kad setujemo donju desnu ivicu pozovi repaint modela
     }
 
+    // mouseReleased
     @Override
     public void misPusten(RoomView roomView, Point point) {
         roomView.setSelectionRectangleRB(point);
-        roomView.repaint();
+        //roomView.repaint();
+
+        // ako je pocetni i krajnji klik na istom mestu
+        // onda je to zapravo bio samo misKliknut
+        if(kliknut != null && kliknut.equals(point)){
+
+            //svaki put kada kliknem obrisem sve iz prethodne selektovane liste, da bih dodala nove elemente
+            roomView.getSelectionList().clear();
+
+            for(ElementPainter e : roomView.getPainters()){
+                if(!(e instanceof RoomPainter)){
+                    /// elementAt nam kaze za ovu tacku, reci mi da li se ta taj Point sece sa mojim elementom
+                    if(e.elementAt(point, null)){
+                        roomView.getSelectionList().add(e);
+                    }
+                }
+            }
+            roomView.repaint();
+            System.out.println("Mis kliknut");
+            System.out.println(roomView.getSelectionList());
+            return;
+        }
+
+        // ako nije bio misKliknut znaci da smo prevlacili
+
         // Izračunavanje pravougaonika
         int x = Math.min(roomView.getSelectionRectangleLT().x, roomView.getSelectionRectangleRB().x);
         int y = Math.min(roomView.getSelectionRectangleLT().y, roomView.getSelectionRectangleRB().y);
@@ -85,8 +120,9 @@ public class SelectState implements State {
                 }
             }
         }
-
-        System.out.println(roomView.getSelectionList() +" \n");
+        roomView.repaint();
+        System.out.println("Mis pusten");
+        System.out.println(roomView.getSelectionList());
 
     }
 }

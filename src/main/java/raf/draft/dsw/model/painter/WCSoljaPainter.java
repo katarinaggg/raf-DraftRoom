@@ -85,7 +85,11 @@ public class WCSoljaPainter implements ElementPainter{
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-
         return path!= null && (path.contains(point) || path.intersects(rectangle));
+    }
+
+    @Override
+    public RoomElement getRoomElement() {
+        return wcSolja;
     }
 }
