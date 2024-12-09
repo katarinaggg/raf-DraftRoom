@@ -5,12 +5,15 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.state.concrete.SelectState;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class RoomView extends JPanel implements ISubscriber {
@@ -56,7 +59,7 @@ public class RoomView extends JPanel implements ISubscriber {
         scalingFactor = Math.min((double) panelWidth / roomSirinaPx, (double) panelHeight / roomVisinaPx);
         //System.out.println("Scaling factor: " + scalingFactor);
     }
-//
+// ovo je dobror
 //    @Override
 //    public void paintComponent(Graphics g) {
 //        super.paintComponent(g);
@@ -87,7 +90,6 @@ public class RoomView extends JPanel implements ISubscriber {
 //        }
 //    }
 
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -98,7 +100,31 @@ public class RoomView extends JPanel implements ISubscriber {
             p.paint(g2d);
         }
 
-        // Crtanje isprekidanog pravougaonika za selekciju
+        // Ako postoji tačno jedan selektovani element
+        if (selectionList.size() == 1) {
+            ElementPainter selectedPainter = selectionList.get(0); // Prvi selektovani element
+            Shape shape = selectedPainter.getShape(); // Dobijamo precizan oblik selektovanog elementa
+            Rectangle2D bounds = shape.getBounds2D();
+            g2d.setColor(Color.BLUE);
+            g2d.setStroke(new BasicStroke(3));
+
+            // Nacrtaj pravougaonik
+            g2d.draw(bounds);
+
+            //int donjiX = (int) (bounds.getCenterX() + bounds.getWidth()/2);
+            //int donjiY = (int) (bounds.getCenterY() + bounds.getHeight()/2);
+            int donjiX = (int) bounds.getMaxX(); // x koordinata DONJE DESNE IVICE
+            int gornjiY = (int) bounds.getMaxY(); // y koordinata DONJE DESNE IVICE
+
+            ///ovo ako hocu da uokvirim ivice oblika
+//            if (shape != null) {
+//                g2d.setColor(Color.BLUE); // Postavi boju za ivicu
+//                g2d.setStroke(new BasicStroke(3)); // Postavi debljinu ivice
+//                g2d.draw(shape); // Nacrtaj oblik selektovanog elementa
+//            }
+        }
+
+        // Crtanje isprekidanog pravougaonika za selekciju (ako je potrebno)
         if (selectionRectangleLT != null && selectionRectangleRB != null) {
             int x = Math.min(selectionRectangleLT.x, selectionRectangleRB.x);
             int y = Math.min(selectionRectangleLT.y, selectionRectangleRB.y);
@@ -106,13 +132,10 @@ public class RoomView extends JPanel implements ISubscriber {
             int height = Math.abs(selectionRectangleRB.y - selectionRectangleLT.y);
 
             if (width > 0 && height > 0) {
-                //drawDashedRectangle(g2d, selectionRectangleLT, selectionRectangleRB);
                 drawDashedRectangle(g2d, x, y, width, height);
             }
         }
     }
-
-
     public void addPainter(ElementPainter painter) {
         painters.add(painter);
         //System.out.println("Dodat painter"+painter.getClass().getName());
@@ -191,6 +214,8 @@ public class RoomView extends JPanel implements ISubscriber {
         // Crtanje pravougaonika
         g2d.drawRect(x, y, width, height);
     }
+
+
 
     @Override
     public void update(Notification notification) {

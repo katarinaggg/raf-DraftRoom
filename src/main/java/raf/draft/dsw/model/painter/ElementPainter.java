@@ -3,6 +3,7 @@ package raf.draft.dsw.model.painter;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 
 public interface ElementPainter{
 
@@ -15,4 +16,5 @@ public interface ElementPainter{
     // trebace nam da izvucemo iz liste selektovanih paintera
     // koji smo tacno element selektovali (tj namestaj)
     public RoomElement getRoomElement();
+    public GeneralPath getShape();
 }

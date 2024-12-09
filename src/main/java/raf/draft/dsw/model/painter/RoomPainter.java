@@ -6,6 +6,7 @@ import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 
 public class RoomPainter implements ElementPainter{
 
@@ -60,6 +61,11 @@ public class RoomPainter implements ElementPainter{
 
     @Override
     public RoomElement getRoomElement() {
+        return null;
+    }
+
+    @Override
+    public GeneralPath getShape() {
         return null;
     }
 }

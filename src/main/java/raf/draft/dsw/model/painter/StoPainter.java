@@ -38,71 +38,96 @@ public class StoPainter implements ElementPainter{
         int rectWidth = scaledSize.width; // Širina pravougaonika
         int rectHeight = scaledSize.height; // Visina pravougaonika
 
-        // Udaljenost tačaka od uglova (1/10 veličine najmanje dimenzije pravougaonika)
-        int offset = Math.min(rectWidth, rectHeight) / 10;
+//         //Dodavanje tačaka
+//        int offset = Math.min(rectWidth, rectHeight) / 10;
+//
+//        // Kreiranje GeneralPath objekta za pravougaonik
+//        path = new GeneralPath();
+//        Rectangle2D.Double rectangle = new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight);
+//        path.append(rectangle, false);
+//
+//        // Popunjavanje pravougaonika
+//        g2d.fill(path);
+//
+//        // Postavljanje boje za tačke
+//        g2d.setColor(Color.BLACK);
+//
+//        // Veličina tačaka
+//        int dotSize = 4;
+//
+//        // Dodavanje tačaka u uglove pravougaonika
+//        // Gornji levi ugao
+//        path.append(new Ellipse2D.Double(
+//                rectX + offset - dotSize / 2.0, // X koordinata tačke
+//                rectY + offset - dotSize / 2.0, // Y koordinata tačke
+//                dotSize,                         // Širina tačke
+//                dotSize                          // Visina tačke
+//        ), false);
+//
+//        // Gornji desni ugao
+//        path.append(new Ellipse2D.Double(
+//                rectX + rectWidth - offset - dotSize / 2.0, // X koordinata tačke
+//                rectY + offset - dotSize / 2.0,             // Y koordinata tačke
+//                dotSize,                                     // Širina tačke
+//                dotSize                                      // Visina tačke
+//        ), false);
+//
+//        // Donji levi ugao
+//        path.append(new Ellipse2D.Double(
+//                rectX + offset - dotSize / 2.0,              // X koordinata tačke
+//                rectY + rectHeight - offset - dotSize / 2.0, // Y koordinata tačke
+//                dotSize,                                      // Širina tačke
+//                dotSize                                       // Visina tačke
+//        ), false);
+//
+//        // Donji desni ugao
+//        path.append(new Ellipse2D.Double(
+//                rectX + rectWidth - offset - dotSize / 2.0,  // X koordinata tačke
+//                rectY + rectHeight - offset - dotSize / 2.0, // Y koordinata tačke
+//                dotSize,                                      // Širina tačke
+//                dotSize                                       // Visina tačke
+//        ), false);
+//
+//        g2d.draw(path);
 
-        // Kreiranje GeneralPath objekta za pravougaonik
+
         path = new GeneralPath();
-        Rectangle2D.Double rectangle = new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight);
-        path.append(rectangle, false);
+        // Dodavanje pravougaonika
+        path.append(new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight), false);
 
-        // Popunjavanje pravougaonika
         g2d.fill(path);
 
-        // Postavljanje boje za tačke
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.black);
 
-        // Veličina tačaka
+        // Dodavanje tačaka
+        int offset = Math.min(rectWidth, rectHeight) / 10;
         int dotSize = 4;
 
-        // Kreiranje novog GeneralPath za tačke
-        path = new GeneralPath();
+        path.append(new Ellipse2D.Double(rectX + offset - dotSize / 2.0, rectY + offset - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(rectX + rectWidth - offset - dotSize / 2.0, rectY + offset - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(rectX + offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(rectX + rectWidth - offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
 
-        // Dodavanje tačaka u uglove pravougaonika
-        // Gornji levi ugao
-        path.append(new Ellipse2D.Double(
-                rectX + offset - dotSize / 2.0, // X koordinata tačke
-                rectY + offset - dotSize / 2.0, // Y koordinata tačke
-                dotSize,                         // Širina tačke
-                dotSize                          // Visina tačke
-        ), false);
-
-        // Gornji desni ugao
-        path.append(new Ellipse2D.Double(
-                rectX + rectWidth - offset - dotSize / 2.0, // X koordinata tačke
-                rectY + offset - dotSize / 2.0,             // Y koordinata tačke
-                dotSize,                                     // Širina tačke
-                dotSize                                      // Visina tačke
-        ), false);
-
-        // Donji levi ugao
-        path.append(new Ellipse2D.Double(
-                rectX + offset - dotSize / 2.0,              // X koordinata tačke
-                rectY + rectHeight - offset - dotSize / 2.0, // Y koordinata tačke
-                dotSize,                                      // Širina tačke
-                dotSize                                       // Visina tačke
-        ), false);
-
-        // Donji desni ugao
-        path.append(new Ellipse2D.Double(
-                rectX + rectWidth - offset - dotSize / 2.0,  // X koordinata tačke
-                rectY + rectHeight - offset - dotSize / 2.0, // Y koordinata tačke
-                dotSize,                                      // Širina tačke
-                dotSize                                       // Visina tačke
-        ), false);
-
-        g2d.fill(path);
-        //g2d.draw(path);
+        g2d.draw(path);
     }
 
 
-    @Override
-    public boolean elementAt(Point point, Rectangle rectangle) {
-        return path!= null && (path.contains(point) || path.intersects(rectangle));
+    public boolean elementAt(Point point, Rectangle selectionRectangle) {
+        if (selectionRectangle != null) {
+            return path.intersects(selectionRectangle);
+        } else if (point != null) {
+            return path.contains(point);
+        }
+        return false;
     }
 
     @Override
     public RoomElement getRoomElement() {
         return sto;
+    }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
     }
 }

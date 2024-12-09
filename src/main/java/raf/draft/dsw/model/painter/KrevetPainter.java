@@ -71,10 +71,13 @@ public class KrevetPainter implements ElementPainter{
         g2d.draw(path);
     }
 
-    @Override
-    public boolean elementAt(Point point, Rectangle rectangle) {
-
-        return path!= null && (path.contains(point) || path.intersects(rectangle));
+    public boolean elementAt(Point point, Rectangle selectionRectangle) {
+        if (selectionRectangle != null) {
+            return path.intersects(selectionRectangle);
+        } else if (point != null) {
+            return path.contains(point);
+        }
+        return false;
     }
 
     public Krevet getKrevet() {
@@ -96,5 +99,10 @@ public class KrevetPainter implements ElementPainter{
     @Override
     public RoomElement getRoomElement() {
         return krevet;
+    }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
     }
 }

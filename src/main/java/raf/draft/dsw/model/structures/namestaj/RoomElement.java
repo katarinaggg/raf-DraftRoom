@@ -4,6 +4,9 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.awt.*;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 
 public abstract class RoomElement extends DraftNode {
      private Point lokacija;
@@ -66,6 +69,4 @@ public abstract class RoomElement extends DraftNode {
         int scaledHeight = (int) (size.getHeight() * scalingFactor);
         return new Dimension(scaledWidth, scaledHeight);
     }
-
-
 }

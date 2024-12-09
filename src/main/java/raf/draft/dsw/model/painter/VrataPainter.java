@@ -58,13 +58,22 @@ public class VrataPainter implements ElementPainter{
 
     }
 
-    @Override
-    public boolean elementAt(Point point, Rectangle rectangle) {
-        return path!= null && (path.contains(point) || path.intersects(rectangle));
+    public boolean elementAt(Point point, Rectangle selectionRectangle) {
+        if (selectionRectangle != null) {
+            return path.intersects(selectionRectangle);
+        } else if (point != null) {
+            return path.contains(point);
+        }
+        return false;
     }
 
     @Override
     public RoomElement getRoomElement() {
         return vrata;
+    }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
     }
 }

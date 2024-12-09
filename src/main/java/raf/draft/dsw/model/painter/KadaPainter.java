@@ -65,11 +65,18 @@ public class KadaPainter implements ElementPainter{
     }
 
     @Override
-    public boolean elementAt(Point point, Rectangle rectangle) {
-
-        return path!= null && (path.contains(point) || path.intersects(rectangle));
+    public GeneralPath getShape() {
+        return path;
     }
 
+    public boolean elementAt(Point point, Rectangle selectionRectangle) {
+        if (selectionRectangle != null) {
+            return path.intersects(selectionRectangle);
+        } else if (point != null) {
+            return path.contains(point);
+        }
+        return false;
+    }
     public Kada getKada() {
         return kada;
     }
