@@ -80,7 +80,6 @@ public class BojlerPainter implements ElementPainter{
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-        //return shape != null && (shape.contains(point) || shape.intersects(rectangle));
         if(rectangle != null){
             return shape.intersects(rectangle);
         }

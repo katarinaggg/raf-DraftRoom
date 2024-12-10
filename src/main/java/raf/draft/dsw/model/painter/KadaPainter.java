@@ -66,7 +66,6 @@ public class KadaPainter implements ElementPainter{
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-        //return path!= null && (path.contains(point) || path.intersects(rectangle));
         if(rectangle != null){
             return path.intersects(rectangle);
         }
@@ -95,5 +94,10 @@ public class KadaPainter implements ElementPainter{
     @Override
     public RoomElement getRoomElement() {
         return kada;
+    }
+
+    @Override
+    public GeneralPath getShape() {
+        return null;
     }
 }
