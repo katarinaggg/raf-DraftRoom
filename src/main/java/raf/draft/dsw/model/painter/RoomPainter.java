@@ -7,6 +7,7 @@ import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 
 public class RoomPainter implements ElementPainter{
 
@@ -66,6 +67,18 @@ public class RoomPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return null;
+        if (room == null || roomView == null) {
+            return null;
+        }
+
+        double scalingFactor = roomView.getScalingFactor();
+        int roomWidthPx = room.convertCmToPx(room.getSirina(), scalingFactor);
+        int roomHeightPx = room.convertCmToPx(room.getDuzina(), scalingFactor);
+
+        GeneralPath path = new GeneralPath();
+        path.append(new Rectangle2D.Double(0, 0, roomWidthPx, roomHeightPx), false);
+
+        return path;
     }
+
 }
