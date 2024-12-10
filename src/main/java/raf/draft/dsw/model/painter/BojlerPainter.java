@@ -110,4 +110,6 @@ public class BojlerPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return bojler;
     }
+
+
 }

@@ -103,4 +103,9 @@ public class KrevetPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return krevet;
     }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
+    }
 }

@@ -98,6 +98,7 @@ public class KadaPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return null;
+        return path;
     }
+
 }

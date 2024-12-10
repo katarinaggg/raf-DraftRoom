@@ -74,4 +74,9 @@ public class VrataPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return vrata;
     }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
+    }
 }
