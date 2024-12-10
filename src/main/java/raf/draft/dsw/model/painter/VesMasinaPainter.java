@@ -78,4 +78,9 @@ public class VesMasinaPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return vesMasina;
     }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
+    }
 }

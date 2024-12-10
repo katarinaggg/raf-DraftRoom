@@ -84,4 +84,9 @@ public class OrmarPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return ormar;
     }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
+    }
 }

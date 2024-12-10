@@ -99,4 +99,9 @@ public class WCSoljaPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return wcSolja;
     }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
+    }
 }

@@ -92,4 +92,9 @@ public class LavaboPainter implements ElementPainter{
     public RoomElement getRoomElement() {
         return lavabo;
     }
+
+    @Override
+    public GeneralPath getShape() {
+        return path;
+    }
 }
