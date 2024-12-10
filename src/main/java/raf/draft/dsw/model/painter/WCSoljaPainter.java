@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 
-public class WCSoljaPainter implements ElementPainter {
+public class WCSoljaPainter implements ElementPainter{
 
     private WCSolja wcSolja;
     private GeneralPath path;
@@ -83,10 +83,13 @@ public class WCSoljaPainter implements ElementPainter {
         g2d.draw(path);
     }
 
-    public boolean elementAt(Point point, Rectangle selectionRectangle) {
-        if (selectionRectangle != null) {
-            return path.intersects(selectionRectangle);
-        } else if (point != null) {
+    @Override
+    public boolean elementAt(Point point, Rectangle rectangle) {
+        //return path!= null && (path.contains(point) || path.intersects(rectangle));
+        if(rectangle != null){
+            return path.intersects(rectangle);
+        }
+        else if(point != null){
             return path.contains(point);
         }
         return false;
@@ -95,10 +98,5 @@ public class WCSoljaPainter implements ElementPainter {
     @Override
     public RoomElement getRoomElement() {
         return wcSolja;
-    }
-
-    @Override
-    public GeneralPath getShape() {
-        return path;
     }
 }

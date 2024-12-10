@@ -34,6 +34,7 @@ public class AddBojler implements State {
             // pravimo novi model
             Bojler bojler = new Bojler(roomView.getRoom(),point,dimenzija);
             BojlerPainter bojlerPainter = new BojlerPainter(bojler,roomView);
+
             // dodajemo painter na roomView
             roomView.addPainter(bojlerPainter);
 
@@ -46,12 +47,11 @@ public class AddBojler implements State {
 
             //System.out.println(roomView.getRoom().getNamestaj());
         }
-        else{
-            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-            frame.setVisible(true);
-        }
-
+//        else{
+//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
+//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+//            frame.setVisible(true);
+//        }
 
     }
 

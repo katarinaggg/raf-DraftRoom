@@ -141,6 +141,10 @@ public class RoomView extends JPanel implements ISubscriber {
         //System.out.println("Dodat painter"+painter.getClass().getName());
     }
 
+    public void removePainter(ElementPainter painter) {
+        painters.remove(painter);
+    }
+
     public Point getSelectionRectangleLT() {
         return selectionRectangleLT;
     }
