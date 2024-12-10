@@ -7,7 +7,7 @@ import java.awt.*;
 public class Bojler extends RoomElement{
 
     private static int elementCounter = 1;
-    private Color color = new Color(213, 231, 240);;
+    //private Color color = new Color(213, 231, 240);
     private Stroke stroke  = new BasicStroke(2.0f);
 
     public Bojler(DraftNode parent) {
@@ -15,16 +15,16 @@ public class Bojler extends RoomElement{
     }
 
     public Bojler(DraftNode parent, Point lokacija, Dimension size) {
-        super("Bojler "+ elementCounter++, parent, lokacija, size);
+        super("Bojler "+ elementCounter++, parent, lokacija, size, new Color(213, 231, 240));
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
+//    public Color getColor() {
+//        return color;
+//    }
+//
+//    public void setColor(Color color) {
+//        this.color = color;
+//    }
 
     public Stroke getStroke() {
         return stroke;

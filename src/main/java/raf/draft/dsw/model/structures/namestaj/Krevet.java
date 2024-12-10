@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Krevet extends RoomElement{
 
-    private Color color = new Color(131, 139, 156);;
+    //private Color color = new Color(131, 139, 156);
     private Stroke stroke  = new BasicStroke(2.0f);
 
 
@@ -16,15 +16,15 @@ public class Krevet extends RoomElement{
         super("Krevet " + elementCounter++, parent);
     }
     public Krevet(DraftNode parent, Point lokacija, Dimension size) {
-        super("Krevet " + elementCounter++, parent, lokacija, size);
+        super("Krevet " + elementCounter++, parent, lokacija, size,new Color(131, 139, 156));
     }
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
+//    public Color getColor() {
+//        return color;
+//    }
+//
+//    public void setColor(Color color) {
+//        this.color = color;
+//    }
 
     public Stroke getStroke() {
         return stroke;

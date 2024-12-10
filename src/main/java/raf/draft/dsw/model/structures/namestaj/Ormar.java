@@ -8,7 +8,7 @@ public class Ormar extends RoomElement{
 
     private static int elementCounter = 1;
 
-    private Color color = new Color(74, 45, 24);
+    //private Color color = new Color(74, 45, 24);
     private Stroke stroke = new BasicStroke(2.0f);
 
     public Ormar(DraftNode parent) {
@@ -16,16 +16,16 @@ public class Ormar extends RoomElement{
     }
 
     public Ormar(DraftNode parent, Point lokacija, Dimension size) {
-        super("Ormar "+ elementCounter++, parent, lokacija, size);
+        super("Ormar "+ elementCounter++, parent, lokacija, size,new Color(74, 45, 24));
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
+//    public Color getColor() {
+//        return color;
+//    }
+//
+//    public void setColor(Color color) {
+//        this.color = color;
+//    }
 
     public Stroke getStroke() {
         return stroke;

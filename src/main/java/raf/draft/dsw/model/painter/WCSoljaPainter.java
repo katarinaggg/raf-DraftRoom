@@ -85,7 +85,14 @@ public class WCSoljaPainter implements ElementPainter{
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
-        return path!= null && (path.contains(point) || path.intersects(rectangle));
+        //return path!= null && (path.contains(point) || path.intersects(rectangle));
+        if(rectangle != null){
+            return path.intersects(rectangle);
+        }
+        else if(point != null){
+            return path.contains(point);
+        }
+        return false;
     }
 
     @Override
