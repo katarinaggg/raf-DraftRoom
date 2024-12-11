@@ -4,6 +4,7 @@ import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
+import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +24,7 @@ public class EditRoomElementFrame extends JDialog {
     private JTextField greenField;
     private JTextField blueField;
 
-    public EditRoomElementFrame() {
+    public EditRoomElementFrame(RoomElement roomElement) {
         setTitle("Edit Room Element");
         setSize(300, 300);
         setLayout(new GridBagLayout());
@@ -40,7 +41,8 @@ public class EditRoomElementFrame extends JDialog {
         gbc.gridy = 0;
         add(widthLabel, gbc);
 
-        JTextField widthField = new JTextField(15);
+        String sirina = String.valueOf((int) Math.round(roomElement.getSize().getWidth()));
+        widthField = new JTextField(sirina,15);
         gbc.gridx = 1;
         gbc.gridy = 0;
         add(widthField, gbc);
@@ -51,7 +53,8 @@ public class EditRoomElementFrame extends JDialog {
         gbc.gridy = 1;
         add(lengthLabel, gbc);
 
-        JTextField lengthField = new JTextField(15);
+        String duzina = String.valueOf((int) Math.round(roomElement.getSize().getHeight()));
+        lengthField = new JTextField(duzina,15);
         gbc.gridx = 1;
         gbc.gridy = 1;
         add(lengthField, gbc);
@@ -62,7 +65,8 @@ public class EditRoomElementFrame extends JDialog {
         gbc.gridy = 2;
         add(redLabel, gbc);
 
-        JTextField redField = new JTextField(15);
+        String crvena = String.valueOf(roomElement.getColor().getRed());
+        redField = new JTextField(crvena,15);
         gbc.gridx = 1;
         gbc.gridy = 2;
         add(redField, gbc);
@@ -73,7 +77,8 @@ public class EditRoomElementFrame extends JDialog {
         gbc.gridy = 3;
         add(greenLabel, gbc);
 
-        JTextField greenField = new JTextField(15);
+        String zelena = String.valueOf(roomElement.getColor().getGreen());
+        greenField = new JTextField(zelena, 15);
         gbc.gridx = 1;
         gbc.gridy = 3;
         add(greenField, gbc);
@@ -84,7 +89,8 @@ public class EditRoomElementFrame extends JDialog {
         gbc.gridy = 4;
         add(blueLabel, gbc);
 
-        JTextField blueField = new JTextField(15);
+        String plava = String.valueOf(roomElement.getColor().getBlue());
+        blueField = new JTextField(plava,15);
         gbc.gridx = 1;
         gbc.gridy = 4;
         add(blueField, gbc);

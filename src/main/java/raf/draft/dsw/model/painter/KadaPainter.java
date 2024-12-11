@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.Kada;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
@@ -25,6 +26,11 @@ public class KadaPainter implements ElementPainter{
         g2d.setColor(kada.getColor());
         g2d.setStroke(kada.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         // Faktor skaliranja sobe
         double scalingFactor = roomView.getScalingFactor();
         // Skaliranje dimenzija pravougaonika
@@ -36,6 +42,15 @@ public class KadaPainter implements ElementPainter{
 
         int rectWidth = scaledDimensions.width;
         int rectHeight = scaledDimensions.height;
+
+        double centarX = rectX+rectWidth/2;
+        double centarY = rectY+rectHeight/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(kada.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         path = new GeneralPath();
 
@@ -62,6 +77,8 @@ public class KadaPainter implements ElementPainter{
 
         g2d.setColor(Color.black);
         g2d.draw(path);
+
+        g2d.setTransform(start);
     }
 
     @Override

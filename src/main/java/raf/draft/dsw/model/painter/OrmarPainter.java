@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.Ormar;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
@@ -25,6 +26,11 @@ public class OrmarPainter implements ElementPainter{
         g2d.setColor(ormar.getColor());
         g2d.setStroke(ormar.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         double scalingFactor = roomView.getScalingFactor();
         Dimension scaledSize = ormar.getScaledDimensions(scalingFactor);
 
@@ -35,6 +41,15 @@ public class OrmarPainter implements ElementPainter{
 //        int rectHeight = ormar.getSize().height; // Visina pravougaonika
         int rectWidth = scaledSize.width;
         int rectHeight = scaledSize.height;
+
+        double centarX = rectX+rectWidth/2;
+        double centarY = rectY+rectHeight/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(ormar.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         path = new GeneralPath();
 
@@ -65,6 +80,8 @@ public class OrmarPainter implements ElementPainter{
 
         // Iscrtavanje oblika
         g2d.draw(path);
+
+        g2d.setTransform(start);
 
     }
 

@@ -1,10 +1,16 @@
 package raf.draft.dsw.model.painter;
 
+import raf.draft.dsw.controller.actions.SideToolBarActions.RotateLeftAction;
+import raf.draft.dsw.core.ApplicationFramework;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Krevet;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
+import raf.draft.dsw.state.concrete.RotateLeftState;
+import raf.draft.dsw.state.concrete.RotateRightState;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
 public class KrevetPainter implements ElementPainter{
@@ -26,15 +32,29 @@ public class KrevetPainter implements ElementPainter{
         g2d.setColor(krevet.getColor());
         g2d.setStroke(krevet.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         // Faktor skaliranja iz RoomView
         double scalingFactor = roomView.getScalingFactor();
         Dimension scaledDimensions = krevet.getScaledDimensions(scalingFactor);
         int bedWidth = scaledDimensions.width;
         int bedHeight = scaledDimensions.height;
 
-        // Dimenzije kreveta
-//        int bedWidth = krevet.getSize().width; // Širina kreveta (povećana za dužinu)
-//        int bedHeight = krevet.getSize().height; // Visina kreveta
+        // Crtanje kreveta (veliki pravougaonik)
+        int bedX = krevet.getLokacija().x; // X koordinata gornjeg levog ugla kreveta
+        int bedY = krevet.getLokacija().y; // Y koordinata gornjeg levog ugla kreveta
+
+        double centarX = bedX+bedWidth/2;
+        double centarY = bedY+bedHeight/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(krevet.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         // Dimenzije jastuka
         int pillowWidth = bedWidth / 2; // Jastuk zauzima 1/2 širine kreveta
@@ -44,9 +64,7 @@ public class KrevetPainter implements ElementPainter{
 
         path = new GeneralPath();
 
-        // Crtanje kreveta (veliki pravougaonik)
-        int bedX = krevet.getLokacija().x; // X koordinata gornjeg levog ugla kreveta
-        int bedY = krevet.getLokacija().y; // Y koordinata gornjeg levog ugla kreveta
+//        // Crtanje kreveta (veliki pravougaonik)
         path.moveTo(bedX, bedY); // Gornji levi ugao kreveta
         path.lineTo(bedX + bedWidth, bedY); // Gornji desni ugao kreveta
         path.lineTo(bedX + bedWidth, bedY + bedHeight); // Donji desni ugao kreveta
@@ -69,6 +87,9 @@ public class KrevetPainter implements ElementPainter{
 
         g2d.setColor(Color.black);
         g2d.draw(path);
+
+        // vracamo na pocetno stanje
+        g2d.setTransform(start);
     }
 
     @Override

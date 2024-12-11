@@ -43,7 +43,9 @@ public class RoomView extends JPanel implements ISubscriber {
         addMouseMotionListener(mouseListener); // Za MouseDragged i MouseMoved
     }
 
+    // Metoda za određivanje faktora skaliranja
     public void calculateScalingFactor() {
+
         // Uzimamo dimenzije panela
         int panelWidth = getWidth();
         int panelHeight = getHeight();
@@ -76,11 +78,6 @@ public class RoomView extends JPanel implements ISubscriber {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
-//        Rectangle roomBounds = getRoomBounds(); // Dobijamo granice sobe
-////        g2d.setColor(Color.RED); // Postavljamo boju za granice sobe
-////        g2d.drawRect(roomBounds.x, roomBounds.y, roomBounds.width, roomBounds.height); // Crtamo pravougaonik
-
 
         // Crtanje svih elemenata
         for (ElementPainter p : painters) {

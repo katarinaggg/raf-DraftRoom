@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.Sto;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
@@ -28,6 +29,11 @@ public class StoPainter implements ElementPainter{
         g2d.setColor(sto.getColor());
         g2d.setStroke(sto.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         // Računanje skaliranih dimenzija
         double scalingFactor = roomView.getScalingFactor();
         Dimension scaledSize = sto.getScaledDimensions(scalingFactor);
@@ -37,6 +43,15 @@ public class StoPainter implements ElementPainter{
         int rectY = sto.getLokacija().y; // Y koordinata gornjeg levog ugla pravougaonika
         int rectWidth = scaledSize.width; // Širina pravougaonika
         int rectHeight = scaledSize.height; // Visina pravougaonika
+
+        double centarX = rectX+rectWidth/2;
+        double centarY = rectY+rectHeight/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(sto.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
 //         //Dodavanje tačaka
 //        int offset = Math.min(rectWidth, rectHeight) / 10;
@@ -109,6 +124,7 @@ public class StoPainter implements ElementPainter{
         path.append(new Ellipse2D.Double(rectX + rectWidth - offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
 
         g2d.draw(path);
+        g2d.setTransform(start);
     }
 
 

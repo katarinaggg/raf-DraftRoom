@@ -25,6 +25,10 @@ public class ProjectView extends JPanel implements ISubscriber {
     private JLabel authorLabel;
     private StateManager stateManager = new StateManager();
 
+    // da bi dodali namestaj prvo moramo da imamo sobu
+    // na pocetku false jer je nemamo
+    private boolean dodataSoba = false;
+
     // mora da cuva sve RoomView-ove koje ima
     // da nam se ne bi izgubili crtezi kada menjamo nesto
     // ili prolazimo kroz tabove
@@ -509,5 +513,27 @@ public class ProjectView extends JPanel implements ISubscriber {
         stateManager.setZoomState();
     }
 
+    public void startRotateLeftState(){
+        stateManager.setRotateLeftState();
+    }
+    public void startRotateRightState(){
+        stateManager.setRotateRightState();
+    }
+
+    // setujemo da li smo dodali sobu
+    public void setDodataSoba(boolean dodata){
+        this.dodataSoba = dodata;
+        // na osnovu toga omoguci cemo osrale State-ove
+        MainFrame.getInstance().getActionManager().getAddRoomElementAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getCopyPasteAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getDeleteAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getEditRoomElementAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getMoveRoomElementAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getResizeAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getRotateLeftAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getRotateRightAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getSelectRoomElementAction().setEnabled(dodata);
+        MainFrame.getInstance().getActionManager().getZoomAction().setEnabled(dodata);
+    }
 
 }

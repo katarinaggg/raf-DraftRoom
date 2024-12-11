@@ -21,7 +21,7 @@ public class EditState implements State {
         // prolazimo kroz paintere da vidimo jesmo li kliknuli na neki
         for(ElementPainter e: roomView.getPainters()){
             if(!(e instanceof RoomPainter) && e.elementAt(point,null)) {
-                EditRoomElementFrame frame = new EditRoomElementFrame();
+                EditRoomElementFrame frame = new EditRoomElementFrame(e.getRoomElement());
                 frame.setVisible(true);
 
                 Dimension dimension = frame.getDimension();

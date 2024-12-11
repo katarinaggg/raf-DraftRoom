@@ -39,6 +39,7 @@ public class AddRoomElementAction extends AbstractAction {
         return icon;
     }
 
+    // dugme ce se omoguciti kada je soba dodata pa ce moci i namestaj da se dodaje
     @Override
     public void actionPerformed(ActionEvent e) {
 

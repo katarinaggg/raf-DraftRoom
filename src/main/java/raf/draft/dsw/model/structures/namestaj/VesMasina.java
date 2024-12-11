@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class VesMasina extends RoomElement{
+public class VesMasina extends RoomElement implements Prototype{
 
     private static int elementCounter = 1;
 
@@ -33,5 +33,10 @@ public class VesMasina extends RoomElement{
 
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
+    }
+
+    @Override
+    public Prototype clone() {
+        return null;
     }
 }

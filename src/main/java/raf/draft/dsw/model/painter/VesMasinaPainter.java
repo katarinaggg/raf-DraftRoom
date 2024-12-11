@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.VesMasina;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
@@ -25,6 +26,11 @@ public class VesMasinaPainter implements ElementPainter{
         g2d.setColor(vesMasina.getColor());
         g2d.setStroke(vesMasina.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         double scalingFactor = roomView.getScalingFactor();
         Dimension scaledSize = vesMasina.getScaledDimensions(scalingFactor); // Skalirane dimenzije
 
@@ -34,6 +40,15 @@ public class VesMasinaPainter implements ElementPainter{
         int squareY = vesMasina.getLokacija().y; // Y koordinata gornjeg levog ugla kvadrata
         //int squareSize = vesMasina.getSize().width; // Dužina stranice kvadrata
         int squareSize = scaledSize.width;
+
+        double centarX = squareX+squareSize/2;
+        double centarY = squareY+squareSize/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(vesMasina.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         // Crtanje kvadrata
         path = new GeneralPath();
@@ -60,6 +75,7 @@ public class VesMasinaPainter implements ElementPainter{
         // Iscrtavanje oblika
         g2d.draw(path);
 
+        g2d.setTransform(start);
     }
 
     @Override

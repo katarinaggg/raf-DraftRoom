@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Lavabo extends RoomElement{
+public class Lavabo extends RoomElement implements Prototype{
 
     private static int elementCounter = 1;
     //private Color color = new Color(218, 237, 228);;
@@ -32,5 +32,10 @@ public class Lavabo extends RoomElement{
 
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
+    }
+
+    @Override
+    public Prototype clone() {
+        return null;
     }
 }
