@@ -1,13 +1,8 @@
-package raf.draft.dsw.model.painter;
+package raf.draft.dsw.painter;
 
-import raf.draft.dsw.controller.actions.SideToolBarActions.RotateLeftAction;
-import raf.draft.dsw.core.ApplicationFramework;
-import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Krevet;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
-import raf.draft.dsw.state.concrete.RotateLeftState;
-import raf.draft.dsw.state.concrete.RotateRightState;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

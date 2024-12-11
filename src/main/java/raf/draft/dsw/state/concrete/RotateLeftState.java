@@ -1,8 +1,7 @@
 package raf.draft.dsw.state.concrete;
 
 import raf.draft.dsw.gui.swing.RoomView;
-import raf.draft.dsw.model.painter.ElementPainter;
-import raf.draft.dsw.model.painter.RoomPainter;
+import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;

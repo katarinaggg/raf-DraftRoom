@@ -1,4 +1,4 @@
-package raf.draft.dsw.model.painter;
+package raf.draft.dsw.painter;
 
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
@@ -18,6 +18,7 @@ public class VrataPainter implements ElementPainter{
     public VrataPainter(Vrata vrata,RoomView roomView) {
         this.vrata = vrata;
         this.roomView = roomView;
+
     }
 
     @Override
@@ -85,6 +86,11 @@ public class VrataPainter implements ElementPainter{
         return false;
     }
 
+    public boolean isArc() {
+        return true; // Ili dinamički utvrdite da li je oblik luk
+    }
+
+
     @Override
     public RoomElement getRoomElement() {
         return vrata;
@@ -93,5 +99,17 @@ public class VrataPainter implements ElementPainter{
     @Override
     public GeneralPath getShape() {
         return path;
+    }
+
+    public double getStartAngle() {
+        if (path == null || path.getPathIterator(null) == null) {
+            return 0; // Defaultni ugao
+        }
+        // Ovde postavljate vrednost koja odgovara vašem luku (ako ga generišete)
+        return 90; // Početni ugao (primer)
+    }
+
+    public double getArcAngle() {
+        return 90; // Ugao luka (primer)
     }
 }

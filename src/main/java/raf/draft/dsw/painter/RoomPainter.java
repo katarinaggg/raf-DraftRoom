@@ -1,10 +1,9 @@
-package raf.draft.dsw.model.painter;
+package raf.draft.dsw.painter;
 
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.Room;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
