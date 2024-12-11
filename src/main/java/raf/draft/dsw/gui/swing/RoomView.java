@@ -144,6 +144,9 @@ public class RoomView extends JPanel implements ISubscriber {
         repaint();
     }
 
+    public void removePainter(ElementPainter painter) {
+        painters.remove(painter);
+    }
 
     public Point getSelectionRectangleLT() {
         return selectionRectangleLT;
