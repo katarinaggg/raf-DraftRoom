@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Kada extends RoomElement {
+public class Kada extends RoomElement implements Prototype{
 
     //private Color color = new Color(197, 206, 212);
 
@@ -34,5 +34,10 @@ public class Kada extends RoomElement {
 
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
+    }
+
+    @Override
+    public Prototype clone() {
+        return null;
     }
 }

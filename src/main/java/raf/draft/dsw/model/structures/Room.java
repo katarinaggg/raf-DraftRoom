@@ -26,6 +26,8 @@ public class Room extends DraftNodeComposite {
     // njegova deca
     private ArrayList<RoomElement> namestaj = new ArrayList<>();
 
+    private ArrayList<RoomElement> copyElements = new ArrayList<>();
+
     public Room(String ime, DraftNode parent, double sirina, double duzina) {
         super(ime, parent);
         this.sirina = sirina;
@@ -90,5 +92,9 @@ public class Room extends DraftNodeComposite {
 
     public float getLineThickness() {
         return lineThickness;
+    }
+
+    public ArrayList<RoomElement> getCopyElements() {
+        return copyElements;
     }
 }

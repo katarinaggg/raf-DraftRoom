@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.model.structures.namestaj.Vrata;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 
@@ -25,6 +26,11 @@ public class VrataPainter implements ElementPainter{
         g2d.setColor(vrata.getColor());
         g2d.setStroke(vrata.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         double scalingFactor = roomView.getScalingFactor();
         Dimension scaledSize = vrata.getScaledDimensions(scalingFactor); // Skalirane dimenzije
 
@@ -33,6 +39,14 @@ public class VrataPainter implements ElementPainter{
         //int precnik = Math.max(vrata.getSize().width, vrata.getSize().height); // Prečnik kruga
         int precnik = Math.max(scaledSize.width, scaledSize.height); // Prečnik kruga (najveća dimenzija)
 
+        double centarX = startX+precnik/2;
+        double centarY = startY+precnik/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(vrata.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         path = new GeneralPath();
 
@@ -56,6 +70,7 @@ public class VrataPainter implements ElementPainter{
 
         g2d.draw(path);
 
+        g2d.setTransform(start);
     }
 
     @Override

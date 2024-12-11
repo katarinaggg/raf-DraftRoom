@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.Bojler;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
@@ -26,20 +27,29 @@ public class BojlerPainter implements ElementPainter{
         g2d.setColor(bojler.getColor());
         g2d.setStroke(bojler.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         // faktor skaliranja sobe
         double scalingFactor = roomView.getScalingFactor();
 
         // Skaliranje dimenzija
         Dimension scaledDimensions = bojler.getScaledDimensions(scalingFactor);
 
-        // Dimenzije kruga pre metode za skaliranje
         int centarX = bojler.getLokacija().x; // X koordinata centra kruga
         int centarY = bojler.getLokacija().y; // Y koordinata centra kruga
-//        int precnik = Math.min(bojler.getSize().width, bojler.getSize().height); // Prečnik kruga
-//        int radius = precnik / 2; // Poluprečnik kruga
 
         int precnik = Math.min(scaledDimensions.width, scaledDimensions.height);
         int radius = precnik / 2;
+
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(bojler.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         shape = new GeneralPath();
 
@@ -76,6 +86,8 @@ public class BojlerPainter implements ElementPainter{
         g2d.setColor(Color.black);
         g2d.draw(shape);
 
+        // vracamo na pocetno stanje
+        g2d.setTransform(start);
     }
 
     @Override

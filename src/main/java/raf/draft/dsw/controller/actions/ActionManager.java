@@ -46,6 +46,19 @@ public class ActionManager {
         selectRoomElementAction = new SelectRoomElementAction();
         zoomAction = new ZoomAction();
 
+        // na pocetku su svi State-ovi onemoguceni sem
+        // dodavanja sobe (jer nista ne mozemo da radimo ako nemamo nacrtanu sobu)
+        addRoomElementAction.setEnabled(false);
+        copyPasteAction.setEnabled(false);
+        deleteAction.setEnabled(false);
+        editRoomElementAction.setEnabled(false);
+        moveRoomElementAction.setEnabled(false);
+        resizeAction.setEnabled(false);
+        rotateLeftAction.setEnabled(false);
+        rotateRightAction.setEnabled(false);
+        selectRoomElementAction.setEnabled(false);
+        zoomAction.setEnabled(false);
+
     }
 
 }

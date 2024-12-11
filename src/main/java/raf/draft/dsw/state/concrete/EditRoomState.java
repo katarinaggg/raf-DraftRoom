@@ -2,6 +2,7 @@ package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.gui.swing.DimensionFrame;
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.painter.ElementPainter;
 import raf.draft.dsw.model.painter.RoomPainter;
@@ -36,6 +37,10 @@ public class EditRoomState implements State {
             RoomPainter roomPainter = new RoomPainter(roomView.getRoom(),roomView);
             roomView.addPainter(roomPainter);
             roomView.repaint();
+
+            // dodali smo sobu pa mozemo i namestaj
+            MainFrame.getInstance().getProjectView().setDodataSoba(true);
+
         }
 
     }

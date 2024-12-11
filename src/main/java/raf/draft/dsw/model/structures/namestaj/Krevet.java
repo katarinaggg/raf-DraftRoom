@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Krevet extends RoomElement{
+public class Krevet extends RoomElement implements Prototype{
 
     //private Color color = new Color(131, 139, 156);
     private Stroke stroke  = new BasicStroke(2.0f);
@@ -32,5 +32,10 @@ public class Krevet extends RoomElement{
 
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
+    }
+
+    @Override
+    public Prototype clone() {
+        return null;
     }
 }

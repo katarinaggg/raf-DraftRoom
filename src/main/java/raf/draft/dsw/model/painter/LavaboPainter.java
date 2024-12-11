@@ -5,6 +5,7 @@ import raf.draft.dsw.model.structures.namestaj.Lavabo;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
@@ -25,6 +26,11 @@ public class LavaboPainter implements ElementPainter{
         g2d.setColor(lavabo.getColor());
         g2d.setStroke(lavabo.getStroke());
 
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
+
         double scalingFactor = roomView.getScalingFactor();
         // Skalirane dimenzije i pozicija
         Dimension scaledSize = lavabo.getScaledDimensions(scalingFactor);
@@ -37,6 +43,15 @@ public class LavaboPainter implements ElementPainter{
         int baseY = lavabo.getLokacija().y; // Y koordinata baze trougla
 //        int width = lavabo.getSize().width; // Širina baze trougla
 //        int height = lavabo.getSize().height; // Visina trougla
+
+        double centarX = baseX+width/2;
+        double centarY = baseY+height/2;
+
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(lavabo.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         // Koordinate vrhova trougla
         int[] xPoints = {
@@ -73,7 +88,7 @@ public class LavaboPainter implements ElementPainter{
         g2d.setColor(Color.black);
         g2d.draw(path);
 
-
+        g2d.setTransform(start);
     }
 
     @Override

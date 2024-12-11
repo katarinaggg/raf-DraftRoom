@@ -57,12 +57,16 @@ public abstract class RoomElement extends DraftNode {
         return rotacija;
     }
 
+//    public void setRotateRatio(int rotateRatio) {
+//        if (rotateRatio >= 0 && rotateRatio <= 3) {
+//            this.rotacija = rotacija;
+//        } else {
+//            throw new IllegalArgumentException("Rotacija mora biti između 0 i 3.");
+//        }
+//    }
+
     public void setRotateRatio(int rotateRatio) {
-        if (rotateRatio >= 0 && rotateRatio <= 3) {
-            this.rotacija = rotacija;
-        } else {
-            throw new IllegalArgumentException("Rotacija mora biti između 0 i 3.");
-        }
+        this.rotacija = (rotateRatio % 4 + 4) % 4; // Osigurava opseg 0-3
     }
 
     public Dimension getScaledDimensions(double scalingFactor) {

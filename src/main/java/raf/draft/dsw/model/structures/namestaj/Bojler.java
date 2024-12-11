@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Bojler extends RoomElement{
+public class Bojler extends RoomElement implements Prototype{
 
     private static int elementCounter = 1;
     //private Color color = new Color(213, 231, 240);
@@ -35,4 +35,8 @@ public class Bojler extends RoomElement{
     }
 
 
+    @Override
+    public Prototype clone() {
+        return null;
+    }
 }

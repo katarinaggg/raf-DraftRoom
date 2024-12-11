@@ -219,10 +219,10 @@ public class RoomView extends JPanel implements ISubscriber {
         g2d.drawRect(x, y, width, height);
     }
 
-
-
     @Override
     public void update(Notification notification) {
         repaint();
     }
+
+
 }
