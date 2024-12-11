@@ -34,11 +34,11 @@ public class AddOrmar implements State {
             DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
             MainFrame.getInstance().getDraftTree().addRoomChild(soba, ormar);
         }
-        else{
-            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-            frame.setVisible(true);
-        }
+//        else{
+//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
+//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+//            frame.setVisible(true);
+//        }
     }
 
     @Override

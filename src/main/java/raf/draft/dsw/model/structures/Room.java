@@ -58,6 +58,10 @@ public class Room extends DraftNodeComposite {
     @Override
     public void removeChild(DraftNode child) {
         namestaj.remove(child);
+
+        // obavestavamo RoomView da smo uklonili dete
+        // i da treba da se repaintuje
+        notifySubscribers(new Notification());
     }
 
     public double getSirina() {

@@ -113,12 +113,10 @@ public class RoomView extends JPanel implements ISubscriber {
         }
     }
 
-
     public void addPainter(ElementPainter painter) {
         painters.add(painter);
         //System.out.println("Dodat painter"+painter.getClass().getName());
     }
-
 
     public void drawDashedRectangle(Graphics2D g2d, int x, int y, int width, int height) {
         // Definisanje isprekidanog stila linije
@@ -143,7 +141,6 @@ public class RoomView extends JPanel implements ISubscriber {
     public void update(Notification notification) {
         repaint();
     }
-
     public void removePainter(ElementPainter painter) {
         painters.remove(painter);
     }

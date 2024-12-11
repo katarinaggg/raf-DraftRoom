@@ -7,7 +7,7 @@ import java.awt.*;
 public class Sto extends RoomElement{
 
     private static int elementCounter = 1;
-    private Color color = new Color(153, 126, 107);
+    //private Color color = new Color(153, 126, 107);
     private Stroke stroke = new BasicStroke(2.0f);
 
     public Sto(DraftNode parent) {
@@ -15,16 +15,16 @@ public class Sto extends RoomElement{
     }
 
     public Sto(DraftNode parent, Point lokacija, Dimension size) {
-        super("Sto "+ elementCounter++, parent, lokacija, size);
+        super("Sto "+ elementCounter++, parent, lokacija, size,new Color(153, 126, 107));
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
+//    public Color getColor() {
+//        return color;
+//    }
+//
+//    public void setColor(Color color) {
+//        this.color = color;
+//    }
 
     public Stroke getStroke() {
         return stroke;

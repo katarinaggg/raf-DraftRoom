@@ -4,9 +4,6 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.awt.*;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 
 public abstract class RoomElement extends DraftNode {
      private Point lokacija;
@@ -16,6 +13,9 @@ public abstract class RoomElement extends DraftNode {
 //    private double sirina;
 //    private double duzina;
 
+    // svaki element ima svoj Color
+    private Color color;
+
 
     private int rotacija; ///  Rotacija elementa (0 do 3, gde 0 = 0°, 1 = 90°, 2 = 180°, 3 = 270°)
 
@@ -24,11 +24,13 @@ public abstract class RoomElement extends DraftNode {
         super(ime, parent);
     }
 
-    public RoomElement(String ime, DraftNode parent, Point lokacija, Dimension size) {
+
+    public RoomElement(String ime, DraftNode parent, Point lokacija, Dimension size, Color color) {
         super(ime, parent);
         this.lokacija = lokacija;
         this.size = size;
         this.rotacija = 0;
+        this.color = color;
     }
 
     //  Apstraktna metoda za prikazivanje u JTree
@@ -68,5 +70,13 @@ public abstract class RoomElement extends DraftNode {
         int scaledWidth = (int) (size.getWidth() * scalingFactor);
         int scaledHeight = (int) (size.getHeight() * scalingFactor);
         return new Dimension(scaledWidth, scaledHeight);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

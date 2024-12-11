@@ -78,13 +78,19 @@ public class BojlerPainter implements ElementPainter{
 
     }
 
-    public boolean elementAt(Point point, Rectangle selectionRectangle) {
-        if (selectionRectangle != null) {
-            return shape.intersects(selectionRectangle);
-        } else if (point != null) {
+    @Override
+    public boolean elementAt(Point point, Rectangle rectangle) {
+        if(rectangle != null){
+            return shape.intersects(rectangle);
+        }
+        else if(point != null){
             return shape.contains(point);
         }
         return false;
+    }
+
+    public GeneralPath getShape() {
+        return shape;
     }
 
     public void setShape(GeneralPath shape) {
@@ -105,8 +111,5 @@ public class BojlerPainter implements ElementPainter{
         return bojler;
     }
 
-    @Override
-    public GeneralPath getShape() {
-        return shape;
-    }
+
 }
