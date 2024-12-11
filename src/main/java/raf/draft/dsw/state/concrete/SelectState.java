@@ -1,14 +1,11 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
-import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
-import raf.draft.dsw.model.painter.ElementPainter;
-import raf.draft.dsw.model.painter.RoomPainter;
-import raf.draft.dsw.model.structures.namestaj.RoomElement;
+import raf.draft.dsw.painter.ElementPainter;
+import raf.draft.dsw.painter.RoomPainter;
 import raf.draft.dsw.state.State;
 
-import javax.swing.*;
 import java.awt.*;
 
 @NoArgsConstructor

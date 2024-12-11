@@ -1,21 +1,14 @@
 package raf.draft.dsw.state.concrete;
 
-import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.notification.Message;
-import raf.draft.dsw.model.notification.MessageType;
-import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.KadaPainter;
-import raf.draft.dsw.model.painter.LavaboPainter;
-import raf.draft.dsw.model.structures.namestaj.Kada;
+import raf.draft.dsw.painter.LavaboPainter;
 import raf.draft.dsw.model.structures.namestaj.Lavabo;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
-import java.time.LocalDateTime;
 
 public class AddLavabo implements State {
 

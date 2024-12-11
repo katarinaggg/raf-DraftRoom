@@ -83,4 +83,6 @@ public abstract class RoomElement extends DraftNode {
     public void setColor(Color color) {
         this.color = color;
     }
+
+
 }

@@ -1,21 +1,14 @@
 package raf.draft.dsw.state.concrete;
 
-import com.sun.tools.javac.Main;
-import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
-import raf.draft.dsw.gui.swing.jtree.DraftTree;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
-import raf.draft.dsw.model.notification.Message;
-import raf.draft.dsw.model.notification.MessageType;
-import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.BojlerPainter;
+import raf.draft.dsw.painter.BojlerPainter;
 import raf.draft.dsw.model.structures.namestaj.Bojler;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
-import java.time.LocalDateTime;
 
 public class AddBojler implements State {
 

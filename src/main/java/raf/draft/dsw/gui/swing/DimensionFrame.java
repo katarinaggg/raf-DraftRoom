@@ -4,13 +4,9 @@ import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.RoomPainter;
-import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 
 public class DimensionFrame extends JDialog {

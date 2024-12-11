@@ -3,19 +3,12 @@ package raf.draft.dsw.gui.swing;
 import raf.draft.dsw.controller.RoomMouseListener;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.ElementPainter;
-import raf.draft.dsw.model.painter.RoomPainter;
-import raf.draft.dsw.model.structures.Room;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
-import raf.draft.dsw.state.concrete.SelectState;
+import raf.draft.dsw.painter.ElementPainter;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -133,6 +126,31 @@ public class RoomView extends JPanel implements ISubscriber {
         g2d.drawRect(x, y, width, height);
     }
 
+
+    private int offsetX = 0; // Horizontalni pomak sobe
+    private int offsetY = 0; // Vertikalni pomak sobe
+
+    public void updateRoomOffset(int deltaX, int deltaY) {
+        // Ažuriramo pomak sobe
+        offsetX += deltaX;
+        offsetY += deltaY;
+
+        // Proveravamo granice panela kako bismo osigurali da soba ostane unutar njega
+        int roomWidthPx = (int) (room.getSirina() * scalingFactor);
+        int roomHeightPx = (int) (room.getDuzina() * scalingFactor);
+
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+
+        // Ograničavamo offset tako da soba ne izađe iz panela
+        offsetX = Math.max(offsetX, panelWidth - roomWidthPx);
+        offsetX = Math.min(offsetX, 0);
+
+        offsetY = Math.max(offsetY, panelHeight - roomHeightPx);
+        offsetY = Math.min(offsetY, 0);
+
+        repaint(); // Osvežavamo prikaz
+    }
 
     @Override
     public void update(Notification notification) {
