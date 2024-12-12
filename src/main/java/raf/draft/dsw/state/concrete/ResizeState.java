@@ -32,6 +32,10 @@ public class ResizeState implements State {
             return;
         }
 
+        // menjamo point u slucaju da smo u nekom od zumiranih stanja
+        // treba da cuvamo pravo mesto klika misem iako smo u zoom-u
+        point = roomView.transformMousePoint(point);
+
         kliknut = point;
 
         if (!roomView.getSelectionList().isEmpty()) {
@@ -61,6 +65,8 @@ public class ResizeState implements State {
     @Override
     public void misPovucen(RoomView roomView, Point point) {
         if (resizingElement != null && initialPoint != null && initialSize != null) {
+
+            point = roomView.transformMousePoint(point);
 
             // Racunamo promenu u koordinatama misa
             int deltaX = point.x - initialPoint.x;

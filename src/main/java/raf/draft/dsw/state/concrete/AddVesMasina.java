@@ -27,6 +27,8 @@ public class AddVesMasina implements State {
             return;
         }
 
+        point = roomView.transformMousePoint(point);
+
         DimensionFrame frame = new DimensionFrame(roomView);
         frame.setVisible(true);
 

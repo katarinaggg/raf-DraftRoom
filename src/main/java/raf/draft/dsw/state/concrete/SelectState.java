@@ -47,6 +47,8 @@ public class SelectState implements State {
             return;
         }
 
+        point = roomView.transformMousePoint(point);
+
         // postavljamo klik
         kliknut = point;
         roomView.getSelectionList().clear();
@@ -58,6 +60,7 @@ public class SelectState implements State {
     ///mouseDragged
     @Override
     public void misPovucen(RoomView roomView, Point point) {
+        point = roomView.transformMousePoint(point);
         if(roomView.getSelectionRectangleLT() != null){
             roomView.setSelectionRectangleRB(point);
             roomView.repaint();
@@ -73,6 +76,7 @@ public class SelectState implements State {
     // mouseReleased
     @Override
     public void misPusten(RoomView roomView, Point point) {
+        point = roomView.transformMousePoint(point);
         roomView.setSelectionRectangleRB(point);
 
         // ako je pocetni i krajnji klik na istom mestu

@@ -59,6 +59,10 @@ public class ZoomState implements State {
                 return;
             }
         }
+
+        // Ponovno izračunavanje skaliranja nakon promene zumiranja
+        roomView.calculateScalingFactor();
+
         roomView.repaint();
     }
 
