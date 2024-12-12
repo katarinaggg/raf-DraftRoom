@@ -31,10 +31,10 @@ public class KrevetPainter implements ElementPainter{
         g2d.setColor(krevet.getColor());
         g2d.setStroke(krevet.getStroke());
 
-//        // cuvamo pocetno stanje da bi se kasnije vratili na njega
-//        AffineTransform start = g2d.getTransform();
-//        // nad ovom radimo
-//        AffineTransform af = g2d.getTransform();
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
 
         // Faktor skaliranja iz RoomView
         double scalingFactor = roomView.getScalingFactor();
@@ -49,11 +49,11 @@ public class KrevetPainter implements ElementPainter{
         double centarX = bedX+bedWidth/2;
         double centarY = bedY+bedHeight/2;
 
-//        // ugao rotacije na osnovu njegove vrednosti rotacije
-//        double ugao = Math.toRadians(krevet.getRotacija() * 90);
-//
-//        af.rotate(ugao, centarX, centarY);
-//        g2d.setTransform(af);
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(krevet.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         // Dimenzije jastuka
         int pillowWidth = bedWidth / 2; // Jastuk zauzima 1/2 širine kreveta
@@ -82,16 +82,17 @@ public class KrevetPainter implements ElementPainter{
         path.lineTo(pillowXStart, pillowYStart + pillowHeight); // Donji levi ugao jastuka
         path.closePath();
 
+        // cuvamo transformisani shape
         AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(krevet.getRotacija() * 90), centarX, centarY);
         transformedPath = (GeneralPath) path.createTransformedShape(transform);
 
-        g2d.fill(transformedPath);
+        g2d.fill(path);
 
         g2d.setColor(Color.black);
-        g2d.draw(transformedPath);
+        g2d.draw(path);
 
         // vracamo na pocetno stanje
-        //g2d.setTransform(start);
+        g2d.setTransform(start);
     }
 
     @Override

@@ -11,6 +11,7 @@ import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Rectangle2D;
 import java.time.LocalDateTime;
 
@@ -95,7 +96,7 @@ public class ResizeState implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

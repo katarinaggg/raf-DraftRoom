@@ -15,6 +15,8 @@ public class VesMasinaPainter implements ElementPainter{
     private GeneralPath path;
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     public VesMasinaPainter(VesMasina vesMasina, RoomView roomView) {
         this.vesMasina = vesMasina;
         this.roomView = roomView;
@@ -72,6 +74,11 @@ public class VesMasinaPainter implements ElementPainter{
         // Crtanje kružnice
         path.append(new Ellipse2D.Double(circleX, circleY, circleDiameter, circleDiameter), false);
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(vesMasina.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
+
         // Iscrtavanje oblika
         g2d.draw(path);
 
@@ -97,6 +104,6 @@ public class VesMasinaPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 }

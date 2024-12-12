@@ -29,10 +29,10 @@ public class KadaPainter implements ElementPainter{
         g2d.setColor(kada.getColor());
         g2d.setStroke(kada.getStroke());
 
-//        // cuvamo pocetno stanje da bi se kasnije vratili na njega
-//        AffineTransform start = g2d.getTransform();
-//        // nad ovom radimo
-//        AffineTransform af = g2d.getTransform();
+        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+        AffineTransform start = g2d.getTransform();
+        // nad ovom radimo
+        AffineTransform af = g2d.getTransform();
 
         // Faktor skaliranja sobe
         double scalingFactor = roomView.getScalingFactor();
@@ -49,11 +49,11 @@ public class KadaPainter implements ElementPainter{
         double centarX = rectX+rectWidth/2;
         double centarY = rectY+rectHeight/2;
 
-//        // ugao rotacije na osnovu njegove vrednosti rotacije
-//        double ugao = Math.toRadians(kada.getRotacija() * 90);
-//
-//        af.rotate(ugao, centarX, centarY);
-//        g2d.setTransform(af);
+        // ugao rotacije na osnovu njegove vrednosti rotacije
+        double ugao = Math.toRadians(kada.getRotacija() * 90);
+
+        af.rotate(ugao, centarX, centarY);
+        g2d.setTransform(af);
 
         path = new GeneralPath();
 
@@ -76,21 +76,24 @@ public class KadaPainter implements ElementPainter{
         // Crtanje elipse
         path.append(new Ellipse2D.Double(ellipseX, ellipseY, ellipseWidth, ellipseHeight), false); //mozda i false
 
-        //transformedPath = (GeneralPath) path.createTransformedShape(af);
+        // MORAMO DA SACUVAMO NOVI ROTIRANI SHAPE I NAD NJIM PROVERAVAMO SELEKCIJU
+        // ako je rotate=0 sacuvace se onaj obican element nerotiani
+
         // Transformacija za rotaciju
         AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(kada.getRotacija() * 90), centarX, centarY);
-
         // Kreiranje transformisanog path-a
         transformedPath = (GeneralPath) path.createTransformedShape(transform);
 
-        g2d.fill(transformedPath);
+        g2d.fill(path);
 
         g2d.setColor(Color.black);
-        g2d.draw(transformedPath);
+        g2d.draw(path);
 
-        //g2d.setTransform(start);
+        g2d.setTransform(start);
     }
 
+    // umesto obicnog patha koristimo transformedPath jer se tu cuva
+    // rotirani shape ako dodje do rotiranja (ako ne svakako se cuva originalni)
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
         if(rectangle != null){

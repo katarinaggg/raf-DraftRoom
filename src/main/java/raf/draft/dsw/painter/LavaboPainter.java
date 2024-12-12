@@ -15,6 +15,8 @@ public class LavaboPainter implements ElementPainter{
     private GeneralPath path;
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     public LavaboPainter(Lavabo lavabo, RoomView roomView) {
         this.lavabo = lavabo;
         this.roomView = roomView;
@@ -49,7 +51,6 @@ public class LavaboPainter implements ElementPainter{
 
         // ugao rotacije na osnovu njegove vrednosti rotacije
         double ugao = Math.toRadians(lavabo.getRotacija() * 90);
-
         af.rotate(ugao, centarX, centarY);
         g2d.setTransform(af);
 
@@ -84,6 +85,10 @@ public class LavaboPainter implements ElementPainter{
         Ellipse2D.Double centerDot = new Ellipse2D.Double(centerX - dotSize / 2.0, centerY - dotSize / 2.0, dotSize, dotSize);
         path.append(centerDot, false);
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(lavabo.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
         // Ponovno iscrtavanje celog oblika (trougao i tačka)
         g2d.setColor(Color.black);
         g2d.draw(path);
@@ -95,10 +100,10 @@ public class LavaboPainter implements ElementPainter{
     public boolean elementAt(Point point, Rectangle rectangle) {
         //return path!= null && (path.contains(point) || path.intersects(rectangle));
         if(rectangle != null){
-            return path.intersects(rectangle);
+            return transformedPath.intersects(rectangle);
         }
         else if(point != null){
-            return path.contains(point);
+            return transformedPath.contains(point);
         }
         return false;
     }
@@ -110,6 +115,6 @@ public class LavaboPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 }

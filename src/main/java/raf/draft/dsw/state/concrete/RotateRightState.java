@@ -10,6 +10,7 @@ import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -37,7 +38,7 @@ public class RotateRightState implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

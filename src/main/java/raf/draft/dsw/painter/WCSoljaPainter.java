@@ -15,6 +15,8 @@ public class WCSoljaPainter implements ElementPainter{
     private GeneralPath path;
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     public WCSoljaPainter(WCSolja wcSolja, RoomView roomView) {
         this.wcSolja = wcSolja;
         this.roomView = roomView;
@@ -92,6 +94,11 @@ public class WCSoljaPainter implements ElementPainter{
         int lineStartX = startX; // Početak linije od leve ivice spoljnog luka
         int lineEndX = startX + width; // Kraj linije do desne ivice spoljnog luka
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(wcSolja.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
+
         g2d.drawLine(lineStartX, lineY, lineEndX, lineY);
         g2d.draw(path);
 
@@ -121,7 +128,7 @@ public class WCSoljaPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 
 

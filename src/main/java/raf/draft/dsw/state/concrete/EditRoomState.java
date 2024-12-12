@@ -1,14 +1,13 @@
 package raf.draft.dsw.state.concrete;
 
-import com.sun.tools.javac.Main;
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.gui.swing.DimensionFrame;
-import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.painter.RoomPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 
 @NoArgsConstructor
 public class EditRoomState implements State {
@@ -50,7 +49,7 @@ public class EditRoomState implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

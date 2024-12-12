@@ -11,6 +11,7 @@ import raf.draft.dsw.painter.RoomPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -31,7 +32,7 @@ public class SelectState implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

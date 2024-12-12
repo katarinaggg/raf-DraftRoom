@@ -35,7 +35,7 @@ public class RoomMouseListener implements MouseListener, MouseMotionListener, Mo
     //ova
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        MainFrame.getInstance().getProjectView().misScroll();
+        MainFrame.getInstance().getProjectView().misScroll(roomView,e);
     }
 
     //ovo za selekciju

@@ -10,6 +10,7 @@ import raf.draft.dsw.state.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -424,8 +425,8 @@ public class ProjectView extends JPanel implements ISubscriber {
     }
 
 
-    public void misScroll() {
-        stateManager.getCurrentState().misScroll();
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
+        stateManager.getCurrentState().misScroll(roomView,e);
     }
 
     public void misZadrzan(RoomView roomView, Point point){
