@@ -27,6 +27,11 @@ public class AddBojler implements State {
             return;
         }
 
+        // koristimo metodu koja nam vraca novu lokaciju misa u sljucaju
+        // da se nalazimo u nekom zoomiranom stanju
+        // treba nam da bi dodali element tacno tamo gde smo kliknuli misem
+        point = roomView.transformMousePoint(point);
+
         // kada kliknemo misem na to mesto (point treba nacrtati element)
         // otvara se prozor za unosenje dimenzija
 

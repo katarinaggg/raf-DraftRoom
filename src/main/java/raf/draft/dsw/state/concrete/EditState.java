@@ -27,6 +27,11 @@ public class EditState implements State {
             return;
         }
 
+        // i ovde nam treba nova lokacija misem ako se nalazimo u nekom zumiranom stanju
+        // treba nam da li smo kliknuli bas na taj element iako se nalazimo u zumiranom stanju
+        // sto znaci stvarna lokacija misem
+        point = roomView.transformMousePoint(point);
+
         // ako smo kliknuli na element otvara se prozor i unose promene
         // prolazimo kroz paintere da vidimo jesmo li kliknuli na neki
         for(ElementPainter e: roomView.getPainters()){

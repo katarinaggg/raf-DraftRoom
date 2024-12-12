@@ -9,6 +9,8 @@ import raf.draft.dsw.model.structures.Room;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -65,8 +67,8 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public Rectangle getRoomBounds() {
         // Dimenzije sobe u pikselima
-        int roomWidthPx = (int) (room.getSirina() * scalingFactor);
-        int roomHeightPx = (int) (room.getDuzina() * scalingFactor);
+        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
+        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
 
         // Pozicija za centriranje sobe u panelu
         int panelWidth = getWidth();
@@ -86,18 +88,18 @@ public class RoomView extends JPanel implements ISubscriber {
         //g2d.scale(zoomLevel, zoomLevel);
 
         // ZOOM IZ CENTRA PANELA
-        // Dimenzije panela
         int panelWidth = getWidth();
         int panelHeight = getHeight();
 
-        // Izračunavanje centra panela
+        // izracunavanje centra panela
+        // treba nam da bi zoom bio sa fokusom u centru sobe
         double centarX = panelWidth / 2.0;
         double centarY = panelHeight / 2.0;
 
-        // Primena transformacije za zumiranje oko centra
+        // transformacija
         AffineTransform zoom = new AffineTransform();
 
-        // Pomeramo tako da centar zumiranja ostane isti
+        // pomeramo tako da centar zumiranja ostane isti
         zoom.translate(centarX, centarY);
         zoom.scale(zoomLevel, zoomLevel);
         zoom.translate(-centarX, -centarY);
@@ -252,4 +254,60 @@ public class RoomView extends JPanel implements ISubscriber {
     public void setZoomLevel(double zoomLevel) {
         this.zoomLevel = zoomLevel;
     }
+
+
+    // kada zumiramo treba nam ona stara lokacija misem tj stvarna
+    // ova metoda vraca tu stvarnu lokaciju misem kao da nismo u zoom modu
+    // preko inverzne matrice
+    // ovu novu tacku treba sada svuda da prosledimo gde postoji rad s misem
+    // jer kad zumiramo bice nam potrebna ta nova lokacija misem da bi sve
+    // opcije radile i u stanju zoom-a
+    // u slucaju da je zoom=1 vratice se normalna lokacija misem
+
+    public Point transformMousePoint(Point point) {
+
+        // ako nismo zumiralki vraca normalan point
+        if (zoomLevel == 1.0) {
+            //System.out.println("Kliknuta tačka (bez zuma): " + point);
+            return point;
+        }
+
+        try {
+            // transformacija koja se desila pri zumiranju
+            AffineTransform zoomTransform = new AffineTransform();
+
+            // isto ko i u paintComponent kada se desava zoom
+            double panelWidth = getWidth();
+            double panelHeight = getHeight();
+            double centerX = panelWidth / 2.0;
+            double centerY = panelHeight / 2.0;
+            zoomTransform.translate(centerX, centerY);
+            zoomTransform.scale(zoomLevel, zoomLevel);
+            zoomTransform.translate(-centerX, -centerY);
+
+            // sada nam treba inverzna matrica ovoj za zumiranje
+            // da bi iz nje dobili odgovarajucu lokaciju misa
+            // a ne neku pomerenu zbog transformacije zumiranja
+            AffineTransform inverseZoom = zoomTransform.createInverse();
+
+            // trenutni klik transformisemo u taj novi koji nam treba iz pocetnog stanja (da nismo zumirali)
+            Point2D transformedPoint2D = inverseZoom.transform(point, null);
+
+            // tu novu tacku treba da sacuvamo da bi je vratili
+            Point transformedPoint = new Point((int) transformedPoint2D.getX(), (int) transformedPoint2D.getY());
+
+//            System.out.println("Kliknuta tačka: " + point);
+//            System.out.println("Transformisana tačka (sa zumiranjem): " + transformedPoint);
+//            System.out.println("Faktor skaliranja: " + scalingFactor);
+//            System.out.println("ZoomLevel: " + zoomLevel);
+//            System.out.println("RoomBounds: " + roomBounds);
+
+            return transformedPoint;
+
+        } catch (NoninvertibleTransformException e) {
+            return point;
+        }
+    }
+
+
 }

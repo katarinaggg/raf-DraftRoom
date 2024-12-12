@@ -102,6 +102,8 @@ public class DimensionFrame extends JDialog {
         });
 
         add(saveButton, gbc);
+        // save button moze i na enter
+        getRootPane().setDefaultButton(saveButton);
 
         //pack();
         setLocationRelativeTo(null);
