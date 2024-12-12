@@ -17,6 +17,9 @@ public class VrataPainter implements ElementPainter{
 
     private GeneralPath transformedPath;
 
+    private Arc2D.Double arc; // Luk vrata
+
+
     public VrataPainter(Vrata vrata,RoomView roomView) {
         this.vrata = vrata;
         this.roomView = roomView;
@@ -54,7 +57,7 @@ public class VrataPainter implements ElementPainter{
         path = new GeneralPath();
 
         // Dodavanje luka (gornja polovina kružnice) u GeneralPath
-        Arc2D.Double arc = new Arc2D.Double(
+        arc = new Arc2D.Double(
                 startX, startY,            // Gornji levi ugao pravougaonika koji sadrži luk
                 precnik, precnik,        // Širina i visina pravougaonika
                 90, 90,                    // Početni ugao i ugao luka (90° do 90°)
@@ -113,6 +116,14 @@ public class VrataPainter implements ElementPainter{
         }
         // Ovde postavljate vrednost koja odgovara vašem luku (ako ga generišete)
         return 90; // Početni ugao (primer)
+    }
+
+    public Arc2D.Double getArc() {
+        return arc;
+    }
+
+    public void setArc(Arc2D.Double arc) {
+        this.arc = arc;
     }
 
     public double getArcAngle() {
