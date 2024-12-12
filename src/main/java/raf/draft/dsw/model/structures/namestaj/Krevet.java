@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Krevet extends RoomElement implements Prototype{
+public class Krevet extends RoomElement{
 
     //private Color color = new Color(131, 139, 156);
     private Stroke stroke  = new BasicStroke(2.0f);
@@ -36,6 +36,7 @@ public class Krevet extends RoomElement implements Prototype{
 
     @Override
     public Prototype clone() {
-        return null;
+        Point point = new Point(this.getLokacija().x +this.getOffset(), this.getLokacija().y+this.getOffset());
+        return new Krevet(this.getParent(),point, this.getSize());
     }
 }

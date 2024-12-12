@@ -97,4 +97,5 @@ public class Room extends DraftNodeComposite {
     public ArrayList<RoomElement> getCopyElements() {
         return copyElements;
     }
+
 }

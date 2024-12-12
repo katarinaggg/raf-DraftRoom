@@ -16,9 +16,13 @@ public class KrevetPainter implements ElementPainter{
 
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
+
     public KrevetPainter(Krevet krevet, RoomView roomView) {
         this.krevet = krevet;
         this.roomView = roomView;
+        this.transformedPath = new GeneralPath();
     }
 
     @Override
@@ -27,10 +31,10 @@ public class KrevetPainter implements ElementPainter{
         g2d.setColor(krevet.getColor());
         g2d.setStroke(krevet.getStroke());
 
-        // cuvamo pocetno stanje da bi se kasnije vratili na njega
-        AffineTransform start = g2d.getTransform();
-        // nad ovom radimo
-        AffineTransform af = g2d.getTransform();
+//        // cuvamo pocetno stanje da bi se kasnije vratili na njega
+//        AffineTransform start = g2d.getTransform();
+//        // nad ovom radimo
+//        AffineTransform af = g2d.getTransform();
 
         // Faktor skaliranja iz RoomView
         double scalingFactor = roomView.getScalingFactor();
@@ -45,11 +49,11 @@ public class KrevetPainter implements ElementPainter{
         double centarX = bedX+bedWidth/2;
         double centarY = bedY+bedHeight/2;
 
-        // ugao rotacije na osnovu njegove vrednosti rotacije
-        double ugao = Math.toRadians(krevet.getRotacija() * 90);
-
-        af.rotate(ugao, centarX, centarY);
-        g2d.setTransform(af);
+//        // ugao rotacije na osnovu njegove vrednosti rotacije
+//        double ugao = Math.toRadians(krevet.getRotacija() * 90);
+//
+//        af.rotate(ugao, centarX, centarY);
+//        g2d.setTransform(af);
 
         // Dimenzije jastuka
         int pillowWidth = bedWidth / 2; // Jastuk zauzima 1/2 širine kreveta
@@ -78,23 +82,26 @@ public class KrevetPainter implements ElementPainter{
         path.lineTo(pillowXStart, pillowYStart + pillowHeight); // Donji levi ugao jastuka
         path.closePath();
 
-        g2d.fill(path);
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(krevet.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
+        g2d.fill(transformedPath);
 
         g2d.setColor(Color.black);
-        g2d.draw(path);
+        g2d.draw(transformedPath);
 
         // vracamo na pocetno stanje
-        g2d.setTransform(start);
+        //g2d.setTransform(start);
     }
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
         //return path!= null && (path.contains(point) || path.intersects(rectangle));
         if(rectangle != null){
-            return path.intersects(rectangle);
+            return transformedPath.intersects(rectangle);
         }
         else if(point != null){
-            return path.contains(point);
+            return transformedPath.contains(point);
         }
         return false;
     }
@@ -122,6 +129,6 @@ public class KrevetPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 }

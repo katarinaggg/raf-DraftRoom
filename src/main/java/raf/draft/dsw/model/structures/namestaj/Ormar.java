@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Ormar extends RoomElement implements Prototype{
+public class Ormar extends RoomElement{
 
     private static int elementCounter = 1;
 
@@ -37,6 +37,7 @@ public class Ormar extends RoomElement implements Prototype{
 
     @Override
     public Prototype clone() {
-        return null;
+        Point point = new Point(this.getLokacija().x +this.getOffset(), this.getLokacija().y+this.getOffset());
+        return new Ormar(this.getParent(),point, this.getSize());
     }
 }

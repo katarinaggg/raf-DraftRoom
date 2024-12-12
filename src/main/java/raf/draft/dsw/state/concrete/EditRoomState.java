@@ -1,5 +1,6 @@
 package raf.draft.dsw.state.concrete;
 
+import com.sun.tools.javac.Main;
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -36,9 +37,9 @@ public class EditRoomState implements State {
             roomView.addPainter(roomPainter);
             roomView.repaint();
 
-            // dodali smo sobu pa mozemo i namestaj
-            MainFrame.getInstance().getProjectView().setDodataSoba(true);
 
+            // nacrtali smo sobu sad mozemo sve ostalo da radimo
+            roomView.setNacrtanaSoba(true);
         }
 
     }

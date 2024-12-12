@@ -6,6 +6,8 @@ import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.painter.ElementPainter;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 public class RoomView extends JPanel implements ISubscriber {
 
     private Room room;
+
+    private boolean nacrtanaSoba = false;
 
     private double scalingFactor; // Faktor skaliranja
 
@@ -190,5 +194,13 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public ArrayList<ElementPainter> getSelectionList() {
         return selectionList;
+    }
+
+    public void setNacrtanaSoba(boolean nacrtanaSoba) {
+        this.nacrtanaSoba = nacrtanaSoba;
+    }
+
+    public boolean isNacrtanaSoba() {
+        return nacrtanaSoba;
     }
 }

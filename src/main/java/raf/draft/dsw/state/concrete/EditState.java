@@ -1,20 +1,30 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.EditRoomElementFrame;
 import raf.draft.dsw.gui.swing.RoomView;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.painter.RoomPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 public class EditState implements State {
 
     @Override
     public void misKliknut(RoomView roomView, Point point) {
+
+        if(!roomView.isNacrtanaSoba()){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da nacrtate sobu!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
 
         // ako smo kliknuli na element otvara se prozor i unose promene
         // prolazimo kroz paintere da vidimo jesmo li kliknuli na neki

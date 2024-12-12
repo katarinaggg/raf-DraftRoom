@@ -1,14 +1,19 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.painter.RoomPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 public class DeleteState implements State {
@@ -17,7 +22,11 @@ public class DeleteState implements State {
     @Override
     public void misKliknut(RoomView roomView, Point point) {
 
-        // da li ovo treba na klik misem?
+        if(!roomView.isNacrtanaSoba()){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da nacrtate sobu!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
 
         // treba da proverimo listu selektovanih da li treba odatle nesto da brisemo
         if(!roomView.getSelectionList().isEmpty()) {

@@ -5,7 +5,7 @@ import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
 import java.awt.*;
 
-public abstract class RoomElement extends DraftNode {
+public abstract class RoomElement extends DraftNode implements Prototype{
      private Point lokacija;
 
     // umesto ovoga moze klasa Dimension
@@ -16,6 +16,8 @@ public abstract class RoomElement extends DraftNode {
     // svaki element ima svoj Color
     private Color color;
 
+    // kada kopiramo da se izmesti
+    private int offset = 20;
 
     private int rotacija; ///  Rotacija elementa (0 do 3, gde 0 = 0°, 1 = 90°, 2 = 180°, 3 = 270°)
 
@@ -84,5 +86,12 @@ public abstract class RoomElement extends DraftNode {
         this.color = color;
     }
 
+    public int getOffset() {
+        return offset;
+    }
 
+    @Override
+    public Prototype clone() {
+        return null;
+    }
 }

@@ -40,8 +40,8 @@ public class VrataPainter implements ElementPainter{
         //int precnik = Math.max(vrata.getSize().width, vrata.getSize().height); // Prečnik kruga
         int precnik = Math.max(scaledSize.width, scaledSize.height); // Prečnik kruga (najveća dimenzija)
 
-        double centarX = startX+precnik/2;
-        double centarY = startY+precnik/2;
+        double centarX = startX+precnik/4;
+        double centarY = startY+precnik/4;
 
         // ugao rotacije na osnovu njegove vrednosti rotacije
         double ugao = Math.toRadians(vrata.getRotacija() * 90);
