@@ -13,6 +13,7 @@ import raf.draft.dsw.model.structures.namestaj.WCSolja;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 
 public class AddWCSolja implements State {
@@ -51,7 +52,7 @@ public class AddWCSolja implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

@@ -15,6 +15,8 @@ public class OrmarPainter implements ElementPainter{
     private GeneralPath path;
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     public OrmarPainter(Ormar ormar, RoomView roomView) {
         this.ormar = ormar;
         this.roomView = roomView;
@@ -81,6 +83,10 @@ public class OrmarPainter implements ElementPainter{
         // Iscrtavanje oblika
         g2d.draw(path);
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(ormar.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
         g2d.setTransform(start);
 
     }
@@ -89,10 +95,10 @@ public class OrmarPainter implements ElementPainter{
     public boolean elementAt(Point point, Rectangle rectangle) {
         //return path!= null && (path.contains(point) || path.intersects(rectangle));
         if(rectangle != null){
-            return path.intersects(rectangle);
+            return transformedPath.intersects(rectangle);
         }
         else if(point != null){
-            return path.contains(point);
+            return transformedPath.contains(point);
         }
         return false;
     }
@@ -104,6 +110,6 @@ public class OrmarPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 }

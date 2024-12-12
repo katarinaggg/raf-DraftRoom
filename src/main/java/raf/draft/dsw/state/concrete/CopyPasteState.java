@@ -12,8 +12,8 @@ import raf.draft.dsw.model.structures.namestaj.*;
 import raf.draft.dsw.painter.*;
 import raf.draft.dsw.state.State;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -97,7 +97,7 @@ public class CopyPasteState implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

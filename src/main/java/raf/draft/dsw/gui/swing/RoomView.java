@@ -3,14 +3,12 @@ package raf.draft.dsw.gui.swing;
 import raf.draft.dsw.controller.RoomMouseListener;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.structures.namestaj.RoomElement;
-import raf.draft.dsw.painter.ElementPainter;
-import raf.draft.dsw.model.structures.Room;
 import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -21,6 +19,11 @@ public class RoomView extends JPanel implements ISubscriber {
     private boolean nacrtanaSoba = false;
 
     private double scalingFactor; // Faktor skaliranja
+
+    // za zumiranje
+    private double zoomLevel = 1.0;
+    private double MAX_ZOOM = 3.0;
+    private double MIN_ZOOM = 0.5;
 
     // lista Paintera koje treba da iscrta
     ArrayList<ElementPainter> painters = new ArrayList<>();
@@ -41,6 +44,7 @@ public class RoomView extends JPanel implements ISubscriber {
         RoomMouseListener mouseListener = new RoomMouseListener(this);
         addMouseListener(mouseListener); // Za MousePressed, MouseReleased itd.
         addMouseMotionListener(mouseListener); // Za MouseDragged i MouseMoved
+        addMouseWheelListener(mouseListener);
     }
 
     // Metoda za određivanje faktora skaliranja
@@ -78,6 +82,27 @@ public class RoomView extends JPanel implements ISubscriber {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        //g2d.scale(zoomLevel, zoomLevel);
+
+        // ZOOM IZ CENTRA PANELA
+        // Dimenzije panela
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+
+        // Izračunavanje centra panela
+        double centarX = panelWidth / 2.0;
+        double centarY = panelHeight / 2.0;
+
+        // Primena transformacije za zumiranje oko centra
+        AffineTransform zoom = new AffineTransform();
+
+        // Pomeramo tako da centar zumiranja ostane isti
+        zoom.translate(centarX, centarY);
+        zoom.scale(zoomLevel, zoomLevel);
+        zoom.translate(-centarX, -centarY);
+
+        g2d.transform(zoom);
 
         // Translacija za pomak sobe ovo je za movestate
         //g2d.translate(offsetX, offsetY);
@@ -209,5 +234,22 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public boolean isNacrtanaSoba() {
         return nacrtanaSoba;
+    }
+
+    // za zumiranje
+    public double getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public double getMAX_ZOOM() {
+        return MAX_ZOOM;
+    }
+
+    public double getMIN_ZOOM() {
+        return MIN_ZOOM;
+    }
+
+    public void setZoomLevel(double zoomLevel) {
+        this.zoomLevel = zoomLevel;
     }
 }

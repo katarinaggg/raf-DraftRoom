@@ -15,6 +15,8 @@ public class VrataPainter implements ElementPainter{
     private GeneralPath path;
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     private Arc2D.Double arc; // Luk vrata
 
 
@@ -72,6 +74,10 @@ public class VrataPainter implements ElementPainter{
         path.moveTo(verticalLineX, verticalLineStartY); // Početak vertikalne linije
         path.lineTo(verticalLineX, verticalLineEndY);   // Kraj vertikalne linije
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(vrata.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
         g2d.draw(path);
 
         g2d.setTransform(start);
@@ -101,7 +107,7 @@ public class VrataPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 
     public double getStartAngle() {

@@ -16,6 +16,8 @@ public class StoPainter implements ElementPainter{
     private GeneralPath path;
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     public StoPainter(Sto sto,RoomView roomView) {
         this.sto = sto;
         this.roomView = roomView;
@@ -123,6 +125,10 @@ public class StoPainter implements ElementPainter{
         path.append(new Ellipse2D.Double(rectX + offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
         path.append(new Ellipse2D.Double(rectX + rectWidth - offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(sto.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) path.createTransformedShape(transform);
+
         g2d.draw(path);
         g2d.setTransform(start);
     }
@@ -144,6 +150,6 @@ public class StoPainter implements ElementPainter{
 
     @Override
     public GeneralPath getShape() {
-        return path;
+        return transformedPath;
     }
 }

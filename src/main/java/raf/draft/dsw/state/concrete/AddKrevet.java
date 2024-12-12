@@ -13,6 +13,7 @@ import raf.draft.dsw.model.structures.namestaj.Krevet;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 
 public class AddKrevet implements State {
@@ -53,7 +54,7 @@ public class AddKrevet implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

@@ -13,6 +13,7 @@ import raf.draft.dsw.model.structures.namestaj.Sto;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 
 public class AddSto implements State {
@@ -52,7 +53,7 @@ public class AddSto implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 

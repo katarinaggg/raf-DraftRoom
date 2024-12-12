@@ -8,13 +8,13 @@ import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.painter.BojlerPainter;
-import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.painter.VrataPainter;
 import raf.draft.dsw.painter.WCSoljaPainter;
 import raf.draft.dsw.state.State;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -362,7 +362,7 @@ public class MoveState implements State {
     }
 
     @Override
-    public void misScroll() {
+    public void misScroll(RoomView roomView, MouseWheelEvent e) {
 
     }
 }

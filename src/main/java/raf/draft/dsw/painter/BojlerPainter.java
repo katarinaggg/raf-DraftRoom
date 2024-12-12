@@ -16,6 +16,8 @@ public class BojlerPainter implements ElementPainter{
 
     private RoomView roomView;
 
+    private GeneralPath transformedPath;
+
     public BojlerPainter(Bojler bojler, RoomView roomView) {
         this.bojler = bojler;
         this.roomView = roomView;
@@ -57,7 +59,6 @@ public class BojlerPainter implements ElementPainter{
 
         shape.append(krug,false);
 
-
         //Koordinate za X unutar kruga
         int x1 = centarX - radius / 2; // Leva gornja tačka za prvu liniju
         int y1 = centarY - radius / 2; // Gornja tačka za prvu liniju
@@ -81,6 +82,10 @@ public class BojlerPainter implements ElementPainter{
         shape.moveTo(x3, y3);
         shape.lineTo(x4, y4);
 
+        // cuvamo transformisani shape
+        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(bojler.getRotacija() * 90), centarX, centarY);
+        transformedPath = (GeneralPath) shape.createTransformedShape(transform);
+
         g2d.fill(shape);
 
         g2d.setColor(Color.black);
@@ -93,16 +98,16 @@ public class BojlerPainter implements ElementPainter{
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
         if(rectangle != null){
-            return shape.intersects(rectangle);
+            return transformedPath.intersects(rectangle);
         }
         else if(point != null){
-            return shape.contains(point);
+            return transformedPath.contains(point);
         }
         return false;
     }
 
     public GeneralPath getShape() {
-        return shape;
+        return transformedPath;
     }
 
     public void setShape(GeneralPath shape) {
