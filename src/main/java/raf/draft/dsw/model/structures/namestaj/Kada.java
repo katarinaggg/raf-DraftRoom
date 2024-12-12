@@ -3,8 +3,9 @@ package raf.draft.dsw.model.structures.namestaj;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 
-public class Kada extends RoomElement implements Prototype{
+public class Kada extends RoomElement{
 
     //private Color color = new Color(197, 206, 212);
 
@@ -38,6 +39,8 @@ public class Kada extends RoomElement implements Prototype{
 
     @Override
     public Prototype clone() {
-        return null;
+        Point point = new Point(this.getLokacija().x +this.getOffset(), this.getLokacija().y+this.getOffset());
+        return new Kada(this.getParent(),point, this.getSize());
     }
+
 }

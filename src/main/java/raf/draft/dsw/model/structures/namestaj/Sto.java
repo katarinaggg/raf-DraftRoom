@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Sto extends RoomElement implements Prototype{
+public class Sto extends RoomElement{
 
     private static int elementCounter = 1;
     //private Color color = new Color(153, 126, 107);
@@ -36,6 +36,7 @@ public class Sto extends RoomElement implements Prototype{
 
     @Override
     public Prototype clone() {
-        return null;
+        Point point = new Point(this.getLokacija().x +this.getOffset(), this.getLokacija().y+this.getOffset());
+        return new Sto(this.getParent(),point, this.getSize());
     }
 }

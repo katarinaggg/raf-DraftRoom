@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class WCSolja extends RoomElement implements Prototype{
+public class WCSolja extends RoomElement {
 
     private static int elementCounter = 1;
     //private Color color = new Color(250, 250, 245);
@@ -36,6 +36,7 @@ public class WCSolja extends RoomElement implements Prototype{
 
     @Override
     public Prototype clone() {
-        return null;
+        Point point = new Point(this.getLokacija().x +this.getOffset(), this.getLokacija().y+this.getOffset());
+        return new WCSolja(this.getParent(),point, this.getSize());
     }
 }

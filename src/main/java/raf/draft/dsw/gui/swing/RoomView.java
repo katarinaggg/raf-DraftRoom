@@ -3,25 +3,19 @@ package raf.draft.dsw.gui.swing;
 import raf.draft.dsw.controller.RoomMouseListener;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.ElementPainter;
-import raf.draft.dsw.model.painter.RoomPainter;
+import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
-import raf.draft.dsw.model.structures.namestaj.RoomElement;
-import raf.draft.dsw.state.concrete.SelectState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class RoomView extends JPanel implements ISubscriber {
 
     private Room room;
+
+    private boolean nacrtanaSoba = false;
 
     private double scalingFactor; // Faktor skaliranja
 
@@ -172,5 +166,13 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public ArrayList<ElementPainter> getSelectionList() {
         return selectionList;
+    }
+
+    public void setNacrtanaSoba(boolean nacrtanaSoba) {
+        this.nacrtanaSoba = nacrtanaSoba;
+    }
+
+    public boolean isNacrtanaSoba() {
+        return nacrtanaSoba;
     }
 }

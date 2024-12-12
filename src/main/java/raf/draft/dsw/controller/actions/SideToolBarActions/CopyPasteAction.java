@@ -1,5 +1,6 @@
 package raf.draft.dsw.controller.actions.SideToolBarActions;
 
+import com.sun.tools.javac.Main;
 import raf.draft.dsw.gui.swing.AddElementFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
 
@@ -36,6 +37,6 @@ public class CopyPasteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        MainFrame.getInstance().getProjectView().startCopyPasteState();
     }
 }

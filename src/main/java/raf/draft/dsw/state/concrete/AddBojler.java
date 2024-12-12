@@ -1,16 +1,14 @@
 package raf.draft.dsw.state.concrete;
 
-import com.sun.tools.javac.Main;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
-import raf.draft.dsw.gui.swing.jtree.DraftTree;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.BojlerPainter;
+import raf.draft.dsw.painter.BojlerPainter;
 import raf.draft.dsw.model.structures.namestaj.Bojler;
 import raf.draft.dsw.state.State;
 
@@ -21,6 +19,12 @@ public class AddBojler implements State {
 
     @Override
     public void misKliknut(RoomView roomView, Point point) {
+
+        if(!roomView.isNacrtanaSoba()){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da nacrtate sobu!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
 
         // kada kliknemo misem na to mesto (point treba nacrtati element)
         // otvara se prozor za unosenje dimenzija
@@ -44,6 +48,8 @@ public class AddBojler implements State {
             // moramo da pronadjemo odgovarajucu sobu u JTree-u
             DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
             MainFrame.getInstance().getDraftTree().addRoomChild(soba,bojler);
+
+            // Room obavestava RoomView (u addChild metodi) da treba da se repaintuje
 
             //System.out.println(roomView.getRoom().getNamestaj());
         }

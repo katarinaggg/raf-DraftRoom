@@ -1,4 +1,4 @@
-package raf.draft.dsw.model.painter;
+package raf.draft.dsw.painter;
 
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.Bojler;

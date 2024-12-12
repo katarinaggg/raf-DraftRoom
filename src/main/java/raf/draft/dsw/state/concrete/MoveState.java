@@ -1,15 +1,17 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.RoomView;
-import raf.draft.dsw.model.painter.ElementPainter;
+import raf.draft.dsw.model.notification.Message;
+import raf.draft.dsw.model.notification.MessageType;
+import raf.draft.dsw.model.notification.Notification;
+import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 import raf.draft.dsw.state.State;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,13 @@ public class MoveState implements State {
 
     @Override
     public void misZadrzan(RoomView roomView, Point point) {
+
+        if(!roomView.isNacrtanaSoba()){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da nacrtate sobu!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
+
         if (!roomView.getSelectionList().isEmpty()) {
             // Čuvamo početnu tačku miša
             initialPoint = point;

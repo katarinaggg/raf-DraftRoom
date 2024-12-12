@@ -4,7 +4,7 @@ import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
-public class Vrata extends RoomElement implements Prototype{
+public class Vrata extends RoomElement {
 
     //private Color color = new Color(8, 5, 0);
     private Stroke stroke = new BasicStroke(3.0f);
@@ -36,6 +36,7 @@ public class Vrata extends RoomElement implements Prototype{
 
     @Override
     public Prototype clone() {
-        return null;
+        Point point = new Point(this.getLokacija().x +this.getOffset(), this.getLokacija().y+this.getOffset());
+        return new Vrata(this.getParent(),point, this.getSize());
     }
 }

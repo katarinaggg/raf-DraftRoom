@@ -8,9 +8,7 @@ import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
-import raf.draft.dsw.model.painter.KadaPainter;
-import raf.draft.dsw.model.painter.OrmarPainter;
-import raf.draft.dsw.model.structures.namestaj.Kada;
+import raf.draft.dsw.painter.OrmarPainter;
 import raf.draft.dsw.model.structures.namestaj.Ormar;
 import raf.draft.dsw.state.State;
 
@@ -20,6 +18,12 @@ import java.time.LocalDateTime;
 public class AddOrmar implements State {
     @Override
     public void misKliknut(RoomView roomView, Point point) {
+
+        if(!roomView.isNacrtanaSoba()){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da nacrtate sobu!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
 
         DimensionFrame frame = new DimensionFrame(roomView);
         frame.setVisible(true);
