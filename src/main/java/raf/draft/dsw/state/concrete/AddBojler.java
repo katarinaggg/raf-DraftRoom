@@ -9,6 +9,7 @@ import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.painter.BojlerPainter;
+import raf.draft.dsw.painter.BojlerPainter;
 import raf.draft.dsw.model.structures.namestaj.Bojler;
 import raf.draft.dsw.state.State;
 
