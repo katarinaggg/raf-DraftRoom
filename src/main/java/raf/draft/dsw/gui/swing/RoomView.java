@@ -31,6 +31,9 @@ public class RoomView extends JPanel implements ISubscriber {
     private Point selectionRectangleLT;
     private Point selectionRectangleRB;
 
+    private int offsetX = 0; // Horizontalni pomak sobe
+    private int offsetY = 0; // Vertikalni pomak sobe
+
     public RoomView(Room room) {
         this.room = room;
         // dodajemo mu mouse listener
@@ -76,10 +79,18 @@ public class RoomView extends JPanel implements ISubscriber {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        // Translacija za pomak sobe ovo je za movestate
+        //g2d.translate(offsetX, offsetY);
+
+
         // Crtanje svih elemenata
         for (ElementPainter p : painters) {
             p.paint(g2d);
         }
+
+
+        // Vraćanje translacije za dalji rad ovo je za movestate
+        //g2d.translate(-offsetX, -offsetY);
 
         // Crtanje selektovanih elemenata (ako ih ima) ovo mozda treba da se obrise
         if (!selectionList.isEmpty()) {
@@ -129,10 +140,6 @@ public class RoomView extends JPanel implements ISubscriber {
         // Crtanje pravougaonika
         g2d.drawRect(x, y, width, height);
     }
-
-
-    private int offsetX = 0; // Horizontalni pomak sobe
-    private int offsetY = 0; // Vertikalni pomak sobe
 
     public void updateRoomOffset(int deltaX, int deltaY) {
         // Ažuriramo pomak sobe
