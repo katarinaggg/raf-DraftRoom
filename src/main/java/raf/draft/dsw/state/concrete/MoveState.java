@@ -56,6 +56,8 @@ public class MoveState implements State {
                     initialLocations.put(element, new Point(element.getLokacija()));
                 }
             }
+        }else{
+            initialPoint = point;
         }
     }
 
@@ -71,6 +73,7 @@ public class MoveState implements State {
 
             // Ažuriramo početnu tačku
             initialPoint = point;
+
         } else if (initialPoint != null && !initialLocations.isEmpty()) {
             // Računamo pomeranje miša
             int deltaX = point.x - initialPoint.x;
@@ -137,6 +140,91 @@ public class MoveState implements State {
             roomView.repaint();
         }
     }
+
+//    @Override
+//    public void misPovucen(RoomView roomView, Point point) {
+//        if (initialPoint != null && roomView.getSelectionList().isEmpty()) {
+//            // Pomeranje cele sobe
+//            int deltaX = point.x - initialPoint.x;
+//            int deltaY = point.y - initialPoint.y;
+//
+//            // Ažuriramo pomak sobe
+//            roomView.updateRoomOffset(deltaX, deltaY);
+//
+//            // Ažuriramo početnu tačku
+//            initialPoint = point;
+//
+//        } else if (initialPoint != null && !initialLocations.isEmpty()) {
+//            // Računamo pomeranje miša
+//            int deltaX = point.x - initialPoint.x;
+//            int deltaY = point.y - initialPoint.y;
+//
+//            // Dobijamo granice sobe
+//            Rectangle roomBounds = roomView.getRoomBounds();
+//
+//            // Mapa za nove pozicije
+//            HashMap<RoomElement, Point> newLocations = new HashMap<>();
+//
+//            // Iteriramo kroz selektovane elemente
+//            for (ElementPainter painter : roomView.getSelectionList()) {
+//                RoomElement element = painter.getRoomElement();
+//                Point initialLocation = initialLocations.get(element);
+//
+//                if (initialLocation == null) continue;
+//
+//                // Nova lokacija elementa
+//                int newX = initialLocation.x + deltaX;
+//                int newY = initialLocation.y + deltaY;
+//                Point newLocation = new Point(newX, newY);
+//
+//                // Dimenzije elementa
+//                int elementWidth = element.getScaledDimensions(roomView.getScalingFactor()).width;
+//                int elementHeight = element.getScaledDimensions(roomView.getScalingFactor()).height;
+//
+//                // Osiguranje da element ostane unutar granica sobe
+//                if (newLocation.x < roomBounds.x) {
+//                    newLocation.x = roomBounds.x;
+//                }
+//                if (newLocation.y < roomBounds.y) {
+//                    newLocation.y = roomBounds.y;
+//                }
+//                if (newLocation.x + elementWidth > roomBounds.x + roomBounds.width) {
+//                    newLocation.x = roomBounds.x + roomBounds.width - elementWidth;
+//                }
+//                if (newLocation.y + elementHeight > roomBounds.y + roomBounds.height) {
+//                    newLocation.y = roomBounds.y + roomBounds.height - elementHeight;
+//                }
+//
+//                // Dodajemo novu lokaciju u mapu
+//                newLocations.put(element, newLocation);
+//            }
+//
+//            // Proveravamo presek sa drugim elementima
+//            for (Map.Entry<RoomElement, Point> entry : newLocations.entrySet()) {
+//                RoomElement element = entry.getKey();
+//                Point newLocation = entry.getValue();
+//
+//                if (hasIntersection(roomView, element, newLocation)) {
+//                    System.out.println("Preklapanje detektovano! Vraćanje elemenata na početne pozicije.");
+//                    returnToInitialLocations();
+//                    roomView.repaint();
+//                    return;
+//                }
+//            }
+//
+//            // Ažuriramo lokacije elemenata
+//            for (Map.Entry<RoomElement, Point> entry : newLocations.entrySet()) {
+//                entry.getKey().setLokacija(entry.getValue());
+//            }
+//
+//            // Osvežavanje prikaza
+//            roomView.repaint();
+//
+//            // Ažuriramo početnu tačku
+//            initialPoint = point;
+//        }
+//    }
+
 
     @Override
     public void misPusten(RoomView roomView, Point point) {

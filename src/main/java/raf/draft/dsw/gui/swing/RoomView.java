@@ -106,7 +106,7 @@ public class RoomView extends JPanel implements ISubscriber {
 
         g2d.transform(zoom);
 
-        // Translacija za pomak sobe ovo je za movestate
+        //Translacija za pomak sobe ovo je za movestate
         //g2d.translate(offsetX, offsetY);
 
 
@@ -189,6 +189,28 @@ public class RoomView extends JPanel implements ISubscriber {
 
         repaint(); // Osvežavamo prikaz
     }
+
+//    public void updateRoomOffset(int deltaX, int deltaY) {
+//        // Ažuriramo pomak sobe
+//        offsetX += deltaX;
+//        offsetY += deltaY;
+//
+//        // Dinamične granice na osnovu skaliranja i zumiranja
+//        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
+//        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
+//
+//        int panelWidth = getWidth();
+//        int panelHeight = getHeight();
+//
+//        // Ograničavamo offset tako da soba ostane vidljiva, ali omogućavamo pomeranje
+//        offsetX = Math.max(offsetX, panelWidth - roomWidthPx); // Granica levo
+//        offsetX = Math.min(offsetX, 0); // Granica desno
+//
+//        offsetY = Math.max(offsetY, panelHeight - roomHeightPx); // Granica gore
+//        offsetY = Math.min(offsetY, 0); // Granica dole
+//
+//        repaint(); // Osvežavamo prikaz
+//    }
 
     @Override
     public void update(Notification notification) {
