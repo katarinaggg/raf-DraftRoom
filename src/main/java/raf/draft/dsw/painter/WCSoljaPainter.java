@@ -116,11 +116,6 @@ public class WCSoljaPainter implements ElementPainter{
         }
         return false;
     }
-
-    public boolean isArc() {
-        return true; // Ili dinamički utvrdite da li je oblik luk
-    }
-
     @Override
     public RoomElement getRoomElement() {
         return wcSolja;
@@ -130,18 +125,5 @@ public class WCSoljaPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
-
-
-    public double getStartAngle() {
-        if (path == null || path.getPathIterator(null) == null) {
-            return 0; // Defaultni ugao
-        }
-        return 0; // Početni ugao (primer za WC šolju)
-    }
-
-    public double getArcAngle() {
-        return -180; // Ugao luka (primer za WC šolju)
-    }
-
 
 }

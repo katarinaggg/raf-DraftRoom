@@ -8,6 +8,8 @@ import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -47,6 +49,15 @@ public class RoomView extends JPanel implements ISubscriber {
         addMouseListener(mouseListener); // Za MousePressed, MouseReleased itd.
         addMouseMotionListener(mouseListener); // Za MouseDragged i MouseMoved
         addMouseWheelListener(mouseListener);
+
+//        // dodajemo listener za promene velicine panela, ne znam menja li ovo nesto
+//        addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                calculateScalingFactor();
+//                repaint();
+//            }
+//        });
     }
 
     // Metoda za određivanje faktora skaliranja
@@ -64,6 +75,21 @@ public class RoomView extends JPanel implements ISubscriber {
         scalingFactor = Math.min((double) panelWidth / roomWidthPx, (double) panelHeight / roomHeightPx);
     }
 
+
+//    public Rectangle getRoomBounds() {
+//        // Dimenzije sobe u pikselima
+//        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
+//        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
+//
+//        // Pozicija za centriranje sobe u panelu
+//        int panelWidth = getWidth();
+//        int panelHeight = getHeight();
+//        int xStart = (panelWidth - roomWidthPx) / 2; // Centriranje po X
+//        int yStart = (panelHeight - roomHeightPx) / 2; // Centriranje po Y
+//
+//        // Vraćamo pravougaonik koji predstavlja granice sobe
+//        return new Rectangle(xStart, yStart, roomWidthPx, roomHeightPx);
+//    }
 
     public Rectangle getRoomBounds() {
         // Dimenzije sobe u pikselima
@@ -107,7 +133,7 @@ public class RoomView extends JPanel implements ISubscriber {
         g2d.transform(zoom);
 
         //Translacija za pomak sobe ovo je za movestate
-        //g2d.translate(offsetX, offsetY);
+        g2d.translate(offsetX, offsetY);
 
 
         // Crtanje svih elemenata
@@ -117,7 +143,7 @@ public class RoomView extends JPanel implements ISubscriber {
 
 
         // Vraćanje translacije za dalji rad ovo je za movestate
-        //g2d.translate(-offsetX, -offsetY);
+        g2d.translate(-offsetX, -offsetY);
 
         // Crtanje selektovanih elemenata (ako ih ima) ovo mozda treba da se obrise
         if (!selectionList.isEmpty()) {
@@ -173,44 +199,24 @@ public class RoomView extends JPanel implements ISubscriber {
         offsetX += deltaX;
         offsetY += deltaY;
 
-        // Proveravamo granice panela kako bismo osigurali da soba ostane unutar njega
-        int roomWidthPx = (int) (room.getSirina() * scalingFactor);
-        int roomHeightPx = (int) (room.getDuzina() * scalingFactor);
+        // Dinamične granice na osnovu skaliranja i zumiranja
+        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
+        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
 
         int panelWidth = getWidth();
         int panelHeight = getHeight();
 
-        // Ograničavamo offset tako da soba ne izađe iz panela
-        offsetX = Math.max(offsetX, panelWidth - roomWidthPx);
-        offsetX = Math.min(offsetX, 0);
+        // Ažuravanje granica pomeranja na osnovu dimenzija sobe i panela
+        // Ograničavamo pomeranje levo/desno
+        offsetX = Math.max(offsetX, Math.min(0, panelWidth - roomWidthPx));
+        offsetX = Math.min(offsetX, Math.max(0, panelWidth - roomWidthPx));
 
-        offsetY = Math.max(offsetY, panelHeight - roomHeightPx);
-        offsetY = Math.min(offsetY, 0);
+        // Ograničavamo pomeranje gore/dole
+        offsetY = Math.max(offsetY, Math.min(0, panelHeight - roomHeightPx));
+        offsetY = Math.min(offsetY, Math.max(0, panelHeight - roomHeightPx));
 
-        repaint(); // Osvežavamo prikaz
+        repaint(); // Osvežavanje prikaza
     }
-
-//    public void updateRoomOffset(int deltaX, int deltaY) {
-//        // Ažuriramo pomak sobe
-//        offsetX += deltaX;
-//        offsetY += deltaY;
-//
-//        // Dinamične granice na osnovu skaliranja i zumiranja
-//        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
-//        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
-//
-//        int panelWidth = getWidth();
-//        int panelHeight = getHeight();
-//
-//        // Ograničavamo offset tako da soba ostane vidljiva, ali omogućavamo pomeranje
-//        offsetX = Math.max(offsetX, panelWidth - roomWidthPx); // Granica levo
-//        offsetX = Math.min(offsetX, 0); // Granica desno
-//
-//        offsetY = Math.max(offsetY, panelHeight - roomHeightPx); // Granica gore
-//        offsetY = Math.min(offsetY, 0); // Granica dole
-//
-//        repaint(); // Osvežavamo prikaz
-//    }
 
     @Override
     public void update(Notification notification) {

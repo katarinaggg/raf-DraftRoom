@@ -126,7 +126,7 @@ public class SelectState implements State {
         roomView.setSelectionRectangleRB(null);
 
         roomView.repaint();
-        System.out.println("Mis pusten");
+        //System.out.println("Mis pusten");
         System.out.println(roomView.getSelectionList());
 
     }

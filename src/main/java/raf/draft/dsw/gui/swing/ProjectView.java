@@ -340,7 +340,7 @@ public class ProjectView extends JPanel implements ISubscriber {
 
         // Ažuriramo infoPanel na osnovu selektovanog taba
         if (!selectedProject.getRooms().isEmpty()) {
-            Room firstRoom = selectedProject.getRooms().get(0);
+            Room firstRoom = selectedProject.getRooms().getFirst();
             updateInfoPanel(selectedProject, firstRoom);
         } else {
             // Ako nema soba, brišemo informacije iz infoLabel
@@ -440,12 +440,6 @@ public class ProjectView extends JPanel implements ISubscriber {
     public void misPusten(RoomView roomView, Point point){
         stateManager.getCurrentState().misPusten(roomView,point);
     }
-
-
-    public State trenutnoStanje(){
-        return stateManager.getCurrentState();
-    }
-
 
     public void startAddBojlerState(){
         stateManager.setAddBojlerState();

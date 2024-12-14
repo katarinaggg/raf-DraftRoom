@@ -20,8 +20,8 @@ public class ResizeState implements State {
 
     private Point kliknut;
     private RoomElement resizingElement;
-    private Point initialPoint;
-    private Dimension initialSize;
+    private Point pocetnaTacka;
+    private Dimension pocetneDimenzije;
 
     @Override
     public void misZadrzan(RoomView roomView, Point point) {
@@ -39,8 +39,9 @@ public class ResizeState implements State {
         kliknut = point;
 
         if (!roomView.getSelectionList().isEmpty()) {
-            // Dobijamo selektovani element
-            ElementPainter selectedPainter = roomView.getSelectionList().get(0);
+
+            // dobijamo selektovani element
+            ElementPainter selectedPainter = roomView.getSelectionList().getFirst();
             RoomElement element = selectedPainter.getRoomElement();
             Shape shape = selectedPainter.getShape();
             Rectangle2D bounds = shape.getBounds2D();
@@ -48,33 +49,35 @@ public class ResizeState implements State {
             int donjiX = (int) bounds.getMaxX(); // x koordinata DONJE DESNE IVICE
             int donjiY = (int) bounds.getMaxY(); // y koordinata DONJE DESNE IVICE
 
-            // Provera da li je klik blizu donjeg desnog ugla
+            // provera da li je klik blizu donjeg desnog ugla
             int tolerance = 10;
 
             if (kliknut.x >= donjiX - tolerance && kliknut.x <= donjiX + tolerance && kliknut.y >= donjiY - tolerance && kliknut.y <= donjiY + tolerance) {
-                //System.out.println("Kliknuto u donji desni ugao!");
+                //System.out.println("Kliknut donji desni ugao!");
 
-                resizingElement = element;   // Čuvamo referencu na element koji se menja
-                initialPoint = point;        // Početna tačka klika
-                initialSize = element.getSize(); // Početna dimenzija elementa
+                resizingElement = element;
+                pocetnaTacka = point;
+                pocetneDimenzije = element.getSize();
             }
         }
     }
 
 
     @Override
+
     public void misPovucen(RoomView roomView, Point point) {
-        if (resizingElement != null && initialPoint != null && initialSize != null) {
+
+        if (resizingElement != null && pocetnaTacka != null && pocetneDimenzije != null) {
 
             point = roomView.transformMousePoint(point);
 
-            // Racunamo promenu u koordinatama misa
-            int deltaX = point.x - initialPoint.x;
-            int deltaY = point.y - initialPoint.y;
+            // racunamo promenu u koordinatama misa
+            int deltaX = point.x - pocetnaTacka.x;
+            int deltaY = point.y - pocetnaTacka.y;
 
-            // Menjamo dimenzije elementa na osnovu promene
-            int newWidth = Math.max(10, initialSize.width + deltaX); // Minimalna širina 10
-            int newHeight = Math.max(10, initialSize.height + deltaY); // Minimalna visina 10
+            // menjamo dimenzije elementa na osnovu promene
+            int newWidth = Math.max(10, pocetneDimenzije.width + deltaX);
+            int newHeight = Math.max(10, pocetneDimenzije.height + deltaY);
 
             // Postavljamo nove dimenzije elementa
             resizingElement.setSize(new Dimension(newWidth, newHeight));
@@ -86,9 +89,10 @@ public class ResizeState implements State {
 
     @Override
     public void misPusten(RoomView roomView, Point point) {
+            point = roomView.transformMousePoint(point);
             resizingElement = null;
-            initialPoint = null;
-            initialSize = null;
+            pocetnaTacka = null;
+            pocetneDimenzije = null;
             //System.out.println("Resize završen.");
     }
 

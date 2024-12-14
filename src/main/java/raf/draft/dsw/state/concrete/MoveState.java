@@ -23,15 +23,17 @@ import java.util.Map;
 @NoArgsConstructor
 public class MoveState implements State {
 
-    private Point initialPoint; // Početna tačka klika miša
+    private Point pocetnaTacka;
 
-    private static int tolerance=10;
+    private static final int tolerance = 10;
 
-    private final HashMap<RoomElement, Point> initialLocations = new HashMap<>(); // Početne lokacije svih selektovanih elemenata
+    private final HashMap<RoomElement, Point> pocetneLokacije = new HashMap<>();
 
 
     @Override
     public void misZadrzan(RoomView roomView, Point point) {
+
+        point = roomView.transformMousePoint(point);
 
         if(!roomView.isNacrtanaSoba()){
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da nacrtate sobu!", MessageType.WARNING, LocalDateTime.now());
@@ -40,73 +42,70 @@ public class MoveState implements State {
         }
 
         if (!roomView.getSelectionList().isEmpty()) {
-            // Čuvamo početnu tačku miša
-            initialPoint = point;
 
-            // Resetovanje pravougaonika za selekciju
+            pocetnaTacka = point;
+
+            // resetovanje pravougaonika za selekciju
             roomView.setSelectionRectangleLT(null);
             roomView.setSelectionRectangleRB(null);
 
 
-            // Čuvamo početne lokacije svih selektovanih elemenata
-            initialLocations.clear();
+            // cuvam pocetne lokacije svih selektovanih elemenata, prvo ocistim mapu, onda dodajem
+            pocetneLokacije.clear();
             for (ElementPainter painter : roomView.getSelectionList()) {
                 RoomElement element = painter.getRoomElement();
                 if (element != null) {
-                    initialLocations.put(element, new Point(element.getLokacija()));
+                    pocetneLokacije.put(element, new Point(element.getLokacija()));
                 }
             }
         }else{
-            initialPoint = point;
+            pocetnaTacka = point;
         }
     }
 
     @Override
     public void misPovucen(RoomView roomView, Point point) {
-        if (initialPoint != null && roomView.getSelectionList().isEmpty()) {
-            // Pomeranje cele sobe
-            int deltaX = point.x - initialPoint.x;
-            int deltaY = point.y - initialPoint.y;
 
-            // Ažuriramo pomak sobe
+        point = roomView.transformMousePoint(point);
+
+        if (pocetnaTacka != null && roomView.getSelectionList().isEmpty()) {
+            // pomeranje cele sobe
+            int deltaX = point.x - pocetnaTacka.x;
+            int deltaY = point.y - pocetnaTacka.y;
+
+            // promenimo pomeraj sobe
             roomView.updateRoomOffset(deltaX, deltaY);
 
-            // Ažuriramo početnu tačku
-            initialPoint = point;
+            pocetnaTacka = point;
 
-        } else if (initialPoint != null && !initialLocations.isEmpty()) {
-            // Računamo pomeranje miša
-            int deltaX = point.x - initialPoint.x;
-            int deltaY = point.y - initialPoint.y;
+        } else if (pocetnaTacka != null && !pocetneLokacije.isEmpty()) {
+            // racunamo pomeranje misa
+            int deltaX = point.x - pocetnaTacka.x;
+            int deltaY = point.y - pocetnaTacka.y;
 
-            // Dobijamo granice sobe
             Rectangle roomBounds = roomView.getRoomBounds();
 
-            // Mapa za nove pozicije
-            HashMap<RoomElement, Point> newLocations = new HashMap<>();
+            HashMap<RoomElement, Point> novaLokacija = new HashMap<>();
 
-            // Iteriramo kroz selektovane elemente
             for (ElementPainter painter : roomView.getSelectionList()) {
                 RoomElement element = painter.getRoomElement();
-                Point initialLocation = initialLocations.get(element);
+                Point initialLocation = pocetneLokacije.get(element);
 
                 if (initialLocation == null) continue;
 
-                // Nova lokacija elementa
+                // nova lokacija elementa
                 int newX = initialLocation.x + deltaX;
                 int newY = initialLocation.y + deltaY;
                 Point newLocation = new Point(newX, newY);
 
-                // Dobijamo pravougaonik za selekciju elementa
                 Rectangle elementBounds = painter.getShape().getBounds();
 
-                // Ažuriramo poziciju pravougaonika prema trenutnom pomeranju
                 elementBounds.setLocation(newLocation);
 
-                // Lepljenje uz ivicu sobe
+                // pepljenje uz ivicu sobe
                 Point snappedLocation = snapToEdgeRectangle(roomBounds, elementBounds, tolerance);
 
-                // Proveravamo da li je nova lokacija unutar granica sobe
+                // proveravamo da li je nova lokacija unutar granica sobe
                 if (!isWithinRoomBounds(roomView, element, snappedLocation)) {
                     System.out.println("Element " + element.getIme() + " izlazi iz granica sobe!");
                     returnToInitialLocations();
@@ -114,17 +113,17 @@ public class MoveState implements State {
                     return;
                 }
 
-                // Dodajemo novu lokaciju u mapu
-                newLocations.put(element, snappedLocation);
+                // dodajemo novu lokaciju u mapu
+                novaLokacija.put(element, snappedLocation);
             }
 
             // Proveravamo presek sa drugim elementima
-            for (Map.Entry<RoomElement, Point> entry : newLocations.entrySet()) {
+            for (Map.Entry<RoomElement, Point> entry : novaLokacija.entrySet()) {
                 RoomElement element = entry.getKey();
                 Point newLocation = entry.getValue();
 
                 if (hasIntersection(roomView, element, newLocation)) {
-                    System.out.println("Preklapanje detektovano! Vraćanje elemenata na početne pozicije.");
+                    //System.out.println("Preklapanje detektovano! Vraćanje elemenata na početne pozicije.");
                     returnToInitialLocations();
                     roomView.repaint();
                     return;
@@ -132,7 +131,7 @@ public class MoveState implements State {
             }
 
             // Ažuriramo lokacije elemenata
-            for (Map.Entry<RoomElement, Point> entry : newLocations.entrySet()) {
+            for (Map.Entry<RoomElement, Point> entry : novaLokacija.entrySet()) {
                 entry.getKey().setLokacija(entry.getValue());
             }
 
@@ -141,103 +140,18 @@ public class MoveState implements State {
         }
     }
 
-//    @Override
-//    public void misPovucen(RoomView roomView, Point point) {
-//        if (initialPoint != null && roomView.getSelectionList().isEmpty()) {
-//            // Pomeranje cele sobe
-//            int deltaX = point.x - initialPoint.x;
-//            int deltaY = point.y - initialPoint.y;
-//
-//            // Ažuriramo pomak sobe
-//            roomView.updateRoomOffset(deltaX, deltaY);
-//
-//            // Ažuriramo početnu tačku
-//            initialPoint = point;
-//
-//        } else if (initialPoint != null && !initialLocations.isEmpty()) {
-//            // Računamo pomeranje miša
-//            int deltaX = point.x - initialPoint.x;
-//            int deltaY = point.y - initialPoint.y;
-//
-//            // Dobijamo granice sobe
-//            Rectangle roomBounds = roomView.getRoomBounds();
-//
-//            // Mapa za nove pozicije
-//            HashMap<RoomElement, Point> newLocations = new HashMap<>();
-//
-//            // Iteriramo kroz selektovane elemente
-//            for (ElementPainter painter : roomView.getSelectionList()) {
-//                RoomElement element = painter.getRoomElement();
-//                Point initialLocation = initialLocations.get(element);
-//
-//                if (initialLocation == null) continue;
-//
-//                // Nova lokacija elementa
-//                int newX = initialLocation.x + deltaX;
-//                int newY = initialLocation.y + deltaY;
-//                Point newLocation = new Point(newX, newY);
-//
-//                // Dimenzije elementa
-//                int elementWidth = element.getScaledDimensions(roomView.getScalingFactor()).width;
-//                int elementHeight = element.getScaledDimensions(roomView.getScalingFactor()).height;
-//
-//                // Osiguranje da element ostane unutar granica sobe
-//                if (newLocation.x < roomBounds.x) {
-//                    newLocation.x = roomBounds.x;
-//                }
-//                if (newLocation.y < roomBounds.y) {
-//                    newLocation.y = roomBounds.y;
-//                }
-//                if (newLocation.x + elementWidth > roomBounds.x + roomBounds.width) {
-//                    newLocation.x = roomBounds.x + roomBounds.width - elementWidth;
-//                }
-//                if (newLocation.y + elementHeight > roomBounds.y + roomBounds.height) {
-//                    newLocation.y = roomBounds.y + roomBounds.height - elementHeight;
-//                }
-//
-//                // Dodajemo novu lokaciju u mapu
-//                newLocations.put(element, newLocation);
-//            }
-//
-//            // Proveravamo presek sa drugim elementima
-//            for (Map.Entry<RoomElement, Point> entry : newLocations.entrySet()) {
-//                RoomElement element = entry.getKey();
-//                Point newLocation = entry.getValue();
-//
-//                if (hasIntersection(roomView, element, newLocation)) {
-//                    System.out.println("Preklapanje detektovano! Vraćanje elemenata na početne pozicije.");
-//                    returnToInitialLocations();
-//                    roomView.repaint();
-//                    return;
-//                }
-//            }
-//
-//            // Ažuriramo lokacije elemenata
-//            for (Map.Entry<RoomElement, Point> entry : newLocations.entrySet()) {
-//                entry.getKey().setLokacija(entry.getValue());
-//            }
-//
-//            // Osvežavanje prikaza
-//            roomView.repaint();
-//
-//            // Ažuriramo početnu tačku
-//            initialPoint = point;
-//        }
-//    }
-
-
     @Override
     public void misPusten(RoomView roomView, Point point) {
-        initialPoint = null; // Resetujemo početnu tačku
-        initialLocations.clear(); // Resetujemo početne lokacije
+        point = roomView.transformMousePoint(point);
+        pocetnaTacka = null; // Resetujemo početnu tačku
+        pocetneLokacije.clear(); // Resetujemo početne lokacije
     }
 
     private boolean hasIntersection(RoomView roomView, RoomElement movingElement, Point newLocation) {
         // Dohvatamo stvarni oblik pomeranog elementa
-        ElementPainter movingPainter = roomView.getPainters().stream()
-                .filter(p -> p.getRoomElement() == movingElement)
-                .findFirst()
-                .orElse(null);
+        /// .stream() pretvara listu u stream kako bi se lakse obradjivali podaci
+        // p predstavlja pojedinacni painter
+        ElementPainter movingPainter = roomView.getPainters().stream().filter(p -> p.getRoomElement() == movingElement).findFirst().orElse(null);
 
         if (movingPainter == null) {
             System.out.println("Painter za pomerani element nije pronađen.");
@@ -250,89 +164,42 @@ public class MoveState implements State {
             return false;
         }
 
-        // Transliramo oblik na novu lokaciju
+        // transliram oblik na novu lokaciju
         AffineTransform transform = AffineTransform.getTranslateInstance(
                 newLocation.x - movingElement.getLokacija().x,
                 newLocation.y - movingElement.getLokacija().y
         );
         Shape translatedShape = transform.createTransformedShape(movingShape);
 
-        // Proveravamo presek sa svim drugim elementima
+
+        // provera preseka
         for (ElementPainter painter : roomView.getPainters()) {
-            RoomElement otherElement = painter.getRoomElement();
 
-            // Preskačemo element koji trenutno pomeramo ili ako je drugi element null
-            if (otherElement == null || otherElement == movingElement) continue;
+            RoomElement randomElement = painter.getRoomElement();
 
-            Shape otherShape = painter.getShape();
-            if (otherShape == null) {
-                System.out.println("Oblik za element " + otherElement + " nije pronađen. Preskačem.");
+            // preskacemo element koji trenutno pomeramo ili ako je random element null
+            if (randomElement == null || randomElement == movingElement) continue;
+
+            Shape randomShape = painter.getShape();
+            if (randomShape == null) {
+                //System.out.println("Oblik za element " + randomElement + " nije pronađen. Preskačem.");
                 continue;
             }
-
-            // Proveravamo tačan presek između stvarnih oblika
-            if (translatedShape.getBounds2D().intersects(otherShape.getBounds2D()) &&
-                    translatedShape.intersects(otherShape.getBounds2D())) {
-                // Dodatna precizna provera preseka stvarnih oblika
-                Area movingArea = new Area(translatedShape);
-                Area otherArea = new Area(otherShape);
-                movingArea.intersect(otherArea);
-                if (!movingArea.isEmpty()) {
-                    System.out.println("Precizan presek detektovan između " + movingElement.getIme() + " i " + otherElement.getIme());
+            if (translatedShape.getBounds2D().intersects(randomShape.getBounds2D())) {
+                // proveravam da li postoji stvarni presek izmedju oblika
+                if (translatedShape.intersects(randomShape.getBounds2D())) {
+                    //System.out.println("Presek detektovan između " + movingElement.getIme() + " i " + randomElement.getIme());
                     return true;
                 }
             }
+
         }
 
-        return false; // Nema preklapanja
+        return false;
     }
 
-
-//    private boolean isWithinRoomBounds(RoomView roomView, RoomElement movingElement, Point newLocation) {
-//        ElementPainter movingPainter = roomView.getPainters().stream()
-//                .filter(p -> p.getRoomElement() == movingElement)
-//                .findFirst()
-//                .orElse(null);
-//
-//        if (movingPainter == null) {
-//            System.out.println("Painter za element nije pronađen: " + movingElement.getIme());
-//            return false;
-//        }
-//
-//        Shape movingShape = movingPainter.getShape();
-//        boolean isEllipse = movingPainter instanceof VrataPainter || movingPainter instanceof WCSoljaPainter
-//                || movingPainter instanceof BojlerPainter;
-//
-//        if (isEllipse) {
-//            // Dimenzije elipse
-//            Dimension size = movingElement.getScaledDimensions(roomView.getScalingFactor());
-//            int semiMajorAxis = size.width / 2;
-//            int semiMinorAxis = size.height / 2;
-//
-//            // Centar elipse
-//            int centerX = newLocation.x + semiMajorAxis;
-//            int centerY = newLocation.y + semiMinorAxis;
-//
-//            // Proveravamo da li je cela elipsa unutar granica sobe
-//            Rectangle roomBounds = roomView.getRoomBounds();
-//            return centerX - semiMajorAxis >= roomBounds.x &&
-//                    centerX + semiMajorAxis <= roomBounds.x + roomBounds.width &&
-//                    centerY - semiMinorAxis >= roomBounds.y &&
-//                    centerY + semiMinorAxis <= roomBounds.y + roomBounds.height;
-//        } else {
-//            // Provera za pravougaonik
-//            AffineTransform transform = AffineTransform.getTranslateInstance(
-//                    newLocation.x - movingElement.getLokacija().x,
-//                    newLocation.y - movingElement.getLokacija().y
-//            );
-//            Shape translatedShape = transform.createTransformedShape(movingShape);
-//
-//            Rectangle roomBounds = roomView.getRoomBounds();
-//            return roomBounds.contains(translatedShape.getBounds2D());
-//        }
-//    }
-
     private boolean isWithinRoomBounds(RoomView roomView, RoomElement movingElement, Point newLocation) {
+        // hvatamo painter za pomerani element
         ElementPainter movingPainter = roomView.getPainters().stream()
                 .filter(p -> p.getRoomElement() == movingElement)
                 .findFirst()
@@ -342,102 +209,62 @@ public class MoveState implements State {
             return false;
         }
 
+        // hvatamo oblik elementa
         Shape movingShape = movingPainter.getShape();
-        boolean isEllipse = movingPainter instanceof VrataPainter || movingPainter instanceof WCSoljaPainter || movingPainter instanceof BojlerPainter;
 
-        if (isEllipse && movingShape instanceof GeneralPath) {
-            Rectangle2D bounds = movingShape.getBounds2D();
-
-            double radiusX = bounds.getWidth() / 2;
-            double radiusY = bounds.getHeight() / 2;
-            double centerX = newLocation.x + radiusX;
-            double centerY = newLocation.y + radiusY;
-
-            Rectangle roomBounds = roomView.getRoomBounds();
-            return centerX - radiusX >= roomBounds.x &&
-                    centerX + radiusX <= roomBounds.x + roomBounds.width &&
-                    centerY - radiusY >= roomBounds.y &&
-                    centerY + radiusY <= roomBounds.y + roomBounds.height;
+        if (movingShape == null) {
+            return false;
         }
 
-        // Provera za pravougaone oblike
-        Rectangle roomBounds = roomView.getRoomBounds();
+        // Transliramo oblik na novu lokaciju
         AffineTransform transform = AffineTransform.getTranslateInstance(
                 newLocation.x - movingElement.getLokacija().x,
                 newLocation.y - movingElement.getLokacija().y
         );
         Shape translatedShape = transform.createTransformedShape(movingShape);
 
-        return roomBounds.contains(translatedShape.getBounds2D());
+        // proverava da li granice oblika ostaju unutar granica sobe
+        Rectangle roomBounds = roomView.getRoomBounds();
+        return roomBounds.contains(translatedShape.getBounds());
     }
 
 
     private Point snapToEdgeRectangle(Rectangle roomBounds, Rectangle elementBounds, int tolerance) {
-        // Nova pozicija elementa
-        Point adjustedLocation = new Point(elementBounds.x, elementBounds.y);
+        // nova pozicija elementa
+        Point uzIvicu = new Point(elementBounds.x, elementBounds.y);
 
-        // Provera udaljenosti od svake ivice sobe
+        // provera udaljenosti od svake ivice sobe
         if (Math.abs(elementBounds.x - roomBounds.x) <= tolerance) {
-            // Lepljenje uz levu ivicu sobe
-            adjustedLocation.x = roomBounds.x;
+            // lepljenje uz levu ivicu sobe
+            uzIvicu.x = roomBounds.x;
         } else if (Math.abs(elementBounds.x + elementBounds.width - (roomBounds.x + roomBounds.width)) <= tolerance) {
-            // Lepljenje uz desnu ivicu sobe
-            adjustedLocation.x = roomBounds.x + roomBounds.width - elementBounds.width;
+            // lepljenje uz desnu ivicu sobe
+            uzIvicu.x = roomBounds.x + roomBounds.width - elementBounds.width;
         }
+
 
         if (Math.abs(elementBounds.y - roomBounds.y) <= tolerance) {
-            adjustedLocation.y = roomBounds.y;
+            // lepljenje uz gornju ivicu
+            uzIvicu.y = roomBounds.y;
             System.out.println("Snapped to top edge");
+
+
         } else if (Math.abs(elementBounds.y + elementBounds.height - (roomBounds.y + roomBounds.height)) <= tolerance) {
-            adjustedLocation.y = roomBounds.y + roomBounds.height - elementBounds.height;
+            //lepljenje uz donju ivicu
+            uzIvicu.y = roomBounds.y + roomBounds.height - elementBounds.height;
             System.out.println("Snapped to bottom edge");
         }
-        return adjustedLocation;
+        return uzIvicu;
     }
-
-
-    private Point snapToEdge(Rectangle roomBounds, Shape elementShape, boolean isEllipse, int tolerance) {
-        if (isEllipse && elementShape instanceof GeneralPath) {
-            // Dobijamo okvirne granice oblika (bounding box)
-            Rectangle2D bounds = elementShape.getBounds2D();
-
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
-            double radiusX = bounds.getWidth() / 2;
-            double radiusY = bounds.getHeight() / 2;
-
-            // Prilagođavanje pozicije prema sobnim granicama
-            if (Math.abs(centerX - radiusX - roomBounds.x) <= tolerance) {
-                centerX = roomBounds.x + radiusX;
-            } else if (Math.abs(centerX + radiusX - (roomBounds.x + roomBounds.width)) <= tolerance) {
-                centerX = roomBounds.x + roomBounds.width - radiusX;
-            }
-
-            if (Math.abs(centerY - radiusY - roomBounds.y) <= tolerance) {
-                centerY = roomBounds.y + radiusY;
-            } else if (Math.abs(centerY + radiusY - (roomBounds.y + roomBounds.height)) <= tolerance) {
-                centerY = roomBounds.y + roomBounds.height - radiusY;
-            }
-
-            return new Point((int) (centerX - radiusX), (int) (centerY - radiusY));
-        }
-
-        // Za pravougaone oblike, koristimo postojeću logiku
-        Rectangle elementBounds = elementShape.getBounds();
-        return snapToEdgeRectangle(roomBounds, elementBounds, tolerance);
-    }
-
-
 
     private void returnToInitialLocations() {
-        for (Map.Entry<RoomElement, Point> entry : initialLocations.entrySet()) {
+        for (Map.Entry<RoomElement, Point> entry : pocetneLokacije.entrySet()) {
             RoomElement element = entry.getKey();
             Point initialLocation = entry.getValue();
 
-            // Vraćamo element na početnu poziciju
+            // vraćamo element na pocetnu poziciju
             element.setLokacija(initialLocation);
         }
-        System.out.println("Svi elementi su vraćeni na početne pozicije.");
     }
 
 
