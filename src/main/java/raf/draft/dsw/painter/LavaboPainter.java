@@ -20,6 +20,44 @@ public class LavaboPainter implements ElementPainter{
     public LavaboPainter(Lavabo lavabo, RoomView roomView) {
         this.lavabo = lavabo;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
+    }
+
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = lavabo.getScaledDimensions(scalingFactor);
+
+        int width = scaledSize.width;
+        int height = scaledSize.height;
+
+        int baseX = lavabo.getLokacija().x;
+        int baseY = lavabo.getLokacija().y;
+
+        int[] xPoints = {
+                baseX,
+                baseX + width,
+                baseX + width / 2
+        };
+        int[] yPoints = {
+                baseY,
+                baseY,
+                baseY + height
+        };
+
+        GeneralPath path = new GeneralPath();
+        path.moveTo(xPoints[0], yPoints[0]);
+        path.lineTo(xPoints[1], yPoints[1]);
+        path.lineTo(xPoints[2], yPoints[2]);
+        path.closePath();
+
+        int centerX = (xPoints[0] + xPoints[1] + xPoints[2]) / 3;
+        int centerY = (yPoints[0] + yPoints[1] + yPoints[2]) / 3;
+
+        int dotSize = 6;
+        Ellipse2D.Double centerDot = new Ellipse2D.Double(centerX - dotSize / 2.0, centerY - dotSize / 2.0, dotSize, dotSize);
+        path.append(centerDot, false);
+
+        return path;
     }
 
     @Override

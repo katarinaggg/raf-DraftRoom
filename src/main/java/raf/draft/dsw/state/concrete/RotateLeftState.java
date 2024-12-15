@@ -23,6 +23,13 @@ public class RotateLeftState implements State {
             return;
         }
 
+        // ako je lista prazna nemamo sta da rotiramo
+        if(roomView.getSelectionList().isEmpty()){
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da selektujete element", MessageType.INFORMATION, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
+
         for(ElementPainter e: roomView.getSelectionList()){
             // jednom se rotira od prethodnog stanja
             e.getRoomElement().setRotateRatio(e.getRoomElement().getRotacija()-1);

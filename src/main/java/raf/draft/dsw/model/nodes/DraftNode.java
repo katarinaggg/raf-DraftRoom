@@ -36,11 +36,11 @@ public abstract class DraftNode implements IPublisher {
 
     @Override
     public void notifySubscribers(Notification notification) {
-        for(ISubscriber subscriber : subscriberList){
-            subscriber.update(notification);
-        }
-//        for(int i = 0; i < subscriberList.size(); i++){
-//            subscriberList.get(i).update(notification);
+//        for(ISubscriber subscriber : subscriberList){
+//            subscriber.update(notification);
 //        }
+        for(int i = 0; i < subscriberList.size(); i++){
+            subscriberList.get(i).update(notification);
+        }
     }
 }

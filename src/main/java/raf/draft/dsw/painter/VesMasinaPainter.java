@@ -20,6 +20,32 @@ public class VesMasinaPainter implements ElementPainter{
     public VesMasinaPainter(VesMasina vesMasina, RoomView roomView) {
         this.vesMasina = vesMasina;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
+    }
+
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = vesMasina.getScaledDimensions(scalingFactor);
+
+        int squareX = vesMasina.getLokacija().x;
+        int squareY = vesMasina.getLokacija().y;
+        int squareSize = scaledSize.width;
+
+        GeneralPath path = new GeneralPath();
+
+        path.moveTo(squareX, squareY);
+        path.lineTo(squareX + squareSize, squareY);
+        path.lineTo(squareX + squareSize, squareY + squareSize);
+        path.lineTo(squareX, squareY + squareSize);
+        path.closePath();
+
+        int circleDiameter = (int) (squareSize * 0.7);
+        double circleX = squareX + (squareSize - circleDiameter) / 2.0;
+        double circleY = squareY + (squareSize - circleDiameter) / 2.0;
+
+        path.append(new Ellipse2D.Double(circleX, circleY, circleDiameter, circleDiameter), false);
+
+        return path;
     }
 
     @Override

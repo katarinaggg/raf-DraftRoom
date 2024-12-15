@@ -60,6 +60,11 @@ public class ResizeState implements State {
                 pocetneDimenzije = element.getSize();
             }
         }
+        else {
+            // ako je lista prazna nema selektovanih elemenata za resize
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate prvo da selektujete element", MessageType.INFORMATION, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+        }
     }
 
 

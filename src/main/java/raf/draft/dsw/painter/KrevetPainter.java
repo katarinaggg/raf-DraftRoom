@@ -22,7 +22,44 @@ public class KrevetPainter implements ElementPainter{
     public KrevetPainter(Krevet krevet, RoomView roomView) {
         this.krevet = krevet;
         this.roomView = roomView;
-        this.transformedPath = new GeneralPath();
+        this.transformedPath = osnovniOblik();
+    }
+
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledDimensions = krevet.getScaledDimensions(scalingFactor);
+
+        int bedWidth = scaledDimensions.width;
+        int bedHeight = scaledDimensions.height;
+
+        int bedX = krevet.getLokacija().x;
+        int bedY = krevet.getLokacija().y;
+
+        GeneralPath path = new GeneralPath();
+
+        path.moveTo(bedX, bedY);
+        path.lineTo(bedX + bedWidth, bedY);
+        path.lineTo(bedX + bedWidth, bedY + bedHeight);
+        path.lineTo(bedX, bedY + bedHeight);
+        path.closePath();
+
+
+        int pillowWidth = bedWidth / 2;
+        int pillowHeight = bedHeight / 7;
+        int pillowMargin = 10;
+
+
+        double pillowXStart = bedX + (bedWidth - pillowWidth) / 2.0;
+        double pillowYStart = bedY + pillowMargin;
+
+
+        path.moveTo(pillowXStart, pillowYStart);
+        path.lineTo(pillowXStart + pillowWidth, pillowYStart);
+        path.lineTo(pillowXStart + pillowWidth, pillowYStart + pillowHeight);
+        path.lineTo(pillowXStart, pillowYStart + pillowHeight);
+        path.closePath();
+
+        return path;
     }
 
     @Override
