@@ -9,6 +9,7 @@ import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
+import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +54,11 @@ public class RemoveNodeAction extends AbstractRoomAction{
         }
         if (selected.getDraftNode() instanceof ProjectExplorer) {
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne možete da obrišete Project Explorer!", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
+        if(selected.getDraftNode() instanceof RoomElement) {
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Namestaj moze da se obrise preko toolbara s desne strane", MessageType.INFORMATION, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }

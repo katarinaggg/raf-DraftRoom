@@ -37,6 +37,20 @@ public class AddLavabo implements State {
         if(dimenzija!=null && dimenzija.getWidth()>0 && dimenzija.getHeight()>0) {
             Lavabo lavabo = new Lavabo(roomView.getRoom(), point, dimenzija);
             LavaboPainter lavaboPainter = new LavaboPainter(lavabo,roomView);
+
+//            if(!roomView.unutarSobe(point.x,point.y,dimenzija.width,dimenzija.height)){
+//                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element van granica sobe!", MessageType.WARNING, LocalDateTime.now());
+//                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+//                return;
+//            }
+
+            if(roomView.preklapanjeElemenata(lavaboPainter.getShape())){
+                // ako se preklapaju ne mozemo da ga dodamo i izlazi poruka
+                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element jer se preklapa sa postojecim!", MessageType.WARNING, LocalDateTime.now());
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+                return;
+            }
+
             roomView.addPainter(lavaboPainter);
 
             DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());

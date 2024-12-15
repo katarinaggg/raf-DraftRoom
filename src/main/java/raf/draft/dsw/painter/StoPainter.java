@@ -21,6 +21,30 @@ public class StoPainter implements ElementPainter{
     public StoPainter(Sto sto,RoomView roomView) {
         this.sto = sto;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
+    }
+
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = sto.getScaledDimensions(scalingFactor);
+
+        int rectX = sto.getLokacija().x;
+        int rectY = sto.getLokacija().y;
+        int rectWidth = scaledSize.width;
+        int rectHeight = scaledSize.height;
+
+        GeneralPath path = new GeneralPath();
+        path.append(new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight), false);
+
+        int offset = Math.min(rectWidth, rectHeight) / 10;
+        int dotSize = 4;
+
+        path.append(new Ellipse2D.Double(rectX + offset - dotSize / 2.0, rectY + offset - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(rectX + rectWidth - offset - dotSize / 2.0, rectY + offset - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(rectX + offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(rectX + rectWidth - offset - dotSize / 2.0, rectY + rectHeight - offset - dotSize / 2.0, dotSize, dotSize), false);
+
+        return path;
     }
 
     @Override

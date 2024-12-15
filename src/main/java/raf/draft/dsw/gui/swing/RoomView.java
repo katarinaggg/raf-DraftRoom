@@ -5,6 +5,7 @@ import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.painter.ElementPainter;
 import raf.draft.dsw.model.structures.Room;
+import raf.draft.dsw.painter.RoomPainter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -337,5 +338,29 @@ public class RoomView extends JPanel implements ISubscriber {
         }
     }
 
+    public boolean preklapanjeElemenata(Shape novi) {
+        // prolazimo kroz listu paintera u nasem roomView
+        // i gledamo da li se neki shape sece da ovim novim
+        // koji treba da dodamo
+        for(ElementPainter painter : painters) {
+            // treba da iskljucimo roomPainter iz provere
+            // jer se svakako svaki element sece sa sobom
+            Shape trenutni = painter.getShape();
+            if(!(painter instanceof RoomPainter) && trenutni!=null && trenutni.intersects(novi.getBounds2D())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // ne radi kod zumiranja????
+    public boolean unutarSobe(int elementX, int elementY, int elementWidth, int elementHeight) {
+        Rectangle roomBounds = getRoomBounds();
+        // pravimo pravougaonik za element
+        Rectangle2D elementBounds = new Rectangle2D.Double(elementX, elementY, elementWidth, elementHeight);
+        // proveravamo da li se granice elementa nalaze unutar granica sobe
+        return roomBounds.contains(elementBounds);
+    }
 
 }

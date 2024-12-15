@@ -36,6 +36,20 @@ public class AddOrmar implements State {
         if(dimenzija!=null && dimenzija.width>0 && dimenzija.height>0) {
             Ormar ormar = new Ormar(roomView.getRoom(), point, dimenzija);
             OrmarPainter ormarPainter = new OrmarPainter(ormar,roomView);
+
+//            if(!roomView.unutarSobe(point.x,point.y,dimenzija.width,dimenzija.height)){
+//                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element van granica sobe!", MessageType.WARNING, LocalDateTime.now());
+//                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+//                return;
+//            }
+
+            if(roomView.preklapanjeElemenata(ormarPainter.getShape())){
+                // ako se preklapaju ne mozemo da ga dodamo i izlazi poruka
+                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element jer se preklapa sa postojecim!", MessageType.WARNING, LocalDateTime.now());
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+                return;
+            }
+
             roomView.addPainter(ormarPainter);
 
             DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());

@@ -70,12 +70,29 @@ public class RoomPainter implements ElementPainter{
             return null;
         }
 
+//        double scalingFactor = roomView.getScalingFactor();
+//        int roomWidthPx = room.convertCmToPx(room.getSirina(), scalingFactor);
+//        int roomHeightPx = room.convertCmToPx(room.getDuzina(), scalingFactor);
+//
+//        GeneralPath path = new GeneralPath();
+//        path.append(new Rectangle2D.Double(0, 0, roomWidthPx, roomHeightPx), false);
+//
+//        return path;
         double scalingFactor = roomView.getScalingFactor();
         int roomWidthPx = room.convertCmToPx(room.getSirina(), scalingFactor);
         int roomHeightPx = room.convertCmToPx(room.getDuzina(), scalingFactor);
 
+        // Dimenzije panela
+        int panelWidth = roomView.getWidth();
+        int panelHeight = roomView.getHeight();
+
+        // Pozicija za centriranje sobe u panelu
+        int xStart = (panelWidth - roomWidthPx) / 2;
+        int yStart = (panelHeight - roomHeightPx) / 2;
+
+        // Pravougaonik sobe centriran u panelu
         GeneralPath path = new GeneralPath();
-        path.append(new Rectangle2D.Double(0, 0, roomWidthPx, roomHeightPx), false);
+        path.append(new Rectangle2D.Double(xStart, yStart, roomWidthPx, roomHeightPx), false);
 
         return path;
     }

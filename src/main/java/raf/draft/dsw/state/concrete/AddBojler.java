@@ -45,6 +45,29 @@ public class AddBojler implements State {
             Bojler bojler = new Bojler(roomView.getRoom(),point,dimenzija);
             BojlerPainter bojlerPainter = new BojlerPainter(bojler,roomView);
 
+            // moramo da proverimo da li element dodajemo unutar sobe
+            // tj da li izlazi iz granica sobe ako ga dodamo na
+            // tu odredjenuy lokaciju
+
+            // ova metoda nam ne radi kada zumiramo jer
+            // nam iz nekog razloga nisu dobre granice sobe
+            // iako se uvek uzima u obzir i zoomLevel ???
+//            if(!roomView.unutarSobe(point.x,point.y,dimenzija.width,dimenzija.height)){
+//                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element van granica sobe!", MessageType.WARNING, LocalDateTime.now());
+//                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+//                return;
+//            }
+
+            // moramo da proverimo da li se sece sa nekim
+            // vec postojecim elementom
+            // ako ne mozemo da ga nacrtamo
+            if(roomView.preklapanjeElemenata(bojlerPainter.getShape())){
+                // ako se preklapaju ne mozemo da ga dodamo i izlazi poruka
+                Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element jer se preklapa sa postojecim!", MessageType.WARNING, LocalDateTime.now());
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+                return;
+            }
+
             // dodajemo painter na roomView
             roomView.addPainter(bojlerPainter);
 

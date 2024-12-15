@@ -42,7 +42,9 @@ public class DeleteState implements State {
         else {
             // prolazimo kroz paintere i ako se neki sece sa nasim pointom
             // tj ako smo na neki kliknuli treba da ga obrisemo
-            //for(ElementPainter e : roomView.getPainters()){
+
+            point = roomView.transformMousePoint(point);
+
             for (int i = 0; i < roomView.getPainters().size(); i++) {
                 ElementPainter elementPainter = roomView.getPainters().get(i);
                 if (!(elementPainter instanceof RoomPainter) && elementPainter.elementAt(point, null)) {

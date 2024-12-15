@@ -20,7 +20,39 @@ public class OrmarPainter implements ElementPainter{
     public OrmarPainter(Ormar ormar, RoomView roomView) {
         this.ormar = ormar;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
     }
+
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = ormar.getScaledDimensions(scalingFactor);
+
+        int rectX = ormar.getLokacija().x;
+        int rectY = ormar.getLokacija().y;
+        int rectWidth = scaledSize.width;
+        int rectHeight = scaledSize.height;
+
+        GeneralPath path = new GeneralPath();
+        path.moveTo(rectX, rectY);
+        path.lineTo(rectX + rectWidth, rectY);
+        path.lineTo(rectX + rectWidth, rectY + rectHeight);
+        path.lineTo(rectX, rectY + rectHeight);
+        path.closePath();
+
+        int centerX = rectX + rectWidth / 2;
+        path.moveTo(centerX, rectY);
+        path.lineTo(centerX, rectY + rectHeight);
+
+        int dotOffset = 10;
+        int dotSize = 4;
+        int centerY = rectY + rectHeight / 2;
+
+        path.append(new Ellipse2D.Double(centerX - dotOffset - dotSize / 2.0, centerY - dotSize / 2.0, dotSize, dotSize), false);
+        path.append(new Ellipse2D.Double(centerX + dotOffset - dotSize / 2.0, centerY - dotSize / 2.0, dotSize, dotSize), false);
+
+        return path;
+    }
+
 
     @Override
     public void paint(Graphics g) {

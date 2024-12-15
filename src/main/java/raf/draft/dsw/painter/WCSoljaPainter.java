@@ -20,6 +20,51 @@ public class WCSoljaPainter implements ElementPainter{
     public WCSoljaPainter(WCSolja wcSolja, RoomView roomView) {
         this.wcSolja = wcSolja;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
+    }
+
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = wcSolja.getScaledDimensions(scalingFactor);
+
+        int startX = wcSolja.getLokacija().x;
+        int startY = wcSolja.getLokacija().y;
+        int width = scaledSize.width;
+        int height = scaledSize.height;
+
+        GeneralPath path = new GeneralPath();
+
+        Arc2D.Double outerArc = new Arc2D.Double(
+                startX, startY,
+                width, height,
+                0, -180,
+                Arc2D.CHORD
+        );
+        path.append(outerArc, false);
+
+        int innerWidth = width / 2;
+        int innerHeight = height / 3;
+
+        int innerStartX = startX + (width - innerWidth) / 2;
+        int innerStartY = startY + (height - innerHeight) / 2;
+        innerStartY += innerHeight / 2;
+
+        Arc2D.Double innerArc = new Arc2D.Double(
+                innerStartX, innerStartY,
+                innerWidth, innerHeight,
+                0, -180,
+                Arc2D.CHORD
+        );
+        path.append(innerArc, false);
+
+        int lineY = innerStartY + 7;
+        int lineStartX = startX;
+        int lineEndX = startX + width;
+
+        path.moveTo(lineStartX, lineY);
+        path.lineTo(lineEndX, lineY);
+
+        return path;
     }
 
     @Override

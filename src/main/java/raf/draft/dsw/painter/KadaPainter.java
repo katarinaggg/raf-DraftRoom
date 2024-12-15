@@ -20,8 +20,40 @@ public class KadaPainter implements ElementPainter{
     public KadaPainter(Kada kada, RoomView roomView) {
         this.kada = kada;
         this.roomView = roomView;
-        this.transformedPath = new GeneralPath();
+        this.transformedPath = osnovniOblik();
     }
+
+    private GeneralPath osnovniOblik() {
+        // sve isto ko iz painta
+        // samo nam treba da na pocetku sacuvamo osnovni oblik
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledDimensions = kada.getScaledDimensions(scalingFactor);
+
+        int rectX = kada.getLokacija().x; // X koordinata gornjeg levog ugla pravougaonika
+        int rectY = kada.getLokacija().y; // Y koordinata gornjeg levog ugla pravougaonika
+
+        int rectWidth = scaledDimensions.width;
+        int rectHeight = scaledDimensions.height;
+
+        GeneralPath path = new GeneralPath();
+
+        path.moveTo(rectX, rectY);
+        path.lineTo(rectX + rectWidth, rectY);
+        path.lineTo(rectX + rectWidth, rectY + rectHeight);
+        path.lineTo(rectX, rectY + rectHeight);
+        path.closePath();
+
+        int ellipseWidth = (int) (rectWidth * 0.7);
+        int ellipseHeight = (int) (rectHeight * 0.7);
+
+        double ellipseX = rectX + (rectWidth - ellipseWidth) / 2.0; // Centriranje po x-osi
+        double ellipseY = rectY + (rectHeight - ellipseHeight) / 2.0; // Centriranje po y-osi
+
+        path.append(new Ellipse2D.Double(ellipseX, ellipseY, ellipseWidth, ellipseHeight), false);
+
+        return path;
+    }
+
 
     @Override
     public void paint(Graphics g) {

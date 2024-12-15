@@ -23,7 +23,35 @@ public class VrataPainter implements ElementPainter{
     public VrataPainter(Vrata vrata,RoomView roomView) {
         this.vrata = vrata;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
+    }
 
+    private GeneralPath osnovniOblik() {
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledSize = vrata.getScaledDimensions(scalingFactor);
+
+        int startX = vrata.getLokacija().x;
+        int startY = vrata.getLokacija().y;
+        int precnik = Math.max(scaledSize.width, scaledSize.height);
+
+        GeneralPath path = new GeneralPath();
+
+        Arc2D.Double arc = new Arc2D.Double(
+                startX, startY,
+                precnik, precnik,
+                90, 90,
+                Arc2D.OPEN
+        );
+        path.append(arc, false);
+
+        int verticalLineX = startX + precnik / 2;
+        int verticalLineStartY = startY;
+        int verticalLineEndY = startY + precnik / 2;
+
+        path.moveTo(verticalLineX, verticalLineStartY);
+        path.lineTo(verticalLineX, verticalLineEndY);
+
+        return path;
     }
 
     @Override

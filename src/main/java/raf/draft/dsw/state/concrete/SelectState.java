@@ -53,7 +53,7 @@ public class SelectState implements State {
         kliknut = point;
         roomView.getSelectionList().clear();
         roomView.setSelectionRectangleLT(point);
-        System.out.println("Mis zadrzan");
+        //System.out.println("Mis zadrzan");
     }
 
 
@@ -64,7 +64,7 @@ public class SelectState implements State {
         if(roomView.getSelectionRectangleLT() != null){
             roomView.setSelectionRectangleRB(point);
             roomView.repaint();
-            System.out.println("Mis povucen");
+            //System.out.println("Mis povucen");
         }
 
         //kada je mouseDown uzmem i setujem gornju levu tacku, dok prevlacim ukoliko postoji gornja levatacka,
@@ -95,8 +95,8 @@ public class SelectState implements State {
                 }
             }
             roomView.repaint();
-            System.out.println("Mis kliknut");
-            System.out.println(roomView.getSelectionList());
+            //System.out.println("Mis kliknut");
+            //System.out.println(roomView.getSelectionList());
             return;
         }
 
@@ -127,7 +127,7 @@ public class SelectState implements State {
 
         roomView.repaint();
         //System.out.println("Mis pusten");
-        System.out.println(roomView.getSelectionList());
+        //System.out.println(roomView.getSelectionList());
 
     }
 }

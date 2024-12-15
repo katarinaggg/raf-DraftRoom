@@ -21,6 +21,44 @@ public class BojlerPainter implements ElementPainter{
     public BojlerPainter(Bojler bojler, RoomView roomView) {
         this.bojler = bojler;
         this.roomView = roomView;
+        this.transformedPath = osnovniOblik();
+    }
+
+    // ova metoda nam treba samo na pocetku
+    // pravimo osnovni oblik sa kojim cemo proveravati dal se sece sa nekim drugim
+    // vec nacrtanim jer treba da uzimamo getShape a mi taj shape ne inicijalizujemo
+    // dok ga ne nacrtamo
+    private GeneralPath osnovniOblik(){
+        double scalingFactor = roomView.getScalingFactor();
+        Dimension scaledDimensions = bojler.getScaledDimensions(scalingFactor);
+
+        int centarX = bojler.getLokacija().x; // X koordinata centra
+        int centarY = bojler.getLokacija().y; // Y koordinata centra
+
+        int precnik = Math.min(scaledDimensions.width, scaledDimensions.height);
+        int radius = precnik / 2;
+
+        GeneralPath shape = new GeneralPath();
+        Ellipse2D.Double krug = new Ellipse2D.Double(centarX - radius, centarY - radius, precnik, precnik);
+        shape.append(krug, false);
+
+        int x1 = centarX - radius / 2;
+        int y1 = centarY - radius / 2;
+        int x2 = centarX + radius / 2;
+        int y2 = centarY + radius / 2;
+
+        int x3 = centarX + radius / 2;
+        int y3 = centarY - radius / 2;
+        int x4 = centarX - radius / 2;
+        int y4 = centarY + radius / 2;
+
+        shape.moveTo(x1, y1);
+        shape.lineTo(x2, y2);
+        shape.moveTo(x3, y3);
+        shape.lineTo(x4, y4);
+
+        // vracamo osnovni shape
+        return shape;
     }
 
     @Override
