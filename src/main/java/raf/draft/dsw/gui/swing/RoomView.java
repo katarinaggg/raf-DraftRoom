@@ -206,7 +206,7 @@ public class RoomView extends JPanel implements ISubscriber {
         int panelWidth = getWidth();
         int panelHeight = getHeight();
 
-        // Ažuravanje granica pomeranja na osnovu dimenzija sobe i panela
+        //  azurira granice pomeranja na osnovu dimenzija sobe i panela
         // Ograničavamo pomeranje levo/desno
         offsetX = Math.max(offsetX, Math.min(0, panelWidth - roomWidthPx));
         offsetX = Math.min(offsetX, Math.max(0, panelWidth - roomWidthPx));
@@ -283,6 +283,21 @@ public class RoomView extends JPanel implements ISubscriber {
         this.zoomLevel = zoomLevel;
     }
 
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public void setOffsetX(int offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
 
     // kada zumiramo treba nam ona stara lokacija misem tj stvarna
     // ova metoda vraca tu stvarnu lokaciju misem kao da nismo u zoom modu

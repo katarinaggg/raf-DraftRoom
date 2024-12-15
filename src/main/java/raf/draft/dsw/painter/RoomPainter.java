@@ -42,7 +42,9 @@ public class RoomPainter implements ElementPainter{
 
         // Dimenzije panela
         int panelWidth = roomView.getWidth();
+        //System.out.println("panel width" + panelWidth);
         int panelHeight = roomView.getHeight();
+        //System.out.println("Panel height " + panelHeight);
 
         // Pozicija za centriranje sobe u panelu
         int xStart = (panelWidth - roomWidthPx) / 2;

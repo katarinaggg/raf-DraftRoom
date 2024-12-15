@@ -31,50 +31,40 @@ public class BojlerPainter implements ElementPainter{
 
         // cuvamo pocetno stanje da bi se kasnije vratili na njega
         AffineTransform start = g2d.getTransform();
-        // nad ovom radimo
-        AffineTransform af = g2d.getTransform();
 
         // faktor skaliranja sobe
         double scalingFactor = roomView.getScalingFactor();
 
-        // Skaliranje dimenzija
+        // skaliranje dimenzija
         Dimension scaledDimensions = bojler.getScaledDimensions(scalingFactor);
-
-        int centarX = bojler.getLokacija().x; // X koordinata centra kruga
-        int centarY = bojler.getLokacija().y; // Y koordinata centra kruga
 
         int precnik = Math.min(scaledDimensions.width, scaledDimensions.height);
         int radius = precnik / 2;
 
+        // uzimamo mesto klika misa za crtanje
+        Point mouseClickLocation = bojler.getLokacija();
+        int offsetX = mouseClickLocation.x;
+        int offsetY = mouseClickLocation.y;
 
         // ugao rotacije na osnovu njegove vrednosti rotacije
         double ugao = Math.toRadians(bojler.getRotacija() * 90);
 
-        af.rotate(ugao, centarX, centarY);
-        g2d.setTransform(af);
-
+        // Kreiramo shape u koordinatama gornjeg levog ugla u odnosu na klik
         shape = new GeneralPath();
 
-        Ellipse2D.Double krug = new Ellipse2D.Double(centarX - radius, centarY-radius, precnik, precnik);
+        Ellipse2D.Double krug = new Ellipse2D.Double(offsetX, offsetY, precnik, precnik);
+        shape.append(krug, false);
 
-        shape.append(krug,false);
+        // Koordinate za X unutar kruga
+        int x1 = offsetX + radius / 2; // Leva gornja tačka za prvu liniju
+        int y1 = offsetY + radius / 2; // Gornja tačka za prvu liniju
+        int x2 = offsetX + precnik - radius / 2; // Desna donja tačka za prvu liniju
+        int y2 = offsetY + precnik - radius / 2; // Donja tačka za prvu liniju
 
-        //Koordinate za X unutar kruga
-        int x1 = centarX - radius / 2; // Leva gornja tačka za prvu liniju
-        int y1 = centarY - radius / 2; // Gornja tačka za prvu liniju
-        int x2 = centarX + radius / 2; // Desna donja tačka za prvu liniju
-        int y2 = centarY + radius / 2; // Donja tačka za prvu liniju
-
-        int x3 = centarX + radius / 2; // Desna gornja tačka za drugu liniju
-        int y3 = centarY - radius / 2; // Gornja tačka za drugu liniju
-        int x4 = centarX - radius / 2; // Leva donja tačka za drugu liniju
-        int y4 = centarY + radius / 2; // Donja tačka za drugu liniju
-
-//        // Crtanje prve dijagonale (leva gornja ka desnoj donjoj tački)
-//        g2d.drawLine(x1, y1, x2, y2);
-//
-//        // Crtanje druge dijagonale (desna gornja ka levoj donjoj tački)
-//        g2d.drawLine(x3, y3, x4, y4);
+        int x3 = offsetX + precnik - radius / 2; // Desna gornja tačka za drugu liniju
+        int y3 = offsetY + radius / 2; // Gornja tačka za drugu liniju
+        int x4 = offsetX + radius / 2; // Leva donja tačka za drugu liniju
+        int y4 = offsetY + precnik - radius / 2; // Donja tačka za drugu liniju
 
         // Dodavanje linija za X u oblik
         shape.moveTo(x1, y1);
@@ -83,17 +73,18 @@ public class BojlerPainter implements ElementPainter{
         shape.lineTo(x4, y4);
 
         // cuvamo transformisani shape
-        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(bojler.getRotacija() * 90), centarX, centarY);
+        AffineTransform transform = AffineTransform.getRotateInstance(ugao, offsetX + radius, offsetY + radius);
         transformedPath = (GeneralPath) shape.createTransformedShape(transform);
 
-        g2d.fill(shape);
+        g2d.fill(transformedPath);
 
         g2d.setColor(Color.black);
-        g2d.draw(shape);
+        g2d.draw(transformedPath);
 
         // vracamo na pocetno stanje
         g2d.setTransform(start);
     }
+
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {

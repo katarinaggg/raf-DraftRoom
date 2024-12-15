@@ -45,8 +45,8 @@ public class WCSoljaPainter implements ElementPainter{
         int width = scaledSize.width;
         int height = scaledSize.height;
 
-        double centarX = startX+width/2;
-        double centarY = startY+height/2;
+        double centarX = startX+width/2.0;
+        double centarY = startY+height/2.0;
 
         // ugao rotacije na osnovu njegove vrednosti rotacije
         double ugao = Math.toRadians(wcSolja.getRotacija() * 90);
@@ -104,6 +104,7 @@ public class WCSoljaPainter implements ElementPainter{
 
         g2d.setTransform(start);
     }
+
 
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
