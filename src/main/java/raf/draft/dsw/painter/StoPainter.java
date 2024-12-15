@@ -152,4 +152,5 @@ public class StoPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
+
 }

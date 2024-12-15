@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures.namestaj;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
@@ -77,7 +78,6 @@ public abstract class RoomElement extends DraftNode implements Prototype{
         int scaledHeight = (int) (size.getHeight() * scalingFactor);
         return new Dimension(scaledWidth, scaledHeight);
     }
-
     public Color getColor() {
         return color;
     }

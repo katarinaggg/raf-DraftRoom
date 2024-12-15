@@ -69,14 +69,18 @@ public class MoveState implements State {
         point = roomView.transformMousePoint(point);
 
         if (pocetnaTacka != null && roomView.getSelectionList().isEmpty()) {
-            // pomeranje cele sobe
-            int deltaX = point.x - pocetnaTacka.x;
-            int deltaY = point.y - pocetnaTacka.y;
+//            // pomeranje cele sobe
+//            int deltaX = point.x - pocetnaTacka.x;
+//            int deltaY = point.y - pocetnaTacka.y;
+//
+//            // promenimo pomeraj sobe
+//            roomView.updateRoomOffset(deltaX, deltaY);
+//
+//            pocetnaTacka = point;
 
-            // promenimo pomeraj sobe
-            roomView.updateRoomOffset(deltaX, deltaY);
-
+            roomView.updateTranslate(point.x - pocetnaTacka.x, point.y- pocetnaTacka.y);
             pocetnaTacka = point;
+            roomView.repaint();
 
         } else if (pocetnaTacka != null && !pocetneLokacije.isEmpty()) {
             // racunamo pomeranje misa

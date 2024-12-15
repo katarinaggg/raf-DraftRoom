@@ -105,7 +105,6 @@ public class WCSoljaPainter implements ElementPainter{
         g2d.setTransform(start);
     }
 
-
     @Override
     public boolean elementAt(Point point, Rectangle rectangle) {
         //return path!= null && (path.contains(point) || path.intersects(rectangle));
@@ -126,5 +125,4 @@ public class WCSoljaPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
-
 }

@@ -117,4 +117,5 @@ public class LavaboPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
+
 }
