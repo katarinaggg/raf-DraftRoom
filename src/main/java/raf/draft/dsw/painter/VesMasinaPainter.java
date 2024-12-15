@@ -106,4 +106,5 @@ public class VesMasinaPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
+
 }

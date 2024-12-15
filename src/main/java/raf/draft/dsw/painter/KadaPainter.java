@@ -130,6 +130,4 @@ public class KadaPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
-
-
 }

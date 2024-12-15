@@ -1,5 +1,6 @@
 package raf.draft.dsw.painter;
 
+import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
 import java.awt.*;

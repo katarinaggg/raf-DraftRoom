@@ -194,29 +194,30 @@ public class RoomView extends JPanel implements ISubscriber {
         g2d.drawRect(x, y, width, height);
     }
 
-    public void updateRoomOffset(int deltaX, int deltaY) {
-        // Ažuriramo pomak sobe
-        offsetX += deltaX;
-        offsetY += deltaY;
-
-        // Dinamične granice na osnovu skaliranja i zumiranja
-        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
-        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
-
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
-
-        //  azurira granice pomeranja na osnovu dimenzija sobe i panela
-        // Ograničavamo pomeranje levo/desno
-        offsetX = Math.max(offsetX, Math.min(0, panelWidth - roomWidthPx));
-        offsetX = Math.min(offsetX, Math.max(0, panelWidth - roomWidthPx));
-
-        // Ograničavamo pomeranje gore/dole
-        offsetY = Math.max(offsetY, Math.min(0, panelHeight - roomHeightPx));
-        offsetY = Math.min(offsetY, Math.max(0, panelHeight - roomHeightPx));
-
-        repaint(); // Osvežavanje prikaza
-    }
+//      ne radi ovo
+//    public void updateRoomOffset(int deltaX, int deltaY) {
+//        // Ažuriramo pomak sobe
+//        offsetX += deltaX;
+//        offsetY += deltaY;
+//
+//        // Dinamične granice na osnovu skaliranja i zumiranja
+//        int roomWidthPx = (int) (room.getSirina() * scalingFactor * zoomLevel);
+//        int roomHeightPx = (int) (room.getDuzina() * scalingFactor * zoomLevel);
+//
+//        int panelWidth = getWidth();
+//        int panelHeight = getHeight();
+//
+//        //  azurira granice pomeranja na osnovu dimenzija sobe i panela
+//        // Ograničavamo pomeranje levo/desno
+//        offsetX = Math.max(offsetX, Math.min(0, panelWidth - roomWidthPx));
+//        offsetX = Math.min(offsetX, Math.max(0, panelWidth - roomWidthPx));
+//
+//        // Ograničavamo pomeranje gore/dole
+//        offsetY = Math.max(offsetY, Math.min(0, panelHeight - roomHeightPx));
+//        offsetY = Math.min(offsetY, Math.max(0, panelHeight - roomHeightPx));
+//
+//        repaint(); // Osvežavanje prikaza
+//    }
 
     @Override
     public void update(Notification notification) {
@@ -312,6 +313,7 @@ public class RoomView extends JPanel implements ISubscriber {
         // ako nismo zumiralki vraca normalan point
         if (zoomLevel == 1.0) {
             //System.out.println("Kliknuta tačka (bez zuma): " + point);
+            //return new Point (point.x + offsetX, point.y + offsetY) ;
             return point;
         }
 
@@ -353,4 +355,8 @@ public class RoomView extends JPanel implements ISubscriber {
     }
 
 
+    public void updateTranslate(int x, int y) {
+        offsetX += x;
+        offsetY += y;
+    }
 }

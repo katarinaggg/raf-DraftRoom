@@ -100,7 +100,6 @@ public class BojlerPainter implements ElementPainter{
     public GeneralPath getShape() {
         return transformedPath;
     }
-
     public void setShape(GeneralPath shape) {
         this.shape = shape;
     }

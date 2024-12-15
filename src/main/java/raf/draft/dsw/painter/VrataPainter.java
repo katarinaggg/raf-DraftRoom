@@ -125,8 +125,4 @@ public class VrataPainter implements ElementPainter{
     public void setArc(Arc2D.Double arc) {
         this.arc = arc;
     }
-
-    public double getArcAngle() {
-        return 90; // Ugao luka (primer)
-    }
 }
