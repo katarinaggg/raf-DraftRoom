@@ -1,6 +1,7 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.commands.concrete.ResizeCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.notification.Message;
@@ -95,6 +96,11 @@ public class ResizeState implements State {
     @Override
     public void misPusten(RoomView roomView, Point point) {
             point = roomView.transformMousePoint(point);
+
+            Dimension noveDimenzije = resizingElement.getSize();
+            ResizeCommand resizeCommand = new ResizeCommand(roomView,pocetneDimenzije, noveDimenzije,resizingElement);
+            roomView.getCommandManager().addCommand(resizeCommand);
+
             resizingElement = null;
             pocetnaTacka = null;
             pocetneDimenzije = null;

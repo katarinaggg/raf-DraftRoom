@@ -1,5 +1,6 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.commands.concrete.RotateLeftCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.notification.Message;
@@ -30,11 +31,15 @@ public class RotateLeftState implements State {
             return;
         }
 
-        for(ElementPainter e: roomView.getSelectionList()){
-            // jednom se rotira od prethodnog stanja
-            e.getRoomElement().setRotateRatio(e.getRoomElement().getRotacija()-1);
-        }
-        roomView.repaint();
+        // ovu logiku smo prebacili u komandu
+//        for(ElementPainter e: roomView.getSelectionList()){
+//            // jednom se rotira od prethodnog stanja
+//            e.getRoomElement().setRotateRatio(e.getRoomElement().getRotacija()-1);
+//        }
+//        roomView.repaint();
+
+        RotateLeftCommand rotateLeftCommand = new RotateLeftCommand(roomView,roomView.getSelectionList());
+        roomView.getCommandManager().addCommand(rotateLeftCommand);
     }
 
     @Override

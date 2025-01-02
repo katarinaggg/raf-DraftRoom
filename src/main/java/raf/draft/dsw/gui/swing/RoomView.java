@@ -1,5 +1,7 @@
 package raf.draft.dsw.gui.swing;
 
+import com.sun.tools.javac.Main;
+import raf.draft.dsw.commands.CommandManager;
 import raf.draft.dsw.controller.RoomMouseListener;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
@@ -25,6 +27,8 @@ public class RoomView extends JPanel implements ISubscriber {
 
     private double scalingFactor; // Faktor skaliranja
 
+    private CommandManager commandManager;
+
     // za zumiranje
     private double zoomLevel = 1.0;
     private double MAX_ZOOM = 3.0;
@@ -44,6 +48,8 @@ public class RoomView extends JPanel implements ISubscriber {
 
     public RoomView(Room room) {
         this.room = room;
+        this.commandManager = new CommandManager();
+
         // dodajemo mu mouse listener
         //addMouseListener(new RoomMouseListener(this));
         RoomMouseListener mouseListener = new RoomMouseListener(this);
@@ -383,5 +389,33 @@ public class RoomView extends JPanel implements ISubscriber {
     public void updateTranslate(int x, int y) {
         offsetX += x;
         offsetY += y;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    // za enable/disable dugmica na osnovu toga da li imamo komande za redo/undo
+    public void enableUndoAction(){
+        MainFrame.getInstance().getActionManager().getUndoAction().setEnabled(true);
+    }
+
+    public void disableUndoAction(){
+        MainFrame.getInstance().getActionManager().getUndoAction().setEnabled(false);
+    }
+
+    public void enableRedoAction(){
+        MainFrame.getInstance().getActionManager().getRedoAction().setEnabled(true);
+    }
+
+    public void disableRedoAction(){
+        MainFrame.getInstance().getActionManager().getRedoAction().setEnabled(false);
+    }
+
+    public void updateSelection(){
+        this.selectionRectangleLT = null;
+        this.selectionRectangleRB = null;
+        this.selectionList.clear();
+        repaint();
     }
 }

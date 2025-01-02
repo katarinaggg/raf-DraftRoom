@@ -1,5 +1,6 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.commands.concrete.AddBojlerCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -18,6 +19,13 @@ import java.time.LocalDateTime;
 
 public class AddBojler implements State {
 
+    // sada ovde pravimo komandu koja ce da ima ceo kod za mis kliknut
+    // prosledjujemo potrebna polja za izvrsavanje komande tj
+    // prosledjujemo roomView i point
+
+    // ovde treba da ostane unosenje dimenzija jer ne zelimo i za REDO
+    // da unosimo opet dimenzije vec da se nacrta onaj postojeci
+
     @Override
     public void misKliknut(RoomView roomView, Point point) {
 
@@ -26,6 +34,7 @@ public class AddBojler implements State {
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
+
 
         // koristimo metodu koja nam vraca novu lokaciju misa u sljucaju
         // da se nalazimo u nekom zoomiranom stanju
@@ -42,8 +51,8 @@ public class AddBojler implements State {
 
         if(dimenzija != null && dimenzija.width > 0 && dimenzija.height > 0) {
             // pravimo novi model
-            Bojler bojler = new Bojler(roomView.getRoom(),point,dimenzija);
-            BojlerPainter bojlerPainter = new BojlerPainter(bojler,roomView);
+            Bojler bojler = new Bojler(roomView.getRoom(), point, dimenzija);
+            BojlerPainter bojlerPainter = new BojlerPainter(bojler, roomView);
 
             // moramo da proverimo da li element dodajemo unutar sobe
             // tj da li izlazi iz granica sobe ako ga dodamo na
@@ -61,32 +70,17 @@ public class AddBojler implements State {
             // moramo da proverimo da li se sece sa nekim
             // vec postojecim elementom
             // ako ne mozemo da ga nacrtamo
-            if(roomView.preklapanjeElemenata(bojlerPainter.getShape())){
+            if (roomView.preklapanjeElemenata(bojlerPainter.getShape())) {
                 // ako se preklapaju ne mozemo da ga dodamo i izlazi poruka
                 Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Ne mozete da dodate element jer se preklapa sa postojecim!", MessageType.WARNING, LocalDateTime.now());
                 ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
                 return;
             }
 
-            // dodajemo painter na roomView
-            roomView.addPainter(bojlerPainter);
-
-            // treba dodati bojler u draftTree
-            // na Room tipa DTI treba da se doda dete
-
-            // moramo da pronadjemo odgovarajucu sobu u JTree-u
-            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-            MainFrame.getInstance().getDraftTree().addRoomChild(soba,bojler);
-
-            // Room obavestava RoomView (u addChild metodi) da treba da se repaintuje
-
-            //System.out.println(roomView.getRoom().getNamestaj());
+            AddBojlerCommand addBojlerCommand = new AddBojlerCommand(roomView,bojler,bojlerPainter);
+            // dodajemo komandu u CommandManager ove sobe
+            roomView.getCommandManager().addCommand(addBojlerCommand);
         }
-//        else{
-//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
-//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-//            frame.setVisible(true);
-//        }
 
     }
 

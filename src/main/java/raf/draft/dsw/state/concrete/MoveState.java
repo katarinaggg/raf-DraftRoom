@@ -1,6 +1,7 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.commands.concrete.MoveCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.notification.Message;
@@ -28,7 +29,7 @@ public class MoveState implements State {
     private static final int tolerance = 10;
 
     private final HashMap<RoomElement, Point> pocetneLokacije = new HashMap<>();
-
+    private final HashMap<RoomElement, Point> noveLokacije = new HashMap<>();
 
     @Override
     public void misZadrzan(RoomView roomView, Point point) {
@@ -87,9 +88,11 @@ public class MoveState implements State {
             int deltaX = point.x - pocetnaTacka.x;
             int deltaY = point.y - pocetnaTacka.y;
 
+            noveLokacije.clear();
+
             Rectangle roomBounds = roomView.getRoomBounds();
 
-            HashMap<RoomElement, Point> novaLokacija = new HashMap<>();
+            //HashMap<RoomElement, Point> novaLokacija = new HashMap<>();
 
             for (ElementPainter painter : roomView.getSelectionList()) {
                 RoomElement element = painter.getRoomElement();
@@ -118,11 +121,11 @@ public class MoveState implements State {
                 }
 
                 // dodajemo novu lokaciju u mapu
-                novaLokacija.put(element, snappedLocation);
+                noveLokacije.put(element, snappedLocation);
             }
 
             // Proveravamo presek sa drugim elementima
-            for (Map.Entry<RoomElement, Point> entry : novaLokacija.entrySet()) {
+            for (Map.Entry<RoomElement, Point> entry : noveLokacije.entrySet()) {
                 RoomElement element = entry.getKey();
                 Point newLocation = entry.getValue();
 
@@ -135,7 +138,7 @@ public class MoveState implements State {
             }
 
             // Ažuriramo lokacije elemenata
-            for (Map.Entry<RoomElement, Point> entry : novaLokacija.entrySet()) {
+            for (Map.Entry<RoomElement, Point> entry : noveLokacije.entrySet()) {
                 entry.getKey().setLokacija(entry.getValue());
             }
 
@@ -147,8 +150,13 @@ public class MoveState implements State {
     @Override
     public void misPusten(RoomView roomView, Point point) {
         point = roomView.transformMousePoint(point);
+
+        MoveCommand moveCommand = new MoveCommand(roomView,new HashMap<>(pocetneLokacije), new HashMap<>(noveLokacije));
+        roomView.getCommandManager().addCommand(moveCommand);
+
         pocetnaTacka = null; // Resetujemo početnu tačku
         pocetneLokacije.clear(); // Resetujemo početne lokacije
+        noveLokacije.clear();
     }
 
     private boolean hasIntersection(RoomView roomView, RoomElement movingElement, Point newLocation) {

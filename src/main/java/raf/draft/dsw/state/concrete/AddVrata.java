@@ -1,5 +1,6 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.commands.concrete.AddVrataCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -51,16 +52,10 @@ public class AddVrata implements State {
                 return;
             }
 
-            roomView.addPainter(vrataPainter);
-
-            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-            MainFrame.getInstance().getDraftTree().addRoomChild(soba, vrata);
+            AddVrataCommand addVrataCommand = new AddVrataCommand(roomView, vrata, vrataPainter);
+            roomView.getCommandManager().addCommand(addVrataCommand);
         }
-//        else{
-//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
-//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-//            frame.setVisible(true);
-//        }
+
     }
 
     @Override
