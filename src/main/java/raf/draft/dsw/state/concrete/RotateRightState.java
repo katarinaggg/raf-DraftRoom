@@ -1,6 +1,7 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.commands.concrete.RotateRightCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.notification.Message;
@@ -32,11 +33,13 @@ public class RotateRightState implements State {
             return;
         }
 
-        for(ElementPainter e: roomView.getSelectionList()){
-            // jednom se rotira od prethodnog stanja
-            e.getRoomElement().setRotateRatio(e.getRoomElement().getRotacija()+1);
-        }
-        roomView.repaint();
+//        for(ElementPainter e: roomView.getSelectionList()){
+//            // jednom se rotira od prethodnog stanja
+//            e.getRoomElement().setRotateRatio(e.getRoomElement().getRotacija()+1);
+//        }
+//        roomView.repaint();
+        RotateRightCommand rotateRightCommand = new RotateRightCommand(roomView,roomView.getSelectionList());
+        roomView.getCommandManager().addCommand(rotateRightCommand);
     }
 
     @Override

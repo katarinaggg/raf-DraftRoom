@@ -1,5 +1,6 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.commands.concrete.AddVesMasinaCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -51,16 +52,10 @@ public class AddVesMasina implements State {
                 return;
             }
 
-            roomView.addPainter(vesMasinaPainter);
-
-            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-            MainFrame.getInstance().getDraftTree().addRoomChild(soba, vesMasina);
+            AddVesMasinaCommand addVesMasinaCommand = new AddVesMasinaCommand(roomView, vesMasina, vesMasinaPainter);
+            roomView.getCommandManager().addCommand(addVesMasinaCommand);
         }
-//        else{
-//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
-//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-//            frame.setVisible(true);
-//        }
+
     }
 
     @Override

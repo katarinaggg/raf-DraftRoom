@@ -1,6 +1,7 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.commands.concrete.CopyPasteCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
@@ -48,46 +49,49 @@ public class CopyPasteState implements State {
             return;
         }
 
-        // PASTE
-        // prolazimo kroz listu kopiranih
-        for(RoomElement roomElement:roomView.getRoom().getCopyElements()){
+        CopyPasteCommand copyPasteCommand = new CopyPasteCommand(roomView);
+        roomView.getCommandManager().addCommand(copyPasteCommand);
 
-            // pravimo isti element
-            RoomElement kopija = (RoomElement) roomElement.clone();
-
-            // pravimo novi Painter
-            ElementPainter elementPainter = null;
-            if (kopija instanceof Bojler){
-                elementPainter = new BojlerPainter((Bojler) kopija,roomView);
-            }
-            else if (kopija instanceof Kada){
-                elementPainter = new KadaPainter((Kada) kopija,roomView);
-            }
-            else if (kopija instanceof Krevet) {
-                elementPainter = new KrevetPainter((Krevet) kopija,roomView);
-            }
-            else if (kopija instanceof Lavabo) {
-                elementPainter = new LavaboPainter((Lavabo) kopija,roomView);
-            }
-            else if (kopija instanceof Ormar){
-                elementPainter = new OrmarPainter((Ormar) kopija,roomView);
-            }
-            else if (kopija instanceof Sto) {
-                elementPainter = new StoPainter((Sto) kopija,roomView);
-            }
-            else if (kopija instanceof VesMasina) {
-                elementPainter = new VesMasinaPainter((VesMasina) kopija, roomView);
-            }
-            else if (kopija instanceof WCSolja) {
-                elementPainter = new WCSoljaPainter((WCSolja) kopija, roomView);
-            }
-            // dodajemo painter u roomView da bi se nacrtao
-            roomView.addPainter(elementPainter);
-
-            // dodajemo element kao dete sobi:
-            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-            MainFrame.getInstance().getDraftTree().addRoomChild(soba,kopija);
-        }
+//        // PASTE
+//        // prolazimo kroz listu kopiranih
+//        for(RoomElement roomElement:roomView.getRoom().getCopyElements()){
+//
+//            // pravimo isti element
+//            RoomElement kopija = (RoomElement) roomElement.clone();
+//
+//            // pravimo novi Painter
+//            ElementPainter elementPainter = null;
+//            if (kopija instanceof Bojler){
+//                elementPainter = new BojlerPainter((Bojler) kopija,roomView);
+//            }
+//            else if (kopija instanceof Kada){
+//                elementPainter = new KadaPainter((Kada) kopija,roomView);
+//            }
+//            else if (kopija instanceof Krevet) {
+//                elementPainter = new KrevetPainter((Krevet) kopija,roomView);
+//            }
+//            else if (kopija instanceof Lavabo) {
+//                elementPainter = new LavaboPainter((Lavabo) kopija,roomView);
+//            }
+//            else if (kopija instanceof Ormar){
+//                elementPainter = new OrmarPainter((Ormar) kopija,roomView);
+//            }
+//            else if (kopija instanceof Sto) {
+//                elementPainter = new StoPainter((Sto) kopija,roomView);
+//            }
+//            else if (kopija instanceof VesMasina) {
+//                elementPainter = new VesMasinaPainter((VesMasina) kopija, roomView);
+//            }
+//            else if (kopija instanceof WCSolja) {
+//                elementPainter = new WCSoljaPainter((WCSolja) kopija, roomView);
+//            }
+//            // dodajemo painter u roomView da bi se nacrtao
+//            roomView.addPainter(elementPainter);
+//
+//            // dodajemo element kao dete sobi:
+//            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
+//            MainFrame.getInstance().getDraftTree().addRoomChild(soba,kopija);
+//        }
 
     }
 

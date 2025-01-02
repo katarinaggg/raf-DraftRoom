@@ -13,6 +13,8 @@ public class ActionManager {
     private AddNodeAction addNodeAction;
     private RemoveNodeAction removeNodeAction;
     private EditProjectAction editProjectAction;
+    private RedoAction redoAction;
+    private UndoAction undoAction;
 
     // akcije na desnom toolbaru
     private AddRoomElementAction addRoomElementAction;
@@ -33,6 +35,10 @@ public class ActionManager {
         addNodeAction = new AddNodeAction();
         removeNodeAction = new RemoveNodeAction();
         editProjectAction = new EditProjectAction();
+        redoAction = new RedoAction();
+        redoAction.setEnabled(false);
+        undoAction = new UndoAction();
+        undoAction.setEnabled(false);
 
         addRoomElementAction = new AddRoomElementAction();
         copyPasteAction = new CopyPasteAction();

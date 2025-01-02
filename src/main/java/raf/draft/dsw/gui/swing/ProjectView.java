@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing;
 
+import raf.draft.dsw.commands.CommandManager;
 import raf.draft.dsw.controller.observer.ISubscriber;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Building;
@@ -355,10 +356,12 @@ public class ProjectView extends JPanel implements ISubscriber {
                 Room selectedRoom = selectedProject.getRooms().get(selectedIndex);
                 updateInfoPanel(selectedProject, selectedRoom);
             }
+            updateUndoRedoButtons();
         });
 
         // Ažuriramo vidljivost sideToolBar
         sideToolBar.setVisible(!selectedProject.getRooms().isEmpty());
+        updateUndoRedoButtons();
     }
 
 
@@ -515,5 +518,33 @@ public class ProjectView extends JPanel implements ISubscriber {
     public void startCopyPasteState() {
         stateManager.setCopyPasteState();
     }
+
+
+    // za undo/redo nam treba ova funkcija
+    // izvlaci na kom roomView se trenutno nalazimo (koji je tab otvoren)
+    public RoomView getCurrentRoomView(){
+        int selectedIndex= tabbedPane.getSelectedIndex();
+        if(selectedIndex != -1){
+            String ime = tabbedPane.getTitleAt(selectedIndex);
+            return roomViewMap.get(ime);
+        }
+        return null;
+    }
+
+    private void updateUndoRedoButtons() {
+        RoomView currentRoomView = getCurrentRoomView();
+        if (currentRoomView != null) {
+            CommandManager commandManager = currentRoomView.getCommandManager();
+
+            // Omogućavamo ili onemogućavamo Undo i Redo dugmiće
+            MainFrame.getInstance().getActionManager().getUndoAction().setEnabled(commandManager.getPointer() > 0);
+            MainFrame.getInstance().getActionManager().getRedoAction().setEnabled(commandManager.getPointer() < commandManager.getCommands().size());
+        } else {
+            // Ako nema aktivnog RoomView-a, onesposobljavamo dugmiće
+            MainFrame.getInstance().getActionManager().getUndoAction().setEnabled(false);
+            MainFrame.getInstance().getActionManager().getRedoAction().setEnabled(false);
+        }
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package raf.draft.dsw.state.concrete;
 
 import lombok.NoArgsConstructor;
+import raf.draft.dsw.commands.concrete.DeleteCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.RoomView;
@@ -29,39 +30,42 @@ public class DeleteState implements State {
             return;
         }
 
-        // treba da proverimo listu selektovanih da li treba odatle nesto da brisemo
-        if(!roomView.getSelectionList().isEmpty()) {
-            for (int i=0; i<roomView.getSelectionList().size(); i++) {
-                ElementPainter painter = roomView.getSelectionList().get(i);
-                DraftTreeItem roomElement = MainFrame.getInstance().getDraftTree().findTreeItem(painter.getRoomElement());
-                roomView.removePainter(painter);
-                MainFrame.getInstance().getDraftTree().removeChild(roomElement);
-            }
-            roomView.getSelectionList().clear();
-        }
-        else {
-            // prolazimo kroz paintere i ako se neki sece sa nasim pointom
-            // tj ako smo na neki kliknuli treba da ga obrisemo
+        point = roomView.transformMousePoint(point);
+        DeleteCommand deleteCommand = new DeleteCommand(roomView,point);
+        roomView.getCommandManager().addCommand(deleteCommand);
 
-            point = roomView.transformMousePoint(point);
-
-            for (int i = 0; i < roomView.getPainters().size(); i++) {
-                ElementPainter elementPainter = roomView.getPainters().get(i);
-                if (!(elementPainter instanceof RoomPainter) && elementPainter.elementAt(point, null)) {
-
-                    // moramo da pronadjemo odgovarajuci RoomElement u JTree-u
-                    // da bi ga izvukli kao tip DraftTreeItem
-                    // i brisemo ga iz modela i JtreeView-a
-                    DraftTreeItem roomElement = MainFrame.getInstance().getDraftTree().findTreeItem(elementPainter.getRoomElement());
-
-                    // treba da obrisemo i odgovarajuci painter iz liste paintera Roomview-a
-                    roomView.removePainter(elementPainter);
-
-                    MainFrame.getInstance().getDraftTree().removeChild(roomElement);
-                }
-            }
-            //System.out.println(roomView.getRoom().getNamestaj());
-        }
+//        // treba da proverimo listu selektovanih da li treba odatle nesto da brisemo
+//        if(!roomView.getSelectionList().isEmpty()) {
+//            for (int i=0; i<roomView.getSelectionList().size(); i++) {
+//                ElementPainter painter = roomView.getSelectionList().get(i);
+//                DraftTreeItem roomElement = MainFrame.getInstance().getDraftTree().findTreeItem(painter.getRoomElement());
+//                roomView.removePainter(painter);
+//                MainFrame.getInstance().getDraftTree().removeChild(roomElement);
+//            }
+//            roomView.getSelectionList().clear();
+//        }
+//        else {
+//            // prolazimo kroz paintere i ako se neki sece sa nasim pointom
+//            // tj ako smo na neki kliknuli treba da ga obrisemo
+//
+//            point = roomView.transformMousePoint(point);
+//
+//            for (int i = 0; i < roomView.getPainters().size(); i++) {
+//                ElementPainter elementPainter = roomView.getPainters().get(i);
+//                if (!(elementPainter instanceof RoomPainter) && elementPainter.elementAt(point, null)) {
+//
+//                    // moramo da pronadjemo odgovarajuci RoomElement u JTree-u
+//                    // da bi ga izvukli kao tip DraftTreeItem
+//                    // i brisemo ga iz modela i JtreeView-a
+//                    DraftTreeItem roomElement = MainFrame.getInstance().getDraftTree().findTreeItem(elementPainter.getRoomElement());
+//
+//                    // treba da obrisemo i odgovarajuci painter iz liste paintera Roomview-a
+//                    roomView.removePainter(elementPainter);
+//
+//                    MainFrame.getInstance().getDraftTree().removeChild(roomElement);
+//                }
+//            }
+//        }
     }
 
     @Override

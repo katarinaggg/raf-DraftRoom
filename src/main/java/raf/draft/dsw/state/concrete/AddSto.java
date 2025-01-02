@@ -1,5 +1,6 @@
 package raf.draft.dsw.state.concrete;
 
+import raf.draft.dsw.commands.concrete.AddStoCommand;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.DimensionFrame;
 import raf.draft.dsw.gui.swing.MainFrame;
@@ -51,16 +52,10 @@ public class AddSto implements State {
                 return;
             }
 
-            roomView.addPainter(stoPainter);
-
-            DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(roomView.getRoom());
-            MainFrame.getInstance().getDraftTree().addRoomChild(soba, sto);
+            AddStoCommand addStoCommand = new AddStoCommand(roomView, sto, stoPainter);
+            roomView.getCommandManager().addCommand(addStoCommand);
         }
-//        else{
-//            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Niste uneli dimenzije", MessageType.WARNING, LocalDateTime.now());
-//            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-//            frame.setVisible(true);
-//        }
+
     }
 
     @Override
