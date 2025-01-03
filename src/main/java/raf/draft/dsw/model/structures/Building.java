@@ -1,10 +1,14 @@
 package raf.draft.dsw.model.structures;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.serializer.ColorDeserializer;
+import raf.draft.dsw.serializer.ColorSerializer;
 
 import java.awt.*;
 import java.util.Random;
@@ -13,7 +17,9 @@ import java.util.Random;
 public class Building extends DraftNodeComposite {
 
     // treba dodati polje za boju
-   Color color;
+    @JsonSerialize(using = ColorSerializer.class)
+    @JsonDeserialize(using = ColorDeserializer.class)
+    Color color;
 
     public Building(String ime, DraftNode parent) {
         super(ime, parent);

@@ -2,6 +2,7 @@ package raf.draft.dsw.core;
 
 
 import lombok.Getter;
+import raf.draft.dsw.serializer.Serializer;
 import raf.draft.dsw.controller.messagegenerator.*;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.model.repository.DraftRoomRepositoryImplementation;
@@ -13,6 +14,7 @@ public class ApplicationFramework {
     Logger consoleLogger;
     Logger fileLogger;
     DraftRoomRepositoryImplementation draftRoomRepositoryImplementation;
+    Serializer serializer;
 
     private static ApplicationFramework applicationFrameworkInstance;
     private ApplicationFramework(){
@@ -28,6 +30,8 @@ public class ApplicationFramework {
     }
 
     public void initialize(){
+
+        serializer = new Serializer();
 
         // fora je da se messageGenerator napravi pre MainFrame-a, da ne bi bio null
         // jer ga inace pozivamo prvo u MainFrame-u, a onda posle inicijalizujemo

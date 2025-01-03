@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures.namestaj;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
@@ -9,14 +10,17 @@ public class VesMasina extends RoomElement {
     private static int elementCounter = 1;
 
     //private Color color = new Color(204, 161, 227);
-    private Stroke stroke = new BasicStroke(2.0f);
+    @JsonIgnore
+    private Stroke stroke;
 
     public VesMasina(DraftNode parent) {
         super("Ves Masina "+ elementCounter++, parent);
+        this.stroke = createStroke();
     }
 
     public VesMasina(DraftNode parent, Point lokacija, Dimension size) {
         super("Ves Masina "+ elementCounter++, parent, lokacija, size, new Color(204, 161, 227));
+        this.stroke = createStroke();
     }
 
 //    public Color getColor() {
@@ -28,6 +32,9 @@ public class VesMasina extends RoomElement {
 //    }
 
     public Stroke getStroke() {
+        if (stroke == null) {
+            stroke = createStroke(); // Rekonstruiši Stroke ako je null
+        }
         return stroke;
     }
 

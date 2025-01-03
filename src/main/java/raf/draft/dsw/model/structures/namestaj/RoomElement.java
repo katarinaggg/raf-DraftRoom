@@ -1,8 +1,13 @@
 package raf.draft.dsw.model.structures.namestaj;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.serializer.ColorDeserializer;
+import raf.draft.dsw.serializer.ColorSerializer;
 
 import java.awt.*;
 
@@ -15,8 +20,13 @@ public abstract class RoomElement extends DraftNode implements Prototype{
 //    private double duzina;
 
     // svaki element ima svoj Color
+    @JsonSerialize(using = ColorSerializer.class)
+    @JsonDeserialize(using = ColorDeserializer.class)
     private Color color;
 
+    private float strokeWidth = 2.0f;
+
+    @JsonIgnore
     // kada kopiramo da se izmesti
     private int offset = 20;
 
@@ -93,5 +103,13 @@ public abstract class RoomElement extends DraftNode implements Prototype{
     @Override
     public Prototype clone() {
         return null;
+    }
+
+    public float getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    public Stroke createStroke() {
+        return new BasicStroke(strokeWidth);
     }
 }

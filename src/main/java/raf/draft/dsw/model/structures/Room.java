@@ -1,5 +1,8 @@
 package raf.draft.dsw.model.structures;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -8,6 +11,8 @@ import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
+import raf.draft.dsw.serializer.ColorDeserializer;
+import raf.draft.dsw.serializer.ColorSerializer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,12 +25,18 @@ public class Room extends DraftNodeComposite {
     private double duzina;
 
     // Polja za crtanje
+    @JsonSerialize(using = ColorSerializer.class)
+    @JsonDeserialize(using = ColorDeserializer.class)
     private Color lineColor = Color.BLACK; // Boja linija (crna)
+
     private float lineThickness = 2.0f; // Debljina linija (2 px)
 
     // njegova deca
-    private ArrayList<RoomElement> namestaj = new ArrayList<>();
+    // ne treba nam posebna lista jer je Room DraftNodeComposite
+    // koji u sebi vec ima ovo polje
+    //private ArrayList<RoomElement> namestaj = new ArrayList<>();
 
+    @JsonIgnore
     private ArrayList<RoomElement> copyElements = new ArrayList<>();
 
     public Room(String ime, DraftNode parent, double sirina, double duzina) {
@@ -46,8 +57,8 @@ public class Room extends DraftNodeComposite {
 
     @Override
     public void addChild(DraftNode child) {
-        if(!namestaj.contains((RoomElement) child)){
-            namestaj.add((RoomElement) child);
+        if(!this.getChildren().contains((RoomElement) child)){
+            this.getChildren().add((RoomElement) child);
         }
 
         // Room je vec IPublisher i samo treba da obavesti RoomView
@@ -59,7 +70,7 @@ public class Room extends DraftNodeComposite {
 
     @Override
     public void removeChild(DraftNode child) {
-        namestaj.remove(child);
+        this.getChildren().remove(child);
 
         // obavestavamo RoomView da smo uklonili dete
         // i da treba da se repaintuje
@@ -74,9 +85,9 @@ public class Room extends DraftNodeComposite {
         return duzina;
     }
 
-    public ArrayList<RoomElement> getNamestaj() {
-        return namestaj;
-    }
+//    public ArrayList<RoomElement> getNamestaj() {
+//        return namestaj;
+//    }
 
     public void setSirina(double sirina) {
         this.sirina = sirina;

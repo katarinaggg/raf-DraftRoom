@@ -1,6 +1,8 @@
 package raf.draft.dsw.gui.swing.jtree.controller;
 
+import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
+import raf.draft.dsw.model.structures.Project;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
@@ -14,5 +16,9 @@ public class TreeSelectionListener implements javax.swing.event.TreeSelectionLis
         DraftTreeItem treeItemSelected = (DraftTreeItem)path.getLastPathComponent();
         System.out.println("Selektovan čvor: " + treeItemSelected.getDraftNode().getIme());
         System.out.println("getPath: "+ e.getPath());
+
+        if (treeItemSelected.getDraftNode() instanceof Project) {
+            MainFrame.getInstance().setClickedProject((Project)treeItemSelected.getDraftNode());
+        }
     }
 }

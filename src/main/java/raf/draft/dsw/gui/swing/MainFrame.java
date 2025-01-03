@@ -31,6 +31,8 @@ public class MainFrame extends JFrame implements ISubscriber {
     private ProjectView projectView;
     private JSplitPane splitPane;
 
+    private Project clickedProject;
+
     // mora da ima mapu svih ProjectView-ova koji su trenutno otvoreni
     // kljuc je odgovarajuci Project
     // kada "setamo" kroz projekte da nam se ne izbrisu crtezi
@@ -155,5 +157,13 @@ public class MainFrame extends JFrame implements ISubscriber {
         else if(message.getTip().equals(MessageType.INFORMATION)){
             JOptionPane.showMessageDialog(this,message.getSadrzaj(),message.getTip().toString(),JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    public Project getClickedProject() {
+        return clickedProject;
+    }
+
+    public void setClickedProject(Project clickedProject) {
+        this.clickedProject = clickedProject;
     }
 }
