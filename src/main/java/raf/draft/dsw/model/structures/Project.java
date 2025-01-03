@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
@@ -17,46 +18,60 @@ public class Project extends DraftNodeComposite {
     // putanja do foldera
     private String path;
 
+    // da sacuvamo projekat samo kad je izmenjen
+    @JsonIgnore
+    private boolean changed;
+
+    @JsonIgnore
     private final String id; // Jedinstveni identifikator
 
     public Project(String ime, DraftNode parent) {
         super(ime, parent);
         this.id = UUID.randomUUID().toString(); // Generišemo jedinstveni ID
+        this.changed = true ;
     }
 
 
     @Override
     public void addChild(DraftNode child) {
+        // kada dodamo dete menja se Projekat pa setujemo changed
         if (child != null &&  child instanceof Building){
             Building building = (Building) child;
             if (!this.getChildren().contains(building)){
                 this.getChildren().add(building);
+                setChanged(true);
             }
         }
         else if (child != null &&  child instanceof Room) {
             Room room = (Room) child;
             if (!this.getChildren().contains(room)){
                 this.getChildren().add(room);
+                setChanged(true);
             }
         }
     }
 
     @Override
     public void removeChild(DraftNode child) {
+        // i kada brisemo dete menja se projekat pa setujemo changed
         if(child!=null && (child instanceof Building || child instanceof Room)){
             this.getChildren().remove(child);
+            setChanged(true);
         }
     }
 
     public void setAutorProjekta(String autorProjekta) {
         this.autorProjekta = autorProjekta;
+        setChanged(true);
     }
 
     public void setPath(String path) {
         this.path = path;
+        setChanged(true);
     }
 
     // f-ja za izvlacenje svih soba iz projekta
+    @JsonIgnore
     public ArrayList<Room> getRooms() {
         ArrayList<Room> rooms = new ArrayList<>();
 
@@ -75,6 +90,14 @@ public class Project extends DraftNodeComposite {
             }
         }
         return rooms;
+    }
+
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
+
+    public boolean isChanged() {
+        return changed;
     }
 
     @Override

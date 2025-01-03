@@ -15,6 +15,9 @@ public class ActionManager {
     private EditProjectAction editProjectAction;
     private RedoAction redoAction;
     private UndoAction undoAction;
+    private OpenProjectAction openProjectAction;
+    private SaveProjectAction saveProjectAction;
+    private SaveAsAction saveAsAction;
 
     // akcije na desnom toolbaru
     private AddRoomElementAction addRoomElementAction;
@@ -39,6 +42,9 @@ public class ActionManager {
         redoAction.setEnabled(false);
         undoAction = new UndoAction();
         undoAction.setEnabled(false);
+        openProjectAction = new OpenProjectAction();
+        saveProjectAction = new SaveProjectAction();
+        saveAsAction = new SaveAsAction();
 
         addRoomElementAction = new AddRoomElementAction();
         copyPasteAction = new CopyPasteAction();

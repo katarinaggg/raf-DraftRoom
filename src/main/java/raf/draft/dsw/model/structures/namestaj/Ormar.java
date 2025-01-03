@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures.namestaj;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
@@ -9,14 +10,18 @@ public class Ormar extends RoomElement{
     private static int elementCounter = 1;
 
     //private Color color = new Color(74, 45, 24);
-    private Stroke stroke = new BasicStroke(2.0f);
+
+    @JsonIgnore
+    private Stroke stroke ;
 
     public Ormar(DraftNode parent) {
         super("Ormar "+ elementCounter++, parent);
+        this.stroke = createStroke();
     }
 
     public Ormar(DraftNode parent, Point lokacija, Dimension size) {
         super("Ormar "+ elementCounter++, parent, lokacija, size,new Color(74, 45, 24));
+        this.stroke = createStroke();
     }
 
 //    public Color getColor() {
@@ -28,6 +33,9 @@ public class Ormar extends RoomElement{
 //    }
 
     public Stroke getStroke() {
+        if (stroke == null) {
+            stroke = createStroke(); // Rekonstruiši Stroke ako je null
+        }
         return stroke;
     }
 

@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures.namestaj;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
@@ -7,16 +8,20 @@ import java.awt.*;
 public class Krevet extends RoomElement{
 
     //private Color color = new Color(131, 139, 156);
-    private Stroke stroke  = new BasicStroke(2.0f);
+
+    @JsonIgnore
+    private Stroke stroke;
 
 
     private static int elementCounter = 1;
 
     public Krevet(DraftNode parent) {
         super("Krevet " + elementCounter++, parent);
+        this.stroke = createStroke();
     }
     public Krevet(DraftNode parent, Point lokacija, Dimension size) {
         super("Krevet " + elementCounter++, parent, lokacija, size,new Color(131, 139, 156));
+        this.stroke = createStroke();
     }
 //    public Color getColor() {
 //        return color;
@@ -27,6 +32,9 @@ public class Krevet extends RoomElement{
 //    }
 
     public Stroke getStroke() {
+        if (stroke == null) {
+            stroke = createStroke(); // Rekonstruiši Stroke ako je null
+        }
         return stroke;
     }
 

@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.nodes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,13 @@ import java.util.ArrayList;
 @Data
 public abstract class DraftNode implements IPublisher {
 
-    ArrayList<ISubscriber> subscriberList = new ArrayList<>();
+    @JsonIgnore
+    transient ArrayList<ISubscriber> subscriberList = new ArrayList<>();
 
     private String ime;
-    private DraftNode parent;
+
+    @JsonIgnore
+    private transient DraftNode parent;
 
     public DraftNode(String ime, DraftNode parent) {
         this.ime = ime;

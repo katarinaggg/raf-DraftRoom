@@ -277,3 +277,6 @@
 [WARNING] [02.01.2025. 19:11] [Niste selektovali nijedan objekat!]
 [WARNING] [02.01.2025. 20:52] [Niste selektovali nijedan objekat!]
 [WARNING] [02.01.2025. 21:19] [Ne mozete da dodate element jer se preklapa sa postojecim!]
+[ERROR] [03.01.2025. 19:27] [Morate da izaberete Projekat koji zelite da sacuvate]
+[WARNING] [03.01.2025. 19:28] [Niste selektovali nijedan objekat!]
+[INFORMATION] [03.01.2025. 19:34] [Da biste dodali namestaj, morate prvo da ga nacrtate]

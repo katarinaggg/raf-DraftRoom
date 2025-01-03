@@ -1,5 +1,6 @@
 package raf.draft.dsw.model.structures.namestaj;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
@@ -7,15 +8,19 @@ import java.awt.*;
 public class Vrata extends RoomElement {
 
     //private Color color = new Color(8, 5, 0);
-    private Stroke stroke = new BasicStroke(3.0f);
+
+    @JsonIgnore
+    private Stroke stroke;
     private static int elementCounter = 1;
 
     public Vrata(DraftNode parent) {
         super("Vrata "+ elementCounter++, parent);
+        this.stroke = createStroke();
     }
 
     public Vrata(DraftNode parent, Point lokacija, Dimension size) {
         super("Vrata "+ elementCounter++, parent, lokacija, size,new Color(8, 5, 0));
+        this.stroke = createStroke();
     }
 
 //    public Color getColor() {
@@ -27,6 +32,9 @@ public class Vrata extends RoomElement {
 //    }
 
     public Stroke getStroke() {
+        if (stroke == null) {
+            stroke = createStroke(); // Rekonstruiši Stroke ako je null
+        }
         return stroke;
     }
 
