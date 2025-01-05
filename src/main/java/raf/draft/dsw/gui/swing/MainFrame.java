@@ -13,6 +13,7 @@ import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
 import raf.draft.dsw.model.structures.Building;
 import raf.draft.dsw.model.structures.Project;
+import raf.draft.dsw.model.structures.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,10 +34,13 @@ public class MainFrame extends JFrame implements ISubscriber {
 
     private Project clickedProject;
 
+    private Room clickedRoom;
+
     // mora da ima mapu svih ProjectView-ova koji su trenutno otvoreni
     // kljuc je odgovarajuci Project
     // kada "setamo" kroz projekte da nam se ne izbrisu crtezi
     private Map<Project, ProjectView> projectViewMap = new HashMap<>();
+
 
     private MainFrame(){
     }
@@ -165,5 +169,13 @@ public class MainFrame extends JFrame implements ISubscriber {
 
     public void setClickedProject(Project clickedProject) {
         this.clickedProject = clickedProject;
+    }
+
+    public Room getClickedRoom() {
+        return clickedRoom;
+    }
+
+    public void setClickedRoom(Room clickedRoom) {
+        this.clickedRoom = clickedRoom;
     }
 }
