@@ -2,10 +2,11 @@ package raf.draft.dsw.model.nodes;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-@Getter
+@Getter@NoArgsConstructor
 public abstract class DraftNodeComposite extends DraftNode {
 
     private List<DraftNode> children = new ArrayList<>();

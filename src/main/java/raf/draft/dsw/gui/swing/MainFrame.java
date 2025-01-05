@@ -32,8 +32,10 @@ public class MainFrame extends JFrame implements ISubscriber {
     private ProjectView projectView;
     private JSplitPane splitPane;
 
+    // za Save i Open
     private Project clickedProject;
-
+    // za Save i Oper (sabloni)
+  
     private Room clickedRoom;
 
     // mora da ima mapu svih ProjectView-ova koji su trenutno otvoreni

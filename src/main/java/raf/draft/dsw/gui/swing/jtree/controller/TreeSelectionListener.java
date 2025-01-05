@@ -1,5 +1,6 @@
 package raf.draft.dsw.gui.swing.jtree.controller;
 
+import com.sun.tools.javac.Main;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.structures.Project;
@@ -20,7 +21,7 @@ public class TreeSelectionListener implements javax.swing.event.TreeSelectionLis
 
         if (treeItemSelected.getDraftNode() instanceof Project) {
             MainFrame.getInstance().setClickedProject((Project)treeItemSelected.getDraftNode());
-        } else if (treeItemSelected.getDraftNode() instanceof Room) {
+        }else if(treeItemSelected.getDraftNode() instanceof Room){
             MainFrame.getInstance().setClickedRoom((Room)treeItemSelected.getDraftNode());
         }
     }

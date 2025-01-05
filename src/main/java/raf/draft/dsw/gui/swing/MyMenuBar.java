@@ -10,6 +10,8 @@ public class MyMenuBar extends JMenuBar {
         //ExitAction ea = new ExitAction(); - ovo je zakomentarisano jer ne pravimo nove akcije,
         // vec ih izvlacimo iz MainFrame-a
         fileMenu.add(MainFrame.getInstance().getActionManager().getOpenProjectAction());
+        fileMenu.add(MainFrame.getInstance().getActionManager().getOpenRoomAction());
+        fileMenu.add(MainFrame.getInstance().getActionManager().getSaveRoomAction());
         fileMenu.add(MainFrame.getInstance().getActionManager().getSaveProjectAction());
         fileMenu.add(MainFrame.getInstance().getActionManager().getSaveAsAction());
         fileMenu.add(MainFrame.getInstance().getActionManager().getExitAction());
