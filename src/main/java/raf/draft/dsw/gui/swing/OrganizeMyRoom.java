@@ -32,6 +32,10 @@ public class OrganizeMyRoom extends JDialog {
     @Getter
     Map<String, Dimension> roomElementsMap = new HashMap<>();
 
+    // da mozemo da dodajemo iste elemente
+    // po necemu da razlikujemo imena
+    public int counter = 1;
+
     public OrganizeMyRoom(Frame parent) {
 
         super(parent, "Dodajte elemente u sobu", true);
@@ -61,7 +65,7 @@ public class OrganizeMyRoom extends JDialog {
         inputPanel.add(widthField);
 
         inputPanel.add(new JLabel("Element sobe:"));
-        elementComboBox = new JComboBox<>(new String[]{"Bojler", "Kada", "Krevet", "Lavabo", "Ormar", "Sto", "Ves masina", "Vrata", "WC solja"});
+        elementComboBox = new JComboBox<>(new String[]{"Bojler", "Kada", "Krevet", "Lavabo", "Ormar", "Sto", "VesMasina", "Vrata", "WCSolja"});
         inputPanel.add(elementComboBox);
 
         add(inputPanel, BorderLayout.NORTH);
@@ -94,7 +98,7 @@ public class OrganizeMyRoom extends JDialog {
 
         // Panel za potvrdu
         JPanel submitPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Sacuvaj");
         submitButton.addActionListener(e -> submit(roomElementsMap));
         submitPanel.add(submitButton);
 
@@ -119,7 +123,7 @@ public class OrganizeMyRoom extends JDialog {
     private void addElementToMap(Map<String, Dimension> roomElementsMap) {
         String length = lengthField.getText().trim();
         String width = widthField.getText().trim();
-        String selectedElement = (String) elementComboBox.getSelectedItem();
+        String selectedElement = (String) elementComboBox.getSelectedItem() +" "+ counter++;
 
         if (length.isEmpty() || width.isEmpty() || selectedElement == null) {
             Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Molimo popunite sva polja!", MessageType.WARNING, LocalDateTime.now());
