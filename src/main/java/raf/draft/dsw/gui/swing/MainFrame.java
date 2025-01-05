@@ -34,14 +34,15 @@ public class MainFrame extends JFrame implements ISubscriber {
 
     // za Save i Open
     private Project clickedProject;
-
     // za Save i Oper (sabloni)
+  
     private Room clickedRoom;
 
     // mora da ima mapu svih ProjectView-ova koji su trenutno otvoreni
     // kljuc je odgovarajuci Project
     // kada "setamo" kroz projekte da nam se ne izbrisu crtezi
     private Map<Project, ProjectView> projectViewMap = new HashMap<>();
+
 
     private MainFrame(){
     }

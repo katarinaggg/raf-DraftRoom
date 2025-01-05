@@ -15,6 +15,7 @@ public class ActionManager {
     private EditProjectAction editProjectAction;
     private RedoAction redoAction;
     private UndoAction undoAction;
+    private OrganizeRoomAction organizeRoomAction;
     private OpenProjectAction openProjectAction;
     private SaveProjectAction saveProjectAction;
     private SaveAsAction saveAsAction;
@@ -44,6 +45,7 @@ public class ActionManager {
         redoAction.setEnabled(false);
         undoAction = new UndoAction();
         undoAction.setEnabled(false);
+        organizeRoomAction = new OrganizeRoomAction();
         openProjectAction = new OpenProjectAction();
         saveProjectAction = new SaveProjectAction();
         saveAsAction = new SaveAsAction();

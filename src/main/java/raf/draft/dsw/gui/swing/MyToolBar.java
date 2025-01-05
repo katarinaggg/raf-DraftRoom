@@ -14,6 +14,8 @@ public class MyToolBar extends JToolBar {
         add(MainFrame.getInstance().getActionManager().getEditProjectAction());
         add(MainFrame.getInstance().getActionManager().getUndoAction());
         add(MainFrame.getInstance().getActionManager().getRedoAction());
+      
+        add(MainFrame.getInstance().getActionManager().getOrganizeRoomAction());
         add(MainFrame.getInstance().getActionManager().getSaveRoomAction());
         add(MainFrame.getInstance().getActionManager().getOpenRoomAction());
         add(MainFrame.getInstance().getActionManager().getOpenProjectAction());
