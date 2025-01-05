@@ -9,6 +9,7 @@ import raf.draft.dsw.model.nodes.DraftNodeComposite;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
+import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.ProjectExplorer;
 import raf.draft.dsw.model.structures.namestaj.RoomElement;
 
@@ -49,6 +50,40 @@ public class DraftTreeImplementation implements DraftTree{
         ((DraftNodeComposite) parent.getDraftNode()).addChild(child);
 
         refreshTree();
+    }
+
+    @Override
+    public void addDeserializedProject(Project project) {
+        DraftTreeItem root = (DraftTreeItem) defaultTreeModel.getRoot();
+
+        // dodajemo Project u model
+        ((DraftNodeComposite) root.getDraftNode()).addChild(project);
+        project.setParent(root.getDraftNode());
+
+        // dodajemo Project u JTreeView
+        DraftTreeItem projectNode = new DraftTreeItem(project);
+        root.add(projectNode);
+
+        addChildrenToTreeNode(project,projectNode);
+
+        refreshTree();
+    }
+
+    // metoda za dodavanje sve dece postojeceg Projecta u Jtree
+    // u modelu ih vec ima (to smo uradili u deserijalizaciji)
+    private void addChildrenToTreeNode(DraftNode parentNode, DraftTreeItem parentTreeItem) {
+        if (parentNode instanceof DraftNodeComposite) {
+            DraftNodeComposite composite = (DraftNodeComposite) parentNode;
+
+            for (DraftNode child : composite.getChildren()) {
+
+                DraftTreeItem childTreeItem = new DraftTreeItem(child);
+                parentTreeItem.add(childTreeItem);
+
+                // rekurzivno dodavanje njegove dece
+                addChildrenToTreeNode(child, childTreeItem);
+            }
+        }
     }
 
     @Override

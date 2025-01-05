@@ -1,10 +1,12 @@
 package raf.draft.dsw.model.structures.namestaj;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 
+@NoArgsConstructor
 public class WCSolja extends RoomElement {
 
     private static int elementCounter = 1;

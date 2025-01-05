@@ -63,6 +63,9 @@ public class CopyPasteCommand extends AbstractCommand {
         else if (kopija instanceof WCSolja) {
             elementPainter = new WCSoljaPainter((WCSolja) kopija, roomView);
         }
+        else if(kopija instanceof Vrata){
+            elementPainter = new VrataPainter((Vrata) kopija, roomView);
+        }
         return elementPainter;
     }
 

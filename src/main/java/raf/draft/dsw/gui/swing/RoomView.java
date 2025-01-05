@@ -80,6 +80,7 @@ public class RoomView extends JPanel implements ISubscriber {
 
         // Pronađi najmanji faktor skaliranja koji odgovara dimenzijama panela
         scalingFactor = Math.min((double) panelWidth / roomWidthPx, (double) panelHeight / roomHeightPx);
+        System.out.println("FAKTOR SKALIRANJA: " +this.scalingFactor);
     }
 
 
@@ -418,4 +419,5 @@ public class RoomView extends JPanel implements ISubscriber {
         this.selectionList.clear();
         repaint();
     }
+
 }

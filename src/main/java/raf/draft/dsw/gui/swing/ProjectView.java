@@ -546,5 +546,7 @@ public class ProjectView extends JPanel implements ISubscriber {
         }
     }
 
-
+    public Map<String, RoomView> getRoomViewMap() {
+        return roomViewMap;
+    }
 }

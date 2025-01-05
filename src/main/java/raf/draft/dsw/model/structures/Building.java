@@ -13,7 +13,7 @@ import raf.draft.dsw.serializer.ColorSerializer;
 import java.awt.*;
 import java.util.Random;
 
-
+@NoArgsConstructor
 public class Building extends DraftNodeComposite {
 
     // treba dodati polje za boju
