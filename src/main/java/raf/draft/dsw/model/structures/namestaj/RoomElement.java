@@ -3,14 +3,17 @@ package raf.draft.dsw.model.structures.namestaj;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.NoArgsConstructor;
 import raf.draft.dsw.gui.swing.RoomView;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
+import raf.draft.dsw.model.structures.Room;
 import raf.draft.dsw.serializer.ColorDeserializer;
 import raf.draft.dsw.serializer.ColorSerializer;
 
 import java.awt.*;
 
+@NoArgsConstructor
 public abstract class RoomElement extends DraftNode implements Prototype{
      private Point lokacija;
 
@@ -54,7 +57,13 @@ public abstract class RoomElement extends DraftNode implements Prototype{
         return lokacija;
     }
 
+    // kada menjamo lokaciju (Move) promenio se i projekat
+    // RoomElementu je parent Room pa trazimo od Rooma odgovarajuci Projekat
     public void setLokacija(Point lokacija) {
+        Room room = (Room) getParent();
+        if(room!=null) {
+            room.getProjectParent().setChanged(true);
+        }
         this.lokacija = lokacija;
     }
 
@@ -63,6 +72,10 @@ public abstract class RoomElement extends DraftNode implements Prototype{
     }
 
     public void setSize(Dimension size) {
+        Room room = (Room) getParent();
+        if(room!=null) {
+            room.getProjectParent().setChanged(true);
+        }
         this.size = size;
     }
 
@@ -79,6 +92,10 @@ public abstract class RoomElement extends DraftNode implements Prototype{
 //    }
 
     public void setRotateRatio(int rotateRatio) {
+        Room room = (Room) getParent();
+        if(room!=null) {
+            room.getProjectParent().setChanged(true);
+        }
         this.rotacija = (rotateRatio % 4 + 4) % 4; // Osigurava opseg 0-3
     }
 
@@ -93,6 +110,10 @@ public abstract class RoomElement extends DraftNode implements Prototype{
     }
 
     public void setColor(Color color) {
+        Room room = (Room) getParent();
+        if(room!=null) {
+            room.getProjectParent().setChanged(true);
+        }
         this.color = color;
     }
 
@@ -111,5 +132,10 @@ public abstract class RoomElement extends DraftNode implements Prototype{
 
     public Stroke createStroke() {
         return new BasicStroke(strokeWidth);
+    }
+
+    @Override
+    public String toString() {
+        return "RoomElement "+this.getIme();
     }
 }

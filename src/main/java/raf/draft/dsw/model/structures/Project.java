@@ -5,10 +5,11 @@ import lombok.*;
 import raf.draft.dsw.model.nodes.DraftNode;
 import raf.draft.dsw.model.nodes.DraftNodeComposite;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.UUID;
 
-@Getter@Setter
+@Getter@Setter@NoArgsConstructor
 public class Project extends DraftNodeComposite {
 
     //private String ime;     vec ima kao polje u DraftNode :')
@@ -23,11 +24,10 @@ public class Project extends DraftNodeComposite {
     private boolean changed;
 
     @JsonIgnore
-    private final String id; // Jedinstveni identifikator
+    private final String id= UUID.randomUUID().toString(); // Generišemo jedinstveni ID
 
     public Project(String ime, DraftNode parent) {
         super(ime, parent);
-        this.id = UUID.randomUUID().toString(); // Generišemo jedinstveni ID
         this.changed = true ;
     }
 
@@ -93,6 +93,7 @@ public class Project extends DraftNodeComposite {
     }
 
     public void setChanged(boolean changed) {
+        System.out.println("PROMENA "+ changed);
         this.changed = changed;
     }
 

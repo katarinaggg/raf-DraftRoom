@@ -18,7 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@Getter
+@Getter@NoArgsConstructor
 public class Room extends DraftNodeComposite {
 
     private double sirina;
@@ -47,6 +47,7 @@ public class Room extends DraftNodeComposite {
 
     public Room(String ime, DraftNode parent) {
         super(ime, parent);
+        //System.out.println(this.getProjectParent());
     }
 
 
@@ -60,6 +61,8 @@ public class Room extends DraftNodeComposite {
         if(!this.getChildren().contains((RoomElement) child)){
             this.getChildren().add((RoomElement) child);
         }
+        //  kada dodajemo dete sobi projekat se menja
+        getProjectParent().setChanged(true);
 
         // Room je vec IPublisher i samo treba da obavesti RoomView
         // (koji je sada postao ISubscriber) da je dodato dete i da treba da se repaintuje
@@ -71,6 +74,8 @@ public class Room extends DraftNodeComposite {
     @Override
     public void removeChild(DraftNode child) {
         this.getChildren().remove(child);
+        // kada brisemo dete projekat se menja
+        getProjectParent().setChanged(true);
 
         // obavestavamo RoomView da smo uklonili dete
         // i da treba da se repaintuje
@@ -109,4 +114,27 @@ public class Room extends DraftNodeComposite {
         return copyElements;
     }
 
+    // funkcija za nalazennje odgovarajuceg Projecta koji je direktni
+    // ili indirektni parent ovoj sobi kako bi obelezili da je doslo
+    // do promena kako bi mogao da se sacuva
+
+    @JsonIgnore
+    public Project getProjectParent(){
+        // ako joj je parent Project
+        if(this.getParent() instanceof Project){
+            return (Project) this.getParent();
+        }
+        // ako joj je parent Building onda je Buildingov parent Project
+        else{
+            return (Project) this.getParent().getParent();
+        }
+    }
+
+    public void setLineColor(Color lineColor) {
+        this.lineColor = lineColor;
+    }
+
+    public void setLineThickness(float lineThickness) {
+        this.lineThickness = lineThickness;
+    }
 }

@@ -1,11 +1,13 @@
 package raf.draft.dsw.model.structures.namestaj;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
 import raf.draft.dsw.model.nodes.DraftNode;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
+@NoArgsConstructor
 public class Kada extends RoomElement{
 
     //private Color color = new Color(197, 206, 212);

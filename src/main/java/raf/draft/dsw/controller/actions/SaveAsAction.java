@@ -18,7 +18,7 @@ public class SaveAsAction extends AbstractRoomAction{
 
     public SaveAsAction() {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
-        putValue(SMALL_ICON, loadIcon("/images/save-as.png"));
+        putValue(SMALL_ICON, loadIcon("/images/saveAs.png"));
         putValue(NAME, "Save As");
         putValue(SHORT_DESCRIPTION, "Save As");
     }

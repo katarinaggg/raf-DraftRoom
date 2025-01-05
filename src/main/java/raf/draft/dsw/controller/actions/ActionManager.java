@@ -18,6 +18,8 @@ public class ActionManager {
     private OpenProjectAction openProjectAction;
     private SaveProjectAction saveProjectAction;
     private SaveAsAction saveAsAction;
+    private OpenRoomAction openRoomAction;
+    private SaveRoomAction saveRoomAction;
 
     // akcije na desnom toolbaru
     private AddRoomElementAction addRoomElementAction;
@@ -45,6 +47,8 @@ public class ActionManager {
         openProjectAction = new OpenProjectAction();
         saveProjectAction = new SaveProjectAction();
         saveAsAction = new SaveAsAction();
+        openRoomAction = new OpenRoomAction();
+        saveRoomAction = new SaveRoomAction();
 
         addRoomElementAction = new AddRoomElementAction();
         copyPasteAction = new CopyPasteAction();
