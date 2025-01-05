@@ -3,11 +3,16 @@ package raf.draft.dsw.controller.actions;
 import raf.draft.dsw.core.ApplicationFramework;
 import raf.draft.dsw.gui.swing.MainFrame;
 import raf.draft.dsw.gui.swing.OrganizeMyRoom;
+import raf.draft.dsw.gui.swing.ProjectView;
+import raf.draft.dsw.gui.swing.RoomView;
+import raf.draft.dsw.gui.swing.jtree.model.DraftTreeItem;
 import raf.draft.dsw.model.notification.Message;
 import raf.draft.dsw.model.notification.MessageType;
 import raf.draft.dsw.model.notification.Notification;
+import raf.draft.dsw.model.structures.Project;
 import raf.draft.dsw.model.structures.Room;
 import raf.draft.dsw.model.structures.namestaj.*;
+import raf.draft.dsw.painter.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,8 +52,12 @@ public class OrganizeRoomAction extends AbstractRoomAction {
         Message message;
 
         if (selectedRoom == null) {
-            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage(
-                    "Niste selektovali sobu", MessageType.WARNING, LocalDateTime.now());
+            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate da izaberete sobu u koju zelite da organizujete", MessageType.WARNING, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return;
+        }
+        if(selectedRoom.getSirina()==0 || selectedRoom.getDuzina()==0){
+            message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Morate da nacrtate sobu i unesete dimenzije kako biste mogli da je organizujete", MessageType.INFORMATION, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
@@ -60,7 +69,8 @@ public class OrganizeRoomAction extends AbstractRoomAction {
 
 
             if (elementsMap.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Nema elemenata za dodavanje!", "Greška", JOptionPane.ERROR_MESSAGE);
+                message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Nema elemenata za dodavanje!", MessageType.ERROR, LocalDateTime.now());
+                ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
                 return;
             }
 
@@ -72,19 +82,24 @@ public class OrganizeRoomAction extends AbstractRoomAction {
             // Kreiranje liste elemenata na osnovu mape
             List<RoomElement> elements = new ArrayList<>();
             for (Map.Entry<String, Dimension> entry : elementsMap.entrySet()) {
-                String name = entry.getKey();
+                String name = entry.getKey().split(" ")[0];
                 Dimension size = entry.getValue();
                 RoomElement element = createRoomElement(name, (int) size.getWidth(), (int) size.getHeight(), selectedRoom);
                 if (element != null) {
                     elements.add(element);
                 }
             }
-
-
-            for (Map.Entry<String, Dimension> entry : elementsMap.entrySet()) {
-                System.out.println("Element: " + entry.getKey() + ", Dimenzije: " + entry.getValue());
+            System.out.println("Elementi za dodavanje u sobu");
+            for(RoomElement element : elements) {
+                System.out.println(element);
             }
 
+            // dodajemo u model i Jtree
+            for(RoomElement element : elements) {
+                DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(selectedRoom);
+                MainFrame.getInstance().getDraftTree().addRoomChild(soba,element);
+                element.setParent(selectedRoom);
+            }
             // Postavljanje elemenata u sobu
             placeElementsInRoom(selectedRoom, elements);
             //displayRoomLayout(selectedRoom, elements, matrixSize[0], matrixSize[1]);
@@ -106,11 +121,11 @@ public class OrganizeRoomAction extends AbstractRoomAction {
                 return new Ormar(room, new Point(0, 0), new Dimension(width, height));
             case "Sto":
                 return new Sto(room, new Point(0, 0), new Dimension(width, height));
-            case "Ves masina":
+            case "VesMasina":
                 return new VesMasina(room, new Point(0, 0), new Dimension(width, height));
             case "Vrata":
                 return new Vrata(room, new Point(0, 0), new Dimension(width, height));
-            case "WC solja":
+            case "WCSolja":
                 return new WCSolja(room, new Point(0, 0), new Dimension(width, height));
             default:
                 return null;
@@ -125,20 +140,29 @@ public class OrganizeRoomAction extends AbstractRoomAction {
         List<Point> spiralOrder = generateSpiralOrder(n, m);
 
         if (elements.size() > spiralOrder.size()) {
-            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage(
-                    "Nema dovoljno mesta u sobi za sve elemente!", MessageType.ERROR, LocalDateTime.now());
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Nema dovoljno mesta u sobi za sve elemente!", MessageType.ERROR, LocalDateTime.now());
             ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
             return;
         }
+
+        // izvlacimo RoomView na koji treba da iscrtamo (vec postoji)
+        Project project = room.getProjectParent();
+        ProjectView projectView = MainFrame.getInstance().getProjectViewMap().get(project);
+        RoomView roomView = projectView.getRoomViewMap().get(room.getIme());
+
+        // za svaki element treba da napravimo odgovarajuci painter
+        // koji cemo dodati na RoomView
+        // i da mu setujemo lokaciju u matrici
 
         for (int i = 0; i < elements.size(); i++) {
             Point position = spiralOrder.get(i);
             RoomElement element = elements.get(i);
             element.setLokacija(new Point(position.x * (int) element.getSize().getWidth(), position.y * (int) element.getSize().getHeight()));
-            room.addChild(element);
+            ElementPainter elementPainter = createPainter(element,roomView);
+            roomView.addPainter(elementPainter);
         }
 
-        room.notifySubscribers(new Notification(room));
+        room.notifySubscribers(new Notification());
     }
 
 //    private void displayRoomLayout(Room room, List<RoomElement> elements, int rows, int cols) {
@@ -183,8 +207,8 @@ public class OrganizeRoomAction extends AbstractRoomAction {
         int m = (int) Math.ceil((double) room.getSirina() / maxElementWidth);
 
         // Ograničite maksimalne dimenzije matrice kako biste izbegli prevelike vrednosti
-        n = Math.min(n, 1000); // Na primer, maksimalno 1000 redova
-        m = Math.min(m, 1000); // Na primer, maksimalno 1000 kolona
+        n = Math.min(n, 100); // Na primer, maksimalno 1000 redova
+        m = Math.min(m, 100); // Na primer, maksimalno 1000 kolona
 
         return new int[]{n, m};
     }
@@ -227,6 +251,38 @@ public class OrganizeRoomAction extends AbstractRoomAction {
         }
 
         return order;
+    }
+
+    private ElementPainter createPainter(RoomElement element, RoomView roomView) {
+        ElementPainter elementPainter = null;
+        if (element instanceof Bojler){
+            elementPainter = new BojlerPainter((Bojler) element,roomView);
+        }
+        else if (element instanceof Kada){
+            elementPainter = new KadaPainter((Kada) element,roomView);
+        }
+        else if (element instanceof Krevet) {
+            elementPainter = new KrevetPainter((Krevet) element,roomView);
+        }
+        else if (element instanceof Lavabo) {
+            elementPainter = new LavaboPainter((Lavabo) element,roomView);
+        }
+        else if (element instanceof Ormar){
+            elementPainter = new OrmarPainter((Ormar) element,roomView);
+        }
+        else if (element instanceof Sto) {
+            elementPainter = new StoPainter((Sto) element,roomView);
+        }
+        else if (element instanceof VesMasina) {
+            elementPainter = new VesMasinaPainter((VesMasina) element, roomView);
+        }
+        else if (element instanceof WCSolja) {
+            elementPainter = new WCSoljaPainter((WCSolja) element, roomView);
+        }
+        else if(element instanceof Vrata){
+            elementPainter = new VrataPainter((Vrata) element, roomView);
+        }
+        return elementPainter;
     }
 
 }
