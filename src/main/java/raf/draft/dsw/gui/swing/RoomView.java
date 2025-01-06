@@ -420,4 +420,13 @@ public class RoomView extends JPanel implements ISubscriber {
         repaint();
     }
 
+    public RoomPainter getRoomPainter(Room room) {
+        RoomPainter painter = null;
+        for(ElementPainter elementPainter : painters) {
+            if(elementPainter instanceof RoomPainter) {
+                painter = (RoomPainter) elementPainter;
+            }
+        }
+        return painter;
+    }
 }

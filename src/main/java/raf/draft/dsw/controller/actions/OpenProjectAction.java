@@ -50,6 +50,9 @@ public class OpenProjectAction extends AbstractRoomAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         Project project = ApplicationFramework.getInstance().getSerializer().openProject();
+        if(project==null){
+            return;
+        }
         dodajUStablo(project);
         inicijalizacijaPaintera(project);
     }

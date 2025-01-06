@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.GeneralPath;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -94,16 +95,18 @@ public class OrganizeRoomAction extends AbstractRoomAction {
                 System.out.println(element);
             }
 
-            // dodajemo u model i Jtree
-            for(RoomElement element : elements) {
-                DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(selectedRoom);
-                MainFrame.getInstance().getDraftTree().addRoomChild(soba,element);
-                element.setParent(selectedRoom);
-            }
-            // Postavljanje elemenata u sobu
-            placeElementsInRoom(selectedRoom, elements);
-            //displayRoomLayout(selectedRoom, elements, matrixSize[0], matrixSize[1]);
 
+            // Postavljanje elemenata u sobu
+
+            // ako su stali dodajemo ih u Jtree
+            if(placeElementsInRoom(selectedRoom, elements)){
+                // dodajemo u model i Jtree
+                for(RoomElement element : elements) {
+                    DraftTreeItem soba = MainFrame.getInstance().getDraftTree().findTreeItem(selectedRoom);
+                    MainFrame.getInstance().getDraftTree().addRoomChild(soba,element);
+                    element.setParent(selectedRoom);
+                }
+            }
         }
     }
 
@@ -132,70 +135,112 @@ public class OrganizeRoomAction extends AbstractRoomAction {
         }
     }
 
-    private void placeElementsInRoom(Room room, List<RoomElement> elements) {
-        int[] matrixSize = calculateMatrixSize(room, elements);
-        int n = matrixSize[0];
-        int m = matrixSize[1];
-
-        List<Point> spiralOrder = generateSpiralOrder(n, m);
-
-        if (elements.size() > spiralOrder.size()) {
-            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Nema dovoljno mesta u sobi za sve elemente!", MessageType.ERROR, LocalDateTime.now());
-            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
-            return;
-        }
-
+    private boolean placeElementsInRoom(Room room, List<RoomElement> elements) {
         // izvlacimo RoomView na koji treba da iscrtamo (vec postoji)
         Project project = room.getProjectParent();
         ProjectView projectView = MainFrame.getInstance().getProjectViewMap().get(project);
         RoomView roomView = projectView.getRoomViewMap().get(room.getIme());
 
+        // Dobijanje granica sobe iz RoomPainter-a
+        RoomPainter roomPainter = roomView.getRoomPainter(room);
+        GeneralPath roomShape = roomPainter.getShape();
+
+        Rectangle bounds = roomShape.getBounds();
+        int roomXStart = bounds.x;
+        int roomYStart = bounds.y;
+        int roomWidth = bounds.width;
+        int roomHeight = bounds.height;
+
+        // Prilagodjavanje matrice prema dimenzijama sobe
+        int[] matrixSize = calculateMatrixSize(roomWidth, roomHeight, elements);
+        int n = matrixSize[0]; // Broj redova
+        int m = matrixSize[1]; // Broj kolona
+
+        List<Point> spiralOrder = generateSpiralOrder(n, m); // Generisanje spiralnog redosleda
+
+        if (elements.size() > spiralOrder.size()) {
+            Message message = ApplicationFramework.getInstance().getMessageGenerator().generateMessage("Nema dovoljno mesta u sobi za sve elemente!", MessageType.ERROR, LocalDateTime.now());
+            ApplicationFramework.getInstance().getMessageGenerator().notifySubscribers(new Notification(message));
+            return false;
+        }
+
+        // Randomizacija redosleda elemenata
+        //Collections.shuffle(elements);
+
+        // Dimenzije ćelije matrice
+        int cellWidth = roomWidth / m;
+        int cellHeight = roomHeight / n;
+
         // za svaki element treba da napravimo odgovarajuci painter
         // koji cemo dodati na RoomView
         // i da mu setujemo lokaciju u matrici
 
+        Set<Point> occupiedCells = new HashSet<>(); // Provera zauzetosti ćelija
+
         for (int i = 0; i < elements.size(); i++) {
-            Point position = spiralOrder.get(i);
             RoomElement element = elements.get(i);
-            element.setLokacija(new Point(position.x * (int) element.getSize().getWidth(), position.y * (int) element.getSize().getHeight()));
-            ElementPainter elementPainter = createPainter(element,roomView);
+
+            // Pronađi sledeću slobodnu poziciju
+            Point position = null;
+            for (Point p : spiralOrder) {
+                if (!occupiedCells.contains(p)) {
+                    position = p;
+                    occupiedCells.add(p);
+                    break;
+                }
+            }
+
+            // Izračunavanje apsolutne pozicije u sobi
+            int x = roomXStart + position.y * cellWidth;
+            int y = roomYStart + position.x * cellHeight;
+
+            // Proporcionalno skaliranje elemenata prema veličini ćelije
+            int elementWidth = Math.min(cellWidth, (int) element.getSize().getWidth());
+            int elementHeight = Math.min(cellHeight, (int) element.getSize().getHeight());
+
+            // Prilagođavanje elemenata unutar ćelije
+            if (position.x == 0 && position.y == 0) {
+                // Gornji levi ugao
+                element.setLokacija(new Point(x, y));
+            } else if (position.x == 0 && position.y == m - 1) {
+                // Gornji desni ugao
+                element.setLokacija(new Point(x + cellWidth - elementWidth, y));
+            } else if (position.x == n - 1 && position.y == 0) {
+                // Donji levi ugao
+                element.setLokacija(new Point(x, y + cellHeight - elementHeight));
+            } else if (position.x == n - 1 && position.y == m - 1) {
+                // Donji desni ugao
+                element.setLokacija(new Point(x + cellWidth - elementWidth, y + cellHeight - elementHeight));
+            } else if (position.x == 0) {
+                // Prvi red - lepljenje uz gornju ivicu
+                element.setLokacija(new Point(x, y));
+            } else if (position.x == n - 1) {
+                // Poslednji red - lepljenje uz donju ivicu
+                element.setLokacija(new Point(x, y + cellHeight - elementHeight));
+            } else if (position.y == 0) {
+                // Prva kolona - lepljenje uz levu ivicu
+                element.setLokacija(new Point(x, y));
+            } else if (position.y == m - 1) {
+                // Poslednja kolona - lepljenje uz desnu ivicu
+                element.setLokacija(new Point(x + cellWidth - elementWidth, y));
+            } else {
+                // Srednja polja - centriranje unutar ćelije
+                int offsetX = (cellWidth - elementWidth) / 2;
+                int offsetY = (cellHeight - elementHeight) / 2;
+                element.setLokacija(new Point(x + offsetX, y + offsetY));
+            }
+
+            // Kreiranje painter-a za element
+            ElementPainter elementPainter = createPainter(element, roomView);
             roomView.addPainter(elementPainter);
         }
 
         room.notifySubscribers(new Notification());
+        return true;
     }
 
-//    private void displayRoomLayout(Room room, List<RoomElement> elements, int rows, int cols) {
-//        JFrame frame = new JFrame("Prikaz sobe");
-//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        frame.setSize(700, 700);
-//        frame.setLayout(new GridLayout(rows, cols));
-//
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < cols; j++) {
-//                JPanel cell = new JPanel();
-//                cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//                frame.add(cell);
-//
-//                for (RoomElement element : elements) {
-//                    Point location = element.getLokacija();
-//                    if (location.x / element.getSize().width == j && location.y / element.getSize().height == i) {
-//                        JLabel label = new JLabel(element.getIme());
-//                        label.setHorizontalAlignment(SwingConstants.CENTER);
-//                        cell.add(label);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//
-//        frame.setVisible(true);
-//    }
-
-
-
-    private int[] calculateMatrixSize(Room room, List<RoomElement> elements) {
-        int maxElementWidth = 1; // Podrazumevana vrednost za izbegavanje deljenja sa nulom
+    private int[] calculateMatrixSize(int roomWidth, int roomHeight, List<RoomElement> elements) {
+        int maxElementWidth = 1;
         int maxElementHeight = 1;
 
         for (RoomElement element : elements) {
@@ -203,12 +248,8 @@ public class OrganizeRoomAction extends AbstractRoomAction {
             maxElementHeight = Math.max(maxElementHeight, (int) element.getSize().getHeight());
         }
 
-        int n = (int) Math.ceil((double) room.getDuzina() / maxElementHeight);
-        int m = (int) Math.ceil((double) room.getSirina() / maxElementWidth);
-
-        // Ograničite maksimalne dimenzije matrice kako biste izbegli prevelike vrednosti
-        n = Math.min(n, 100); // Na primer, maksimalno 1000 redova
-        m = Math.min(m, 100); // Na primer, maksimalno 1000 kolona
+        int n = Math.max(1, (int) Math.ceil((double) roomHeight / maxElementHeight));
+        int m = Math.max(1, (int) Math.ceil((double) roomWidth / maxElementWidth));
 
         return new int[]{n, m};
     }
